@@ -39,15 +39,17 @@ AdvisKV 是我用 C++17 从零实现的分布式 Key-Value 存储系统。客户
 
 ## 快速开始
 
-环境要求：推荐使用 Linux（Ubuntu 24.04）、C++17 编译器、CMake 3.20+、Ninja、Git 和 Python 3。
+环境要求：推荐使用 Linux（Ubuntu 24.04）、C++17 编译器、CMake 3.20+、Ninja 或 Make、Git 和 Python 3。
 
 首次构建前初始化依赖：
 
 ```bash
 git submodule update --init --recursive
 ./scripts/setup.sh
-./scripts/build.sh
+python3 scripts/verify_project.py
 ```
+
+`verify_project.py` 会构建所需二进制，拉起 1 个 Catalog、1 个 Topo 和 3 个 Storage，自动验收建表、Put/Get、覆盖、删除和删表重建，并停止它启动的服务。它会清空 `build/e2e_test` 中的本地测试数据。需要单独构建所有目标时再运行 `./scripts/build.sh`。验证入口会按可用构建工具选择生成器；若默认 `build/` 已按 Ninja 配置而本机没有 Ninja，会改用 `build-make/`。显式选择已有构建目录时，请设置一致的 `BUILD_DIR` 和 `GENERATOR`（例如 `BUILD_DIR=build-make GENERATOR='Unix Makefiles'`）。
 
 如果需要运行 Maelstrom 测试，把上面的 setup 命令替换为：
 
@@ -60,6 +62,8 @@ git submodule update --init --recursive
 ```bash
 ./scripts/adviskvctl_demo.sh
 ```
+
+如果验证入口输出 `using build-make`，则改用 `BUILD_DIR=build-make ./scripts/adviskvctl_demo.sh`。
 
 在交互式 shell 中执行：
 
@@ -208,6 +212,9 @@ Benchmark 测量的是本地多进程环境中的 `SDK → Topo route → Storag
 - [v0.1.0 版本说明](docs/版本.md)：版本能力摘要与后续计划。
 - [v0.1.0 Benchmark 说明](docs/v0.1.0/benchmark/README.md)：Benchmark 的运行方式和结果说明。
 - [v0.1.0 SDK 重试验收](docs/v0.1.0/retry.md)：写请求重试和 leader 故障切主验收结果。
+- [项目速读](docs/interview/项目速读.md)：30 秒介绍、核心链路与分阶段源码阅读路线。
+- [证据与边界](docs/interview/证据与边界.md)：本机验收、历史结果、当前限制和贡献故事。
+- [分层面试题库](docs/interview/分层面试题库.md)：94 道项目与岗位追问题，附答案要点和评分标准。
 
 ## 项目结构
 

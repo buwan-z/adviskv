@@ -11,9 +11,10 @@
 | 脚本 | 用途 |
 | --- | --- |
 | `setup.sh` | 准备本地依赖；使用 `--with-maelstrom-test` 时额外安装 Maelstrom 测试工具。 |
+| `verify_project.py` | 构建所需二进制，运行三副本基础 KV 链路，校验关键输出并清理本次服务；会重置 `BUILD_DIR/e2e_test`。 |
 | `build.sh` | 构建项目；可通过 `BUILD_TARGETS=...` 做局部构建。 |
 | `run_test.sh` | 构建 + C++ 测试；检测到 Maelstrom 时额外运行 3 节点无故障测试和 5 节点网络分区（`--nemesis partition`）压力测试。 |
-| `e2e_pytest.sh` | 构建 + e2e测试 |
+| `e2e_pytest.sh` | 构建 + E2E 测试；可传具体用例路径，仅运行该用例。 |
 | `coverage.sh` | 执行覆盖率测试 |
 | `bench.sh` | 自动拉起集群（配置来自conf目录）并运行 `bench_client`。 |
 | `failover_bench.sh` | kill 当前 Raft leader，并生成 `failover_result.json` 查看切主窗口、失败率和 `UNKNOWN` 统计。 |

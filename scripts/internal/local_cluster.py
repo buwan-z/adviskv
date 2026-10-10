@@ -270,9 +270,12 @@ class LocalCluster:
 
         try:
             self._wait_until_started(handle)
-        except Exception:
-            if handle in self.processes:
-                self.processes.remove(handle)
+        except BaseException:
+            try:
+                self._stop_process(handle, force=True)
+            finally:
+                if handle in self.processes:
+                    self.processes.remove(handle)
             raise
 
     def stop_service(self, name: str) -> None:

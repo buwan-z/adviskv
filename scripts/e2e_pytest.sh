@@ -7,13 +7,18 @@ PYTHON="${PYTHON:-$VENV_DIR/bin/python}"
 REQUIREMENTS="$ROOT_DIR/test/e2e/requirements.txt"
 
 if [[ ! -x "$PYTHON" ]]; then
-    if [[ -n "${PYTHON:-}" && "$PYTHON" != "$VENV_DIR/bin/python" ]]; then
-        echo "configured PYTHON is not executable: $PYTHON" >&2
-        exit 1
+    if [[ "$PYTHON" != "$VENV_DIR/bin/python" ]]; then
+        if command -v "$PYTHON" >/dev/null 2>&1; then
+            PYTHON="$(command -v "$PYTHON")"
+        else
+            echo "configured PYTHON is not executable: $PYTHON" >&2
+            exit 1
+        fi
+    else
+        echo "[e2e] creating Python virtual environment: $VENV_DIR"
+        python3 -m venv "$VENV_DIR"
+        PYTHON="$VENV_DIR/bin/python"
     fi
-    echo "[e2e] creating Python virtual environment: $VENV_DIR"
-    python3 -m venv "$VENV_DIR"
-    PYTHON="$VENV_DIR/bin/python"
 fi
 
 if ! "$PYTHON" -m pytest --version >/dev/null 2>&1; then
@@ -22,4 +27,8 @@ if ! "$PYTHON" -m pytest --version >/dev/null 2>&1; then
 fi
 
 "$ROOT_DIR/scripts/stop_cluster.sh"
-"$PYTHON" -m pytest -c "$ROOT_DIR/test/e2e/pytest.ini" "$ROOT_DIR/test/e2e" "$@"
+if [[ $# -eq 0 || "$1" == -* ]]; then
+    "$PYTHON" -m pytest -c "$ROOT_DIR/test/e2e/pytest.ini" "$ROOT_DIR/test/e2e" "$@"
+else
+    "$PYTHON" -m pytest -c "$ROOT_DIR/test/e2e/pytest.ini" "$@"
+fi
