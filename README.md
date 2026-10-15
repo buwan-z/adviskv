@@ -213,6 +213,7 @@ Benchmark 测量的是本地多进程环境中的 `SDK → Topo route → Storag
 - [v0.1.0 Benchmark 说明](docs/v0.1.0/benchmark/README.md)：Benchmark 的运行方式和结果说明。
 - [v0.1.0 SDK 重试验收](docs/v0.1.0/retry.md)：写请求重试和 leader 故障切主验收结果。
 - [项目速读](docs/interview/项目速读.md)：30 秒介绍、核心链路与分阶段源码阅读路线。
+- [面试图解](docs/interview/图解/README.md)：7 张可编辑组件架构图与 19 张 Mermaid 流程图，串起建表、读写、Raft 与恢复，并对应题库题号。
 - [证据与边界](docs/interview/证据与边界.md)：本机验收、历史结果、当前限制和贡献故事。
 - [分层面试题库](docs/interview/分层面试题库.md)：94 道项目与岗位追问题，附答案要点和评分标准。
 
