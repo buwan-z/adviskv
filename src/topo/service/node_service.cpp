@@ -11,7 +11,7 @@
 #include "topo/store/topo_store.h"
 #include "topo/store/topo_store_txn.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 
 namespace {
 
@@ -327,4 +327,4 @@ Status NodeService::check_and_modify_node_for_test(Node& node) {
     });
 }
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

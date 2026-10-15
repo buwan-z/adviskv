@@ -4,7 +4,7 @@
 #include "storage.pb.h"
 #include "storage/model/model.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 inline bool decode_pb_write_op_type(int32 in, WriteOpType& out) {
     switch (in) {
@@ -87,4 +87,4 @@ inline bool encode_pb_log_entry(const LogEntry& in, rpc::LogEntry& out) {
     return true;
 }
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

@@ -12,12 +12,12 @@
 #include "test_env.h"
 namespace fs = std::filesystem;
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 class ReplicaMetaPersistEngineTest : public ::testing::Test {
    protected:
     void SetUp() override {
-        base_dir_ = adviskv::test::make_unique_test_dir("replica_meta_persist",
+        base_dir_ = raftbox::test::make_unique_test_dir("replica_meta_persist",
                                                         sequence_++);
         ASSERT_TRUE(fs::create_directories(base_dir_)) << base_dir_.string();
     }
@@ -149,4 +149,4 @@ TEST_F(ReplicaMetaPersistEngineTest, LoadCorruptedReplicaMetaFails) {
     EXPECT_TRUE(status.fail());
 }
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

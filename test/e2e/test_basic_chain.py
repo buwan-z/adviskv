@@ -3,7 +3,7 @@ import time
 
 import pytest
 
-from .cluster import AdvisKVCluster
+from .cluster import RaftBoxCluster
 
 
 VERIFY_TIMEOUT_MS = 90_000
@@ -21,14 +21,14 @@ def strip_ansi(text: str) -> str:
     return ANSI_ESCAPE_RE.sub("", text)
 
 
-def clean_case_output(result, cluster: AdvisKVCluster) -> str:
+def clean_case_output(result, cluster: RaftBoxCluster) -> str:
     assert result.returncode == 0, result.stdout + "\n" + cluster.logs_summary()
     output = strip_ansi(result.stdout)
     assert "[ FAIL ]" not in output, output
     return output
 
 
-def run_case_and_get_output(cluster: AdvisKVCluster, **kwargs) -> str:
+def run_case_and_get_output(cluster: RaftBoxCluster, **kwargs) -> str:
     result = cluster.run_case(**kwargs)
     return clean_case_output(result, cluster)
 
@@ -48,7 +48,7 @@ def parse_route_replicas(output: str) -> list[tuple[str, int, str]]:
     return [(host, int(port), role) for host, port, role in matches]
 
 
-def follower_services_from_output(cluster: AdvisKVCluster, output: str) -> list[str]:
+def follower_services_from_output(cluster: RaftBoxCluster, output: str) -> list[str]:
     followers = [
         cluster.service_name_for_port(port)
         for _, port, role in parse_route_replicas(output)
@@ -58,22 +58,22 @@ def follower_services_from_output(cluster: AdvisKVCluster, output: str) -> list[
     return followers
 
 
-def leader_service_from_output(cluster: AdvisKVCluster, output: str) -> str:
+def leader_service_from_output(cluster: RaftBoxCluster, output: str) -> str:
     _, leader_port = parse_route_leader(output)
     return cluster.service_name_for_port(leader_port)
 
 
-def service_port(cluster: AdvisKVCluster, name: str) -> int:
+def service_port(cluster: RaftBoxCluster, name: str) -> int:
     for spec in cluster.specs:
         if spec.name == name:
             return spec.port
     raise KeyError(f"unknown service: {name}")
 
 
-def run_create_table_crash_story(cluster: AdvisKVCluster, *, crash_point: str,
+def run_create_table_crash_story(cluster: RaftBoxCluster, *, crash_point: str,
                                  prepare_case: str, verify_case: str, db: str,
                                  table: str) -> None:
-    cluster.set_service_env("topo", {"ADVISKV_ENABLE_CRASH_POINT": crash_point})
+    cluster.set_service_env("topo", {"RAFTBOX_ENABLE_CRASH_POINT": crash_point})
     cluster.restart_service("topo")
 
     prepare_output = run_case_and_get_output(
@@ -99,7 +99,7 @@ def run_create_table_crash_story(cluster: AdvisKVCluster, *, crash_point: str,
     )
 
 
-def run_follower_catchup_story(cluster: AdvisKVCluster, *, prepare_case: str,
+def run_follower_catchup_story(cluster: RaftBoxCluster, *, prepare_case: str,
                                gap_case: str, verify_case: str, db: str,
                                table: str, key_count: int,
                                verify_timeout_ms: int) -> None:
@@ -142,7 +142,7 @@ def run_follower_catchup_story(cluster: AdvisKVCluster, *, prepare_case: str,
             cluster.start_service(catching_up_follower)
 
 
-def test_catalog_to_storage_basic_kv_chain(cluster: AdvisKVCluster):
+def test_catalog_to_storage_basic_kv_chain(cluster: RaftBoxCluster):
     run_case_and_get_output(
         cluster,
         db="pytest_e2e_db",
@@ -151,7 +151,7 @@ def test_catalog_to_storage_basic_kv_chain(cluster: AdvisKVCluster):
     )
 
 
-def test_scale_to_zero_contract_case(cluster: AdvisKVCluster):
+def test_scale_to_zero_contract_case(cluster: RaftBoxCluster):
     run_case_and_get_output(
         cluster,
         case="scale_to_zero",
@@ -164,7 +164,7 @@ def test_scale_to_zero_contract_case(cluster: AdvisKVCluster):
 
 
 @pytest.mark.parametrize("cluster", [{"storage_count": 5}], indirect=True)
-def test_table_replica_count_resize_case(cluster: AdvisKVCluster):
+def test_table_replica_count_resize_case(cluster: RaftBoxCluster):
     run_case_and_get_output(
         cluster,
         case="table_replica_count_resize",
@@ -177,7 +177,7 @@ def test_table_replica_count_resize_case(cluster: AdvisKVCluster):
 
 
 @pytest.mark.parametrize("cluster", [{"storage_count": 5}], indirect=True)
-def test_table_replica_count_resize_with_writes_case(cluster: AdvisKVCluster):
+def test_table_replica_count_resize_with_writes_case(cluster: RaftBoxCluster):
     run_case_and_get_output(
         cluster,
         case="table_replica_count_resize_with_writes",
@@ -191,7 +191,7 @@ def test_table_replica_count_resize_with_writes_case(cluster: AdvisKVCluster):
 
 @pytest.mark.parametrize("cluster", [{"storage_count": 5}], indirect=True)
 def test_table_replica_count_resize_storage_failure_case(
-        cluster: AdvisKVCluster):
+        cluster: RaftBoxCluster):
     prepare_output = run_case_and_get_output(
         cluster,
         case="table_replica_count_resize_disruption_prepare",
@@ -234,7 +234,7 @@ def test_table_replica_count_resize_storage_failure_case(
 
 @pytest.mark.parametrize("cluster", [{"storage_count": 5}], indirect=True)
 def test_table_replica_count_resize_restart_recovery_case(
-        cluster: AdvisKVCluster):
+        cluster: RaftBoxCluster):
     run_case_and_get_output(
         cluster,
         case="table_replica_count_resize_disruption_prepare",
@@ -268,7 +268,7 @@ def test_table_replica_count_resize_restart_recovery_case(
     )
 
 
-def test_many_tables_create_drop_case(cluster: AdvisKVCluster):
+def test_many_tables_create_drop_case(cluster: RaftBoxCluster):
     run_case_and_get_output(
         cluster,
         case="many_tables_create_drop",
@@ -282,7 +282,7 @@ def test_many_tables_create_drop_case(cluster: AdvisKVCluster):
     )
 
 
-def test_restart_persistence_case(cluster: AdvisKVCluster):
+def test_restart_persistence_case(cluster: RaftBoxCluster):
     run_case_and_get_output(
         cluster,
         case="restart_persistence_seed",
@@ -302,7 +302,7 @@ def test_restart_persistence_case(cluster: AdvisKVCluster):
     )
 
 
-def test_create_table_crash_before_persist_case(cluster: AdvisKVCluster):
+def test_create_table_crash_before_persist_case(cluster: RaftBoxCluster):
     run_create_table_crash_story(
         cluster,
         crash_point="topo.place_table.before_put_table",
@@ -313,7 +313,7 @@ def test_create_table_crash_before_persist_case(cluster: AdvisKVCluster):
     )
 
 
-def test_create_table_crash_after_persist_case(cluster: AdvisKVCluster):
+def test_create_table_crash_after_persist_case(cluster: RaftBoxCluster):
     run_create_table_crash_story(
         cluster,
         crash_point="topo.place_table.after_put_table",
@@ -324,7 +324,7 @@ def test_create_table_crash_after_persist_case(cluster: AdvisKVCluster):
     )
 
 
-def test_leader_failover_case(cluster: AdvisKVCluster):
+def test_leader_failover_case(cluster: RaftBoxCluster):
     prepare_output = run_case_and_get_output(
         cluster,
         case="leader_failover_seed",
@@ -348,7 +348,7 @@ def test_leader_failover_case(cluster: AdvisKVCluster):
     assert new_leader != old_leader, verify_output
 
 
-def test_follower_log_catchup_case(cluster: AdvisKVCluster):
+def test_follower_log_catchup_case(cluster: RaftBoxCluster):
     run_follower_catchup_story(
         cluster,
         prepare_case="follower_log_catchup_prepare",
@@ -361,7 +361,7 @@ def test_follower_log_catchup_case(cluster: AdvisKVCluster):
     )
 
 
-def test_follower_snapshot_catchup_case(cluster: AdvisKVCluster):
+def test_follower_snapshot_catchup_case(cluster: RaftBoxCluster):
     run_follower_catchup_story(
         cluster,
         prepare_case="follower_snapshot_catchup_prepare",
@@ -374,7 +374,7 @@ def test_follower_snapshot_catchup_case(cluster: AdvisKVCluster):
     )
 
 
-def test_topo_crash_recovery_case(cluster: AdvisKVCluster):
+def test_topo_crash_recovery_case(cluster: RaftBoxCluster):
     """TOPO 崩溃后重启，验证数据持久化：创建 DB/table 写入数据 → kill TOPO → 重启 TOPO → 验证数据可读。"""
     run_case_and_get_output(
         cluster,
@@ -398,7 +398,7 @@ def test_topo_crash_recovery_case(cluster: AdvisKVCluster):
     )
 
 
-def test_catalog_crash_recovery_case(cluster: AdvisKVCluster):
+def test_catalog_crash_recovery_case(cluster: RaftBoxCluster):
     """Catalog 崩溃后重启，验证数据持久化：创建 DB/table 写入数据 → kill Catalog → 重启 Catalog → 验证数据可读。"""
     run_case_and_get_output(
         cluster,

@@ -7,7 +7,7 @@
 #include "common/model/type.h"
 #include "storage/model/model.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 class RaftElection {
 public:
@@ -50,4 +50,4 @@ private:
     std::unordered_set<ReplicaID, ReplicaIDHash> pre_vote_granted_voters_;
 };
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

@@ -34,34 +34,34 @@ add_executable(storage
 )
 
 target_link_libraries(storage PRIVATE
-    adviskv_storage_lib
+    raftbox_storage_lib
 )
 
 
-add_library(adviskv_storage_lib
+add_library(raftbox_storage_lib
     ${STORAGE_LIB_SOURCES}
 )
 
-target_link_libraries(adviskv_storage_lib PUBLIC
-    adviskv_common
+target_link_libraries(raftbox_storage_lib PUBLIC
+    raftbox_common
 )
 
-target_include_directories(adviskv_storage_lib PUBLIC
+target_include_directories(raftbox_storage_lib PUBLIC
     ${CMAKE_SOURCE_DIR}/src
 )
 
-add_library(adviskv_storage_test_lib
+add_library(raftbox_storage_test_lib
     ${STORAGE_LIB_SOURCES}
 )
 
-target_link_libraries(adviskv_storage_test_lib PUBLIC
-    adviskv_common
+target_link_libraries(raftbox_storage_test_lib PUBLIC
+    raftbox_common
 )
 
-target_include_directories(adviskv_storage_test_lib PUBLIC
+target_include_directories(raftbox_storage_test_lib PUBLIC
     ${CMAKE_SOURCE_DIR}/src
 )
 
-target_compile_definitions(adviskv_storage_test_lib PUBLIC
-    ADVISKV_ENABLE_CRASH_TEST
+target_compile_definitions(raftbox_storage_test_lib PUBLIC
+    RAFTBOX_ENABLE_CRASH_TEST
 )

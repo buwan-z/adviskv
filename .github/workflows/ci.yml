@@ -28,7 +28,7 @@ jobs:
       - name: Cache vcpkg
         uses: actions/cache@v4
         with:
-          path: .adviskv_deps/vcpkg
+          path: .raftbox_deps/vcpkg
           key: ${{ runner.os }}-vcpkg-${{ hashFiles('vcpkg.json') }}
           restore-keys: |
             ${{ runner.os }}-vcpkg-

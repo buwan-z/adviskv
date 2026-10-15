@@ -8,7 +8,7 @@
 #include "common/define.h"
 #include "common/types.h"
 
-namespace adviskv {
+namespace raftbox {
 
 struct Endpoint {
     std::string ip;
@@ -24,4 +24,4 @@ struct Endpoint {
     DEFINE_OPERATOR_NOT_EQUAL(Endpoint)
 };
 
-}  // namespace adviskv
+}  // namespace raftbox

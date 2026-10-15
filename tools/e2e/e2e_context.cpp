@@ -11,7 +11,7 @@
 #include "catalog/model/model.h"
 #include "sdk/model.h"
 
-namespace adviskv::e2e {
+namespace raftbox::e2e {
 
 E2EContext::E2EContext(const Options& options) : options_(options) {
     const std::string catalog_target =
@@ -31,4 +31,4 @@ E2EContext::E2EContext(const Options& options) : options_(options) {
     topo_stub_ = topo_rpc::TopoService::NewStub(topo_channel);
 }
 
-}  // namespace adviskv::e2e
+}  // namespace raftbox::e2e

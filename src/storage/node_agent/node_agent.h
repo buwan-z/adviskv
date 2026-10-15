@@ -17,7 +17,7 @@
 #include "topo.grpc.pb.h"
 #include "storage/replica/replica.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 struct NodeAgentReplicaOps {
     std::function<std::vector<ReplicaPtr>()> list_replicas;
@@ -101,4 +101,4 @@ private:
     bool initialized_{false};
 };
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

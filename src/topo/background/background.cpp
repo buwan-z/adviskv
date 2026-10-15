@@ -5,7 +5,7 @@
 #include "common/status.h"
 #include "topo/service/service_manager.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 
 //////////////////////////////////////////
 // TableReconcileTask
@@ -78,4 +78,4 @@ void HeartBeatCheckTask::run() {
     }
 }
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

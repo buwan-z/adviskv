@@ -15,7 +15,7 @@
 #include "common/types.h"
 #include "sdk/log.h"
 
-namespace adviskv::sdk {
+namespace raftbox::sdk {
 namespace {
 
 std::string generate_request_id() {
@@ -24,7 +24,7 @@ std::string generate_request_id() {
         return (static_cast<uint64_t>(rd()) << 32) ^ static_cast<uint64_t>(rd());
     }();
     static std::atomic<uint64_t> sequence{0};
-    return fmt::format("adviskv-{}-{}", instance_id, sequence.fetch_add(1, std::memory_order_relaxed));
+    return fmt::format("raftbox-{}-{}", instance_id, sequence.fetch_add(1, std::memory_order_relaxed));
 }
 
 
@@ -90,7 +90,7 @@ std::string_view KVClient::operation_name(Operation operation) {
 }
 
 void KVClient::record_result(Operation operation, const Status& status) {
-    ADVISKV_METRICS_COUNTER(fmt::format("sdk_{}_{}", operation_name(operation), status.ok() ? "success" : "failure"));
+    RAFTBOX_METRICS_COUNTER(fmt::format("sdk_{}_{}", operation_name(operation), status.ok() ? "success" : "failure"));
 }
 
 Status KVClient::finalize_status(const RequestPolicy& policy, Status status, bool write_uncertain) {
@@ -99,7 +99,7 @@ Status KVClient::finalize_status(const RequestPolicy& policy, Status status, boo
         if (!write_uncertain) {
             return status;
         }
-        ADVISKV_METRICS_COUNTER(fmt::format("sdk_{}_unknown_final", operation_name(policy.operation)));
+        RAFTBOX_METRICS_COUNTER(fmt::format("sdk_{}_unknown_final", operation_name(policy.operation)));
         return Status::UNKNOWN(
                 fmt::format("write outcome could not be confirmed within SDK retry budget; "
                             "retry the same request_id; a subsequent get is only an application-level check; "
@@ -187,7 +187,7 @@ Status KVClient::resolve_route(const Key& key, RouteInfo* route, SteadyClock::ti
     }
 
     // 冷启动时缓存还没有 route，先主动拉取一次
-    ADVISKV_METRICS_COUNTER("sdk_route_resolve_refresh_on_miss");
+    RAFTBOX_METRICS_COUNTER("sdk_route_resolve_refresh_on_miss");
     return refresh_route(key, route, deadline);
 }
 
@@ -222,11 +222,11 @@ Status KVClient::run_kv_request(Operation operation, const Key& key, Millisecond
 
     RouteInfo route;
     {
-        ADVISKV_METRICS_TIMER(fmt::format("sdk_{}_route_resolve", op_name));
+        RAFTBOX_METRICS_TIMER(fmt::format("sdk_{}_route_resolve", op_name));
         status = resolve_route(key, &route, deadline);
     }
     if (status.fail()) {
-        ADVISKV_SDK_LOG(LogLevel::WARN, "{} resolve route failed, db={}, table={}, key={}, status={}", op_name,
+        RAFTBOX_SDK_LOG(LogLevel::WARN, "{} resolve route failed, db={}, table={}, key={}, status={}", op_name,
                         conf_.db_name, conf_.table_name, key, status.to_string());
         return status;
     }
@@ -235,15 +235,15 @@ Status KVClient::run_kv_request(Operation operation, const Key& key, Millisecond
     status = execute_with_retry(
             policy, deadline,
             [&](Milliseconds timeout) {
-                ADVISKV_METRICS_TIMER(fmt::format("sdk_{}_storage", op_name));
+                RAFTBOX_METRICS_TIMER(fmt::format("sdk_{}_storage", op_name));
                 return send(route, timeout);
             },
             [&]() {
-                ADVISKV_METRICS_TIMER(fmt::format("sdk_{}_retry_route_resolve", op_name));
+                RAFTBOX_METRICS_TIMER(fmt::format("sdk_{}_retry_route_resolve", op_name));
                 return refresh_route(key, &route, deadline);
             });
     if (status.fail()) {
-        ADVISKV_SDK_LOG(LogLevel::WARN, "{} finished with failure, db={}, table={}, key={}, status={}", op_name,
+        RAFTBOX_SDK_LOG(LogLevel::WARN, "{} finished with failure, db={}, table={}, key={}, status={}", op_name,
                         conf_.db_name, conf_.table_name, key, status.to_string());
     }
     return status;
@@ -252,8 +252,8 @@ Status KVClient::run_kv_request(Operation operation, const Key& key, Millisecond
 Status KVClient::put(const Key& key, const Value& value) { return put(key, value, generate_request_id()); }
 
 Status KVClient::put(const Key& key, const Value& value, const std::string& request_id) {
-    ADVISKV_METRICS_TIMER("sdk_put");
-    ADVISKV_METRICS_COUNTER("sdk_put_request");
+    RAFTBOX_METRICS_TIMER("sdk_put");
+    RAFTBOX_METRICS_COUNTER("sdk_put_request");
     RETURN_IF_INVALID_CONDITION(!request_id.empty(), "request_id should not be empty")
 
     return run_kv_request(Operation::PUT, key, Milliseconds(conf_.write_timeout_ms), request_id,
@@ -265,8 +265,8 @@ Status KVClient::put(const Key& key, const Value& value, const std::string& requ
 Status KVClient::del(const Key& key) { return del(key, generate_request_id()); }
 
 Status KVClient::del(const Key& key, const std::string& request_id) {
-    ADVISKV_METRICS_TIMER("sdk_delete");
-    ADVISKV_METRICS_COUNTER("sdk_delete_request");
+    RAFTBOX_METRICS_TIMER("sdk_delete");
+    RAFTBOX_METRICS_COUNTER("sdk_delete_request");
     RETURN_IF_INVALID_CONDITION(!request_id.empty(), "request_id should not be empty")
 
     return run_kv_request(Operation::DELETE, key, Milliseconds(conf_.write_timeout_ms), request_id,
@@ -276,8 +276,8 @@ Status KVClient::del(const Key& key, const std::string& request_id) {
 }
 
 Status KVClient::get(const Key& key, Value* value) {
-    ADVISKV_METRICS_TIMER("sdk_get");
-    ADVISKV_METRICS_COUNTER("sdk_get_request");
+    RAFTBOX_METRICS_TIMER("sdk_get");
+    RAFTBOX_METRICS_COUNTER("sdk_get_request");
 
     RETURN_IF_NULLPTR(value, "value should not be nullptr")
 
@@ -287,4 +287,4 @@ Status KVClient::get(const Key& key, Value* value) {
                           });
 }
 
-}  // namespace adviskv::sdk
+}  // namespace raftbox::sdk

@@ -9,7 +9,7 @@
 #include "common/status.h"
 #include "e2e_options.h"
 
-namespace adviskv::e2e {
+namespace raftbox::e2e {
 
 struct CheckResult {
     bool ok{false};
@@ -56,4 +56,4 @@ bool grpc_ok(const grpc::Status& status, const std::string& rpc_name,
 bool base_rsp_ok(int32_t code, const std::string& msg,
                  const std::string& rpc_name, std::string* error);
 
-}  // namespace adviskv::e2e
+}  // namespace raftbox::e2e

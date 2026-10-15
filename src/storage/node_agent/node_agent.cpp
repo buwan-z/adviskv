@@ -17,7 +17,7 @@
 #include "common/status.h"
 #include "storage/replica/replica.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 class NodeAgent::HeartbeatTask : public BackgroundTask {
 public:
@@ -298,4 +298,4 @@ topo_rpc::HeartbeatRequest NodeAgent::make_heartbeat_request() const {
     return request;
 }
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

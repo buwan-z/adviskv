@@ -8,7 +8,7 @@
 #include "common/define.h"
 #include "common/status.h"
 
-namespace adviskv::sdk {
+namespace raftbox::sdk {
 
 enum class LogLevel : int32_t {
     DEBUG = 0,
@@ -53,4 +53,4 @@ struct KVClientConf {
     }
 };
 
-}  // namespace adviskv::sdk
+}  // namespace raftbox::sdk

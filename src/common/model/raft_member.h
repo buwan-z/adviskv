@@ -7,7 +7,7 @@
 #include "common/model/raft_member_type.h"
 #include "common/types.h"
 
-namespace adviskv {
+namespace raftbox {
 
 struct RaftMember {
     PeerMember peer;
@@ -22,4 +22,4 @@ struct RaftMember {
     }
 };
 
-}  // namespace adviskv
+}  // namespace raftbox

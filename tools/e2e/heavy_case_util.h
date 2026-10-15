@@ -15,7 +15,7 @@
 #include "sdk/client.h"
 #include "sdk/model.h"
 
-namespace adviskv::e2e::heavy {
+namespace raftbox::e2e::heavy {
 //TODO 记得整改
 
 inline Options with_key_count(const Options& options, int32_t key_count) {
@@ -76,4 +76,4 @@ inline bool wait_existing_table(const Options& options,
     return wait_route_has_leader(&context, probe_key, nullptr);
 }
 
-}  // namespace adviskv::e2e::heavy
+}  // namespace raftbox::e2e::heavy

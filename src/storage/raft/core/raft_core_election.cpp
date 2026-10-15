@@ -4,7 +4,7 @@
 #include "common/log.h"
 #include "storage/raft/core/raft_core.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 void RaftCore::tick(RaftEffects& effects) {
     if (ensure_ready().fail()) return;
@@ -383,4 +383,4 @@ void RaftCore::become_leader(RaftEffects& effects) {
     }
 }
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

@@ -7,7 +7,7 @@
 
 #include "sdk/config.h"
 
-namespace adviskv::sdk {
+namespace raftbox::sdk {
 
 inline std::string_view level_to_string(LogLevel level) {
     switch (level) {
@@ -27,14 +27,14 @@ inline bool should_log(const KVClientConf& conf, LogLevel level) {
     return conf.log.callback && static_cast<int>(level) >= static_cast<int>(conf.log.level);
 }
 
-}  // namespace adviskv::sdk
+}  // namespace raftbox::sdk
 
-#define ADVISKV_SDK_LOG(level, ...)                                                            \
+#define RAFTBOX_SDK_LOG(level, ...)                                                            \
     do {                                                                                       \
-        const auto& adviskv_sdk_log_conf = (conf_);                                            \
-        const auto adviskv_sdk_log_level = (level);                                            \
-        if (::adviskv::sdk::should_log(adviskv_sdk_log_conf, adviskv_sdk_log_level)) {         \
-            const std::string adviskv_sdk_log_message = fmt::format(__VA_ARGS__);              \
-            adviskv_sdk_log_conf.log.callback(adviskv_sdk_log_level, adviskv_sdk_log_message); \
+        const auto& raftbox_sdk_log_conf = (conf_);                                            \
+        const auto raftbox_sdk_log_level = (level);                                            \
+        if (::raftbox::sdk::should_log(raftbox_sdk_log_conf, raftbox_sdk_log_level)) {         \
+            const std::string raftbox_sdk_log_message = fmt::format(__VA_ARGS__);              \
+            raftbox_sdk_log_conf.log.callback(raftbox_sdk_log_level, raftbox_sdk_log_message); \
         }                                                                                      \
     } while (0)

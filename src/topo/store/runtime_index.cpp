@@ -6,7 +6,7 @@
 #include "common/define.h"
 #include "common/status.h"
 #include "topo/model/model.h"
-namespace adviskv::topo {
+namespace raftbox::topo {
 
 namespace {
 
@@ -201,4 +201,4 @@ Status TopoRuntimeIndex::list_replicas_by_node(const NodeID& node_id, std::vecto
 
 std::unique_ptr<TopoRuntimeIndex> TopoRuntimeIndex::clone() const { return std::make_unique<TopoRuntimeIndex>(*this); }
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

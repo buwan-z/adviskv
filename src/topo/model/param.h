@@ -10,7 +10,7 @@
 #include "common/model/type.h"
 #include "common/status.h"
 #include "topo/model/model.h"
-namespace adviskv::topo {
+namespace raftbox::topo {
 
 // Placement Param
 struct PlaceTableParam {
@@ -246,4 +246,4 @@ struct HeartBeatResult {
     std::vector<ExpectedReplica> expects;
 };
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

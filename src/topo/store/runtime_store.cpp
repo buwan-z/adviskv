@@ -4,7 +4,7 @@
 
 #include "common/func.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 
 std::unique_ptr<TopoRuntimeStore> TopoRuntimeStore::clone() const {
     auto copied = std::make_unique<TopoRuntimeStore>();
@@ -72,4 +72,4 @@ Status TopoRuntimeStore::del_shard_route_entry(const ShardID& shard_id, const Re
     return Status::OK();
 }
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

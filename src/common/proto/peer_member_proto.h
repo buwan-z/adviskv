@@ -5,7 +5,7 @@
 #include "common/proto/endpoint_proto.h"
 #include "common/proto/ids_proto.h"
 
-namespace adviskv {
+namespace raftbox {
 
 inline bool encode_pb_peer_member(const PeerMember& in, pb::PeerMember& out) {
     if (!encode_pb_replica_id(in.replica_id, *out.mutable_replica_id())) {
@@ -29,4 +29,4 @@ inline bool decode_pb_peer_member(const pb::PeerMember& in, PeerMember& out) {
     return true;
 }
 
-}  // namespace adviskv
+}  // namespace raftbox

@@ -13,7 +13,7 @@
 #include "e2e_table_util.h"
 #include "sdk/client.h"
 
-namespace adviskv::e2e {
+namespace raftbox::e2e {
 
 inline bool run_scale_to_zero_case(const Options& options) {
     constexpr int32_t kExpandedReplicaCount = 1;
@@ -87,4 +87,4 @@ inline bool run_scale_to_zero_case(const Options& options) {
            verify_dataset(&client, options, kPrefix);
 }
 
-}  // namespace adviskv::e2e
+}  // namespace raftbox::e2e

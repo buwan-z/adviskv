@@ -9,10 +9,10 @@
 #include "common/model/type.h"
 #include "common/optional.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 
-using TableDesired = ::adviskv::TopoTableDesired;
-using TablePhase = ::adviskv::TopoTablePhase;
+using TableDesired = ::raftbox::TopoTableDesired;
+using TablePhase = ::raftbox::TopoTablePhase;
 
 /*
 对于Spec的定义: 控制面定义/相对稳定/desired
@@ -179,4 +179,4 @@ using NodeOr = Optional<Node>;
 using TableOr = Optional<Table>;
 using ShardRouteOr = Optional<ShardRoute>;
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

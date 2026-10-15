@@ -10,7 +10,7 @@
 #include "sdk/model.h"
 #include "topo.grpc.pb.h"
 
-namespace adviskv::e2e {
+namespace raftbox::e2e {
 
 class E2EContext {
 public:
@@ -29,4 +29,4 @@ private:
     std::unique_ptr<topo_rpc::TopoService::Stub> topo_stub_;
 };
 
-}  // namespace adviskv::e2e
+}  // namespace raftbox::e2e

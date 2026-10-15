@@ -6,7 +6,7 @@
 #include "storage/raft/state_machine/state_machine.h"
 #include "storage/replica/replica.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 // 负责把已经 committed 的 Raft log apply 到状态机。
 class ReplicaApplier {
@@ -24,4 +24,4 @@ private:
     ReplicaContext& context_;
 };
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

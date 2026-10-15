@@ -12,7 +12,7 @@
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/spdlog.h>
 
-namespace adviskv {
+namespace raftbox {
 
 namespace {
 
@@ -90,4 +90,4 @@ std::shared_ptr<spdlog::logger> Logger::get_logger() {
     return logger_;
 }
 
-}  // namespace adviskv
+}  // namespace raftbox

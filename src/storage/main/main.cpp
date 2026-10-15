@@ -23,7 +23,7 @@ namespace {
 void print_usage() { fmt::print(stderr, "usage: storage --conf=<conf.yaml>\n"); }
 
 bool parse_args(int argc, char* argv[], std::string* conf_file) {
-    adviskv::ArgParser parser;
+    raftbox::ArgParser parser;
     parser.add_string("conf", *conf_file);
     if (!parser.parse(argc, argv)) return false;
     if (conf_file->empty()) {
@@ -34,18 +34,18 @@ bool parse_args(int argc, char* argv[], std::string* conf_file) {
 }
 
 void init_conf(const std::string& conf_file) {
-    auto& conf_mgr = adviskv::ConfMgr::get_instance();
-    conf_mgr.LoadFromFile(adviskv::path_from_project_root(conf_file).string());
+    auto& conf_mgr = raftbox::ConfMgr::get_instance();
+    conf_mgr.LoadFromFile(raftbox::path_from_project_root(conf_file).string());
 }
 void init_logger() {
-    adviskv::LogConfig config;
+    raftbox::LogConfig config;
     config.logger_name = CONF_GET_STR("logger_name");
-    config.log_dir = adviskv::path_from_config("log_dir").string();
+    config.log_dir = raftbox::path_from_config("log_dir").string();
     config.log_filename = CONF_GET_STR("log_filename");
     config.log_level = CONF_GET_STR("log_level");
     config.log_to_console = CONF_GET_BOOL("log_to_console");
     config.log_to_file = CONF_GET_BOOL("log_to_file");
-    adviskv::Logger::get_instance().init(config);
+    raftbox::Logger::get_instance().init(config);
     LOG_DEBUG(
             "logger config: logger_name={}, log_dir={}, log_filename={}, "
             "log_level={}, log_to_console={}, log_to_file={}",
@@ -54,7 +54,7 @@ void init_logger() {
 }
 
 void init_metrics() {
-    adviskv::MetricsOptions options;
+    raftbox::MetricsOptions options;
     options.http_enable = CONF_GET_BOOL("metrics_http_enable", false);
     if (options.http_enable) {
         options.http_host = CONF_GET_STR("metrics_http_host", options.http_host);
@@ -62,7 +62,7 @@ void init_metrics() {
         options.http_path = CONF_GET_STR("metrics_http_path", options.http_path);
     }
 
-    adviskv::Status status = adviskv::AdvisMetrics::get_instance().init(options);
+    raftbox::Status status = raftbox::RaftBoxMetrics::get_instance().init(options);
     if (status.ok()) {
         if (options.http_enable) {
             LOG_INFO("metrics http server listening on {}:{}{}", options.http_host, options.http_port,
@@ -93,9 +93,9 @@ int main(int argc, char* argv[]) {
     }
 
     {
-        using namespace adviskv::storage;
+        using namespace raftbox::storage;
 
-        std::string data_dir = adviskv::path_from_config("data_dir").string();
+        std::string data_dir = raftbox::path_from_config("data_dir").string();
         int32_t listen_port = CONF_GET_INT("port");
         ReplicaRuntimeOptions runtime_options{
                 std::move(data_dir),
@@ -124,22 +124,22 @@ int main(int argc, char* argv[]) {
         agent_conf.replica_ops.create_replica = [replica_manager_ptr](const ReplicaInitParam& param) {
             return replica_manager_ptr->add_replica(param);
         };
-        agent_conf.replica_ops.delete_replica = [replica_manager_ptr](const adviskv::ReplicaID& replica_id) {
+        agent_conf.replica_ops.delete_replica = [replica_manager_ptr](const raftbox::ReplicaID& replica_id) {
             return replica_manager_ptr->delete_replica(replica_id);
         };
-        agent_conf.replica_ops.add_member = [replica_manager_ptr](const adviskv::ReplicaID& leader_replica_id,
-                                                                  const adviskv::PeerMember& member) {
+        agent_conf.replica_ops.add_member = [replica_manager_ptr](const raftbox::ReplicaID& leader_replica_id,
+                                                                  const raftbox::PeerMember& member) {
             return replica_manager_ptr->add_member(leader_replica_id, member);
         };
-        agent_conf.replica_ops.remove_member = [replica_manager_ptr](const adviskv::ReplicaID& leader_replica_id,
-                                                                     const adviskv::ReplicaID& replica_id) {
+        agent_conf.replica_ops.remove_member = [replica_manager_ptr](const raftbox::ReplicaID& leader_replica_id,
+                                                                     const raftbox::ReplicaID& replica_id) {
             return replica_manager_ptr->remove_member(leader_replica_id, replica_id);
         };
 
         auto service = std::make_unique<StorageServiceImpl>(std::move(replica_manager));
 
         NodeAgent node_agent;
-        adviskv::Status agent_status = node_agent.init(agent_conf);
+        raftbox::Status agent_status = node_agent.init(agent_conf);
         if (agent_status.ok()) {
             agent_status = node_agent.start();
         }
@@ -150,7 +150,7 @@ int main(int argc, char* argv[]) {
             return 1;
         }
 
-        std::string listen_host = adviskv::ConfMgr::get_instance().Get<std::string>("listen_host", agent_conf.ip);
+        std::string listen_host = raftbox::ConfMgr::get_instance().Get<std::string>("listen_host", agent_conf.ip);
 
         grpc::ServerBuilder builder;
         builder.AddListeningPort(fmt::format("{}:{}", listen_host, listen_port), grpc::InsecureServerCredentials());

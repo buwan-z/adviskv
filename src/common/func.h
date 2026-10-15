@@ -19,7 +19,7 @@
 #include "common/defer.h"
 #include "common/define.h"
 #include "common/status.h"
-namespace adviskv {
+namespace raftbox {
 
 namespace func {
 
@@ -201,4 +201,4 @@ inline Status atomic_replace_file(std::filesystem::path path, Func func) {
 
 }  // namespace func
 
-}  // namespace adviskv
+}  // namespace raftbox

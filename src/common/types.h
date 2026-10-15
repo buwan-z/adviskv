@@ -6,7 +6,7 @@
 #include <string_view>
 #include <utility>
 
-namespace adviskv {
+namespace raftbox {
 
 using int64 = int64_t;
 using int32 = int32_t;
@@ -37,4 +37,4 @@ using Seconds = std::chrono::seconds;
 
 using SteadyClock = std::chrono::steady_clock;
 
-}  // namespace adviskv
+}  // namespace raftbox

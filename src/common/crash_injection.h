@@ -5,12 +5,12 @@
 
 #include <unistd.h>
 
-namespace adviskv::testhook {
+namespace raftbox::testhook {
 
 inline bool crash_point_enabled(const char* name) {
-#ifdef ADVISKV_ENABLE_CRASH_TEST
+#ifdef RAFTBOX_ENABLE_CRASH_TEST
     if (!name) return false;
-    const char* target = std::getenv("ADVISKV_ENABLE_CRASH_POINT");
+    const char* target = std::getenv("RAFTBOX_ENABLE_CRASH_POINT");
     return target != nullptr && std::strcmp(name, target) == 0;
 #else
     (void)name;
@@ -19,7 +19,7 @@ inline bool crash_point_enabled(const char* name) {
 }
 
 inline void crash_point(const char* name) {
-#ifdef ADVISKV_ENABLE_CRASH_TEST
+#ifdef RAFTBOX_ENABLE_CRASH_TEST
     if (!name) {
         return;
     }
@@ -31,4 +31,4 @@ inline void crash_point(const char* name) {
 #endif
 }
 
-}  // namespace adviskv::testhook
+}  // namespace raftbox::testhook

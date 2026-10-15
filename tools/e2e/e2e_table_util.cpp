@@ -7,7 +7,7 @@
 #include "e2e_assert.h"
 #include "catalog/model/model.h"
 
-namespace adviskv::e2e {
+namespace raftbox::e2e {
 
 bool create_db(E2EContext* context, std::string* error) {
     const Options& options = context->options();
@@ -245,4 +245,4 @@ bool remove_table(E2EContext* context) {
     return wait_table_deleted(context);
 }
 
-}  // namespace adviskv::e2e
+}  // namespace raftbox::e2e

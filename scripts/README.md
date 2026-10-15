@@ -1,7 +1,7 @@
 # Scripts
 
 
-路径约定：依赖在 `.adviskv_deps/`（`setup.sh`），工程默认输出在 `build/`（默认 Debug）。
+路径约定：依赖在 `.raftbox_deps/`（`setup.sh`），工程默认输出在 `build/`（默认 Debug）。
 本地运行目录：`build/demo`、`build/unit_test`、`build/e2e_test`、`build/bench`（可以看 [`conf/README.md`](../conf/README.md)）。
 特例：`build-asan/`、`build-coverage/`。
 这个目录是常用的一些脚本。
@@ -19,7 +19,7 @@
 | `bench.sh` | 自动拉起集群（配置来自conf目录）并运行 `bench_client`。 |
 | `failover_bench.sh` | kill 当前 Raft leader，并生成 `failover_result.json` 查看切主窗口、失败率和 `UNKNOWN` 统计。 |
 | `bench_metrics.sh` | `bench.sh` + 生成 `metrics` 报告 |
-| `adviskvctl_demo.sh` | 一个交互式demo，会自动拉起集群，可输入 `create_db`, `create_table`, `put`, `get` ... |
+| `raftboxctl_demo.sh` | 一个交互式demo，会自动拉起集群，可输入 `create_db`, `create_table`, `put`, `get` ... |
 | `stop_cluster.sh` | 停止拉起来的集群 |
 
 `asan/` 是测试脚本 + ASAN + UBSAN

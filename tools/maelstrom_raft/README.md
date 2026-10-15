@@ -1,6 +1,6 @@
 # Maelstrom Raft
 
-用 [Maelstrom](https://github.com/jepsen-io/maelstrom) 验证 AdvisKV 的 `RaftCore` 的线性一致性。
+用 [Maelstrom](https://github.com/jepsen-io/maelstrom) 验证 RaftBox 的 `RaftCore` 的线性一致性。
 
 ## 准备
 
@@ -20,6 +20,6 @@
 ```
 
 结果：`tools/maelstrom_raft/store/latest/`  
-节点数据：`$ADVISKV_MAELSTROM_DATA`（默认放到了 `/tmp/adviskv_maelstrom`）
+节点数据：`$RAFTBOX_MAELSTROM_DATA`（默认放到了 `/tmp/raftbox_maelstrom`）
 
 `./scripts/run_test.sh` 若检测到本机 Maelstrom，会在 C++ 测试后自动跑一轮无故障 + 一轮 `--nemesis partition` 压力测试。

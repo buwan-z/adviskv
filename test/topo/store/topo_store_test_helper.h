@@ -9,7 +9,7 @@
 #include "topo/store/topo_store_txn.h"
 #include "topo/model/model.h"
 
-namespace adviskv::topo::store_test {
+namespace raftbox::topo::store_test {
 
 inline Status put_table(TopoStore& store, const Table& table) {
     return store.write_with([&](TopoStoreTxn& txn) {
@@ -136,4 +136,4 @@ inline Status delete_replica_group(TopoStore& store, const ShardID& shard_id) {
     });
 }
 
-}  // namespace adviskv::topo::store_test
+}  // namespace raftbox::topo::store_test

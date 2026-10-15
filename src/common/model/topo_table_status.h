@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-namespace adviskv {
+namespace raftbox {
 
 enum class TopoTableDesired : int32_t {
     PRESENT = 1,
@@ -18,4 +18,4 @@ enum class TopoTablePhase : int32_t {
     RESIZING = 6,
 };
 
-}  // namespace adviskv
+}  // namespace raftbox

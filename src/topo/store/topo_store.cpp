@@ -18,7 +18,7 @@
 #include "topo/store/runtime_store.h"
 #include "topo/store/topo_store_txn.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 
 TopoStore::TopoStore(const MetaStoreParam& param)
         : TopoStore(param, std::make_unique<TopoRuntimeIndex>(), std::make_unique<TopoRuntimeStore>()) {}
@@ -86,8 +86,8 @@ Status TopoStore::write_with(const std::function<Status(TopoStoreTxn&)>& func) {
         return Status::INVALID_ARGUMENT("write_with fn is nullptr");
     }
 
-    ADVISKV_METRICS_TIMER("topo_store_write_with");
-    ADVISKV_METRICS_COUNTER("topo_store_write_with_request");
+    RAFTBOX_METRICS_TIMER("topo_store_write_with");
+    RAFTBOX_METRICS_COUNTER("topo_store_write_with_request");
 
     std::unique_lock locker{mutex_};
     RETURN_IF_NULLPTR(meta_store_, "topo meta store is nullptr")
@@ -520,4 +520,4 @@ Status TopoStore::rebuild_runtime_index() {
     return Status::OK();
 }
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

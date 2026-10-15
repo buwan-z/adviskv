@@ -11,7 +11,7 @@
 #include "sdk/model.h"
 #include "storage.grpc.pb.h"
 
-namespace adviskv::sdk {
+namespace raftbox::sdk {
 
 class StorageClient {
 public:
@@ -33,4 +33,4 @@ private:
     mutable std::unordered_map<std::string, std::unique_ptr<rpc::StorageService::Stub>> stub_cache_;
 };
 
-}  // namespace adviskv::sdk
+}  // namespace raftbox::sdk

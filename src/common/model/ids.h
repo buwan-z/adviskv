@@ -8,7 +8,7 @@
 #include "common/define.h"
 #include "common/types.h"
 
-namespace adviskv {
+namespace raftbox {
 
 struct ShardID {
     TableID table_id{-1};
@@ -66,4 +66,4 @@ struct ReplicaIDHash {
     }
 };
 
-}  // namespace adviskv
+}  // namespace raftbox

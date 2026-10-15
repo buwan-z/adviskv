@@ -11,12 +11,12 @@
 
 namespace fs = std::filesystem;
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 
 class TopoPersistEngineTest : public ::testing::Test {
 protected:
     void SetUp() override {
-        base_dir_ = adviskv::test::make_unique_test_dir("topo_persist", sequence_++);
+        base_dir_ = raftbox::test::make_unique_test_dir("topo_persist", sequence_++);
         ASSERT_TRUE(fs::create_directories(base_dir_)) << base_dir_.string();
     }
 
@@ -298,4 +298,4 @@ TEST_F(TopoPersistEngineTest, LoadCorruptedTopoMetaFails) {
     EXPECT_TRUE(status.fail());
 }
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

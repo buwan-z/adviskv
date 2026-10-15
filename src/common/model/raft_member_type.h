@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-namespace adviskv {
+namespace raftbox {
 
 enum class RaftMemberType : int8_t {
     NON_MEMBER =
@@ -29,4 +29,4 @@ inline bool decode_raft_member_type(int32_t value, RaftMemberType& out) {
 
 inline bool is_raft_voter(RaftMemberType type) { return type == RaftMemberType::VOTER; }
 
-}  // namespace adviskv
+}  // namespace raftbox

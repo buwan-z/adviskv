@@ -8,7 +8,7 @@
 #include "common/status.h"
 #include "storage/model/model.h"
 #include "storage/raft/state_machine/state_machine.h"
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 // 负责WAL，snapshot，raft_meta的落盘
 class PersistEngine {
@@ -79,4 +79,4 @@ private:
     mutable std::shared_mutex mutex_;
 };
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

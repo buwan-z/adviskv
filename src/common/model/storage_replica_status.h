@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-namespace adviskv {
+namespace raftbox {
 
 enum class StorageReplicaStatus : int8_t {
     INITIALIZING = 0,
@@ -30,4 +30,4 @@ inline bool decode_storage_replica_status(int32_t value, StorageReplicaStatus& o
     }
 }
 
-}  // namespace adviskv
+}  // namespace raftbox

@@ -3,7 +3,7 @@
 #include "common.pb.h"
 #include "common/model/ids.h"
 
-namespace adviskv {
+namespace raftbox {
 
 inline bool encode_pb_replica_id(const ReplicaID& in, pb::ReplicaID& out) {
     out.set_table_id(in.table_id);
@@ -17,4 +17,4 @@ inline bool decode_pb_replica_id(const pb::ReplicaID& in, ReplicaID& out) {
     return true;
 }
 
-}  // namespace adviskv
+}  // namespace raftbox

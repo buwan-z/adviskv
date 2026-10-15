@@ -10,7 +10,7 @@
 #include "common.pb.h"
 #include "common/define.h"
 
-namespace adviskv {
+namespace raftbox {
 /*
 0 - 999 共用
 1000 - 1999 topo特有
@@ -20,7 +20,7 @@ namespace adviskv {
 5000 - 5999 持久化特有
 */
 
-#define ADVISKV_STATUS_CODE_LIST(X)                                                \
+#define RAFTBOX_STATUS_CODE_LIST(X)                                                \
     X(OK, 0)                                                                       \
     X(ERROR, 1)                                                                    \
     X(KEY_NOT_FOUND, 2)                                                            \
@@ -53,7 +53,7 @@ namespace adviskv {
 enum class StatusCode : int32_t {
 
 #define X(name, code) name = code,
-    ADVISKV_STATUS_CODE_LIST(X)
+    RAFTBOX_STATUS_CODE_LIST(X)
 #undef X
 };
 
@@ -85,7 +85,7 @@ public:
 #define X(name, code)                                         \
     static Status name() { return Status(StatusCode::name); } \
     static Status name(const std::string& msg) { return Status(StatusCode::name, msg); }
-    ADVISKV_STATUS_CODE_LIST(X)
+    RAFTBOX_STATUS_CODE_LIST(X)
 #undef X
 
 private:
@@ -104,7 +104,7 @@ inline bool try_decode_status_code(int32_t code, StatusCode& out) {
     case value:                 \
         out = StatusCode::name; \
         return true;
-        ADVISKV_STATUS_CODE_LIST(X)
+        RAFTBOX_STATUS_CODE_LIST(X)
 #undef X
         default:
             return false;
@@ -134,4 +134,4 @@ inline void fill_base_rsp(Response* rsp, const Status& status) {
     encode_status_to_base_rsp(rsp->mutable_base_rsp(), status);
 }
 
-}  // namespace adviskv
+}  // namespace raftbox

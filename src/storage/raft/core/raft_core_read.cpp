@@ -1,6 +1,6 @@
 #include "storage/raft/core/raft_core.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 // 判判断当前这个term，这个leader是否已经提交过entry了
 // 原因的话是因为如果他没有提交过的话，那这个commit
@@ -27,4 +27,4 @@ Status RaftCore::build_append_entries_for_read(RaftEffects& effects, LogIndex& r
     return Status::OK();
 }
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

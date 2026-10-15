@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Download Maelstrom into third_party/maelstrom (NOT vcpkg).
-# Maelstrom is a JVM test harness; AdvisKV only provides --bin node process.
+# Maelstrom is a JVM test harness; RaftBox only provides --bin node process.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"

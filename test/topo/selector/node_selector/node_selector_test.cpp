@@ -10,7 +10,7 @@
 #include "topo/store/topo_store.h"
 #include "topo/store/topo_store_test_helper.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 namespace {
 
 Node make_node(const NodeID& id, const std::string& resource_pool, int32_t port,
@@ -309,4 +309,4 @@ TEST(NodeSelectorTest, BalancesLoadAcrossMultipleShards) {
     expect_node_ids(result.shards[2].nodes, {"node-b", "node-c"});
 }
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

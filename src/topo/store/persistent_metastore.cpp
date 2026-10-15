@@ -7,7 +7,7 @@
 #include "common/status.h"
 #include "topo/store/memory_metastore.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 
 PersistentMetaStore::PersistentMetaStore(std::filesystem::path data_dir)
         : memory_store_(std::make_unique<MemoryMetaStore>()),
@@ -35,8 +35,8 @@ std::unique_ptr<ITopoMetaStore> PersistentMetaStore::clone_memory_snapshot() con
 }
 
 Status PersistentMetaStore::commit_memory_snapshot(std::unique_ptr<ITopoMetaStore> next_memory_store) {
-    ADVISKV_METRICS_TIMER("topo_metastore_commit_snapshot");
-    ADVISKV_METRICS_COUNTER("topo_metastore_commit_snapshot_request");
+    RAFTBOX_METRICS_TIMER("topo_metastore_commit_snapshot");
+    RAFTBOX_METRICS_COUNTER("topo_metastore_commit_snapshot_request");
 
     RETURN_IF_NULLPTR(next_memory_store, "next_memory_store is nullptr");
 
@@ -185,4 +185,4 @@ Status PersistentMetaStore::list_replica_groups(std::vector<ReplicaGroupPtr>& ou
     return memory_store_->list_replica_groups(out);
 }
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

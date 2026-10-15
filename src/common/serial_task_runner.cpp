@@ -2,7 +2,7 @@
 
 #include <utility>
 
-namespace adviskv {
+namespace raftbox {
 
 SerialTaskRunner::~SerialTaskRunner() { stop(); }
 
@@ -67,4 +67,4 @@ void SerialTaskRunner::loop() {
     }
 }
 
-}  // namespace adviskv
+}  // namespace raftbox

@@ -9,7 +9,7 @@
 #include "common/metrics/latency_recorder.h"
 #include "common/status.h"
 
-namespace adviskv {
+namespace raftbox {
 
 struct MetricsOptions {
     bool http_enable{false};
@@ -18,9 +18,9 @@ struct MetricsOptions {
     std::string http_path{"/metrics"};
 };
 
-class AdvisMetrics {
+class RaftBoxMetrics {
 public:
-    static AdvisMetrics& get_instance();
+    static RaftBoxMetrics& get_instance();
 
     Status init(const MetricsOptions& options);
     void stop();
@@ -34,10 +34,10 @@ private:
     class Registry;
     class HttpServer;
 
-    AdvisMetrics();
-    ~AdvisMetrics();
+    RaftBoxMetrics();
+    ~RaftBoxMetrics();
 
-    DISALLOW_COPY_AND_ASSIGN(AdvisMetrics)
+    DISALLOW_COPY_AND_ASSIGN(RaftBoxMetrics)
 
     bool initialized_{false};
     std::unique_ptr<Registry> registry_;
@@ -56,9 +56,9 @@ private:
     std::chrono::steady_clock::time_point start_;
 };
 
-}  // namespace adviskv
+}  // namespace raftbox
 
-#define ADVISKV_CONCAT_INNER(x, y) x##y
-#define ADVISKV_CONCAT(x, y) ADVISKV_CONCAT_INNER(x, y)
-#define ADVISKV_METRICS_COUNTER(...) ::adviskv::AdvisMetrics::get_instance().record_counter(__VA_ARGS__)
-#define ADVISKV_METRICS_TIMER(name) ::adviskv::ScopedMetricsTimer ADVISKV_CONCAT(adviskv_metrics_timer_, __LINE__)(name)
+#define RAFTBOX_CONCAT_INNER(x, y) x##y
+#define RAFTBOX_CONCAT(x, y) RAFTBOX_CONCAT_INNER(x, y)
+#define RAFTBOX_METRICS_COUNTER(...) ::raftbox::RaftBoxMetrics::get_instance().record_counter(__VA_ARGS__)
+#define RAFTBOX_METRICS_TIMER(name) ::raftbox::ScopedMetricsTimer RAFTBOX_CONCAT(raftbox_metrics_timer_, __LINE__)(name)

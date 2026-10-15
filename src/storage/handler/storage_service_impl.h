@@ -4,7 +4,7 @@
 #include "storage.grpc.pb.h"
 #include "storage/replica/replica_manager.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 class StorageServiceImpl final : public rpc::StorageService::Service {
 public:
@@ -53,4 +53,4 @@ public:
 private:
     std::unique_ptr<ReplicaManager> replica_manager_;
 };
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

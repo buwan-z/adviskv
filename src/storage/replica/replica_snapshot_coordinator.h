@@ -6,7 +6,7 @@
 #include "storage/model/model.h"
 #include "storage/replica/replica.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 class ReplicaLoop;
 
@@ -38,4 +38,4 @@ private:
     Optional<ReceivingSnapshotSession> receiving_snapshot_;
 };
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

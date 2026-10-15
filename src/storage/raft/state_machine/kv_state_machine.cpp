@@ -11,31 +11,31 @@
 #include "storage/model/model.h"
 #include "storage/raft/state_machine/state_machine.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 namespace {
 
 void record_state_machine_apply_op(WriteOpType op) {
     switch (op) {
         case WriteOpType::PUT:
-            ADVISKV_METRICS_COUNTER("storage_state_machine_apply_put");
+            RAFTBOX_METRICS_COUNTER("storage_state_machine_apply_put");
             break;
         case WriteOpType::DEL:
-            ADVISKV_METRICS_COUNTER("storage_state_machine_apply_del");
+            RAFTBOX_METRICS_COUNTER("storage_state_machine_apply_del");
             break;
         case WriteOpType::ADD_LEARNER:
-            ADVISKV_METRICS_COUNTER("storage_state_machine_apply_add_learner");
+            RAFTBOX_METRICS_COUNTER("storage_state_machine_apply_add_learner");
             break;
         case WriteOpType::PROMOTE_VOTER:
-            ADVISKV_METRICS_COUNTER("storage_state_machine_apply_promote_voter");
+            RAFTBOX_METRICS_COUNTER("storage_state_machine_apply_promote_voter");
             break;
         case WriteOpType::REMOVE_MEMBER:
-            ADVISKV_METRICS_COUNTER("storage_state_machine_apply_remove_member");
+            RAFTBOX_METRICS_COUNTER("storage_state_machine_apply_remove_member");
             break;
         case WriteOpType::NONE:
-            ADVISKV_METRICS_COUNTER("storage_state_machine_apply_none");
+            RAFTBOX_METRICS_COUNTER("storage_state_machine_apply_none");
             break;
         default:
-            ADVISKV_METRICS_COUNTER("storage_state_machine_apply_unknown");
+            RAFTBOX_METRICS_COUNTER("storage_state_machine_apply_unknown");
             break;
     }
 }
@@ -53,8 +53,8 @@ KvStateMachine::KvStateMachine(EngineType engine_type) {
 }
 
 Status KvStateMachine::apply(const LogEntry& entry) {
-    ADVISKV_METRICS_TIMER("storage_state_machine_apply");
-    ADVISKV_METRICS_COUNTER("storage_state_machine_apply_request");
+    RAFTBOX_METRICS_TIMER("storage_state_machine_apply");
+    RAFTBOX_METRICS_COUNTER("storage_state_machine_apply_request");
     record_state_machine_apply_op(entry.op_type);
 
     if (!entry.request_id.empty() && entry.op_type != WriteOpType::PUT && entry.op_type != WriteOpType::DEL) {
@@ -66,7 +66,7 @@ Status KvStateMachine::apply(const LogEntry& entry) {
         case WriteOpType::PUT: {
             status = engine_->put(entry.key, entry.value);
             if (status.fail()) {
-                ADVISKV_METRICS_COUNTER("storage_state_machine_apply_failure");
+                RAFTBOX_METRICS_COUNTER("storage_state_machine_apply_failure");
                 return status;
             }
             break;
@@ -74,7 +74,7 @@ Status KvStateMachine::apply(const LogEntry& entry) {
         case WriteOpType::DEL: {
             status = engine_->del(entry.key);
             if (status.fail()) {
-                ADVISKV_METRICS_COUNTER("storage_state_machine_apply_failure");
+                RAFTBOX_METRICS_COUNTER("storage_state_machine_apply_failure");
                 return status;
             }
             break;
@@ -86,7 +86,7 @@ Status KvStateMachine::apply(const LogEntry& entry) {
             break;
 
         default: {
-            ADVISKV_METRICS_COUNTER("storage_state_machine_apply_failure");
+            RAFTBOX_METRICS_COUNTER("storage_state_machine_apply_failure");
             return Status{StatusCode::ERROR};
         }
     }
@@ -97,12 +97,12 @@ Status KvStateMachine::apply(const LogEntry& entry) {
                 RequestRecord{entry.request_id, entry.op_type,
                               RequestRecord::request_payload_hash(entry.op_type, entry.key, entry.value)});
         if (result.second) {
-            ADVISKV_METRICS_COUNTER("storage_state_machine_request_record_insert");
+            RAFTBOX_METRICS_COUNTER("storage_state_machine_request_record_insert");
         }
     }
     apply_term_ = entry.term;
     apply_index_ = entry.index;
-    ADVISKV_METRICS_COUNTER("storage_state_machine_apply_success");
+    RAFTBOX_METRICS_COUNTER("storage_state_machine_apply_success");
     return Status::OK();
 }
 Status KvStateMachine::restore(const SnapshotPtr& snap, const KvForEach& for_each_kv,
@@ -142,7 +142,7 @@ LogIndex KvStateMachine::apply_term() const { return apply_term_; }
 Status KvStateMachine::get(const Key& key, Value& value) const { return engine_->get(key, value); }
 
 Status KvStateMachine::capture_snapshot(SnapshotData& snapshot) const {
-    ADVISKV_METRICS_TIMER("storage_state_machine_capture_snapshot");
+    RAFTBOX_METRICS_TIMER("storage_state_machine_capture_snapshot");
 
     if (!engine_) {
         return Status{StatusCode::ERROR, "engine is nullptr"};
@@ -190,4 +190,4 @@ Status KvStateMachine::for_each_request(const std::function<Status(const Request
     return Status::OK();
 }
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

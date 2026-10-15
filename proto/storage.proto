@@ -1,95 +1,95 @@
 syntax = "proto3";
 
-package adviskv.rpc;
+package raftbox.rpc;
 
 import "common.proto";
 
 
 message PutRequest {
-  adviskv.pb.ReplicaID replica_id = 1;
+  raftbox.pb.ReplicaID replica_id = 1;
   bytes key = 2;
   bytes value = 3;
   string request_id = 4;
 }
 
 message PutResponse {
-  adviskv.pb.BaseRsp base_rsp = 1;
+  raftbox.pb.BaseRsp base_rsp = 1;
 }
 
 message GetRequest {
-  adviskv.pb.ReplicaID replica_id = 1;
+  raftbox.pb.ReplicaID replica_id = 1;
   bytes key = 2;
 }
 
 message GetResponse {
-  adviskv.pb.BaseRsp base_rsp = 1;
+  raftbox.pb.BaseRsp base_rsp = 1;
   bytes value = 2;
 }
 
 message DeleteRequest {
-  adviskv.pb.ReplicaID replica_id = 1;
+  raftbox.pb.ReplicaID replica_id = 1;
   bytes key = 2;
   string request_id = 3;
 }
 
 message DeleteResponse {
-  adviskv.pb.BaseRsp base_rsp = 1;
+  raftbox.pb.BaseRsp base_rsp = 1;
 }
 
 
 
 message CreateReplicaRequest {
-  adviskv.pb.ReplicaID replica_id = 1;
-  adviskv.pb.EngineType engine_type = 2;
-  repeated adviskv.pb.PeerMember initial_members = 3;
+  raftbox.pb.ReplicaID replica_id = 1;
+  raftbox.pb.EngineType engine_type = 2;
+  repeated raftbox.pb.PeerMember initial_members = 3;
 }
 
 message CreateReplicaResponse {
-  adviskv.pb.BaseRsp base_rsp = 1;
+  raftbox.pb.BaseRsp base_rsp = 1;
 }
 
 message DeleteReplicaRequest {
-  adviskv.pb.ReplicaID replica_id = 1;
+  raftbox.pb.ReplicaID replica_id = 1;
 }
 
 message DeleteReplicaResponse {
-  adviskv.pb.BaseRsp base_rsp = 1;
+  raftbox.pb.BaseRsp base_rsp = 1;
 }
 
 message GetReplicaInfoRequest {
-  adviskv.pb.ReplicaID replica_id = 1;
+  raftbox.pb.ReplicaID replica_id = 1;
 }
 
 message GetReplicaInfoResponse {
-  adviskv.pb.BaseRsp base_rsp = 1;
+  raftbox.pb.BaseRsp base_rsp = 1;
   bool exists = 2;
-  adviskv.pb.ReplicaInfo replica = 3;
+  raftbox.pb.ReplicaInfo replica = 3;
 }
 
 message RequestVoteRequest{
-  adviskv.pb.ReplicaID from = 1;
-  adviskv.pb.ReplicaID to = 2;
+  raftbox.pb.ReplicaID from = 1;
+  raftbox.pb.ReplicaID to = 2;
   int64 term = 3;
   int64 last_log_index = 4;
   int64 last_log_term = 5;
 }
 
 message RequestVoteResponse{
-  adviskv.pb.BaseRsp base_rsp = 1;
+  raftbox.pb.BaseRsp base_rsp = 1;
   int64 term = 2;
   bool vote_granted = 3;
 }
 
 message PreVoteRequest{
-  adviskv.pb.ReplicaID from = 1;
-  adviskv.pb.ReplicaID to = 2;
+  raftbox.pb.ReplicaID from = 1;
+  raftbox.pb.ReplicaID to = 2;
   int64 term = 3;
   int64 last_log_index = 4;
   int64 last_log_term = 5;
 }
 
 message PreVoteResponse{
-  adviskv.pb.BaseRsp base_rsp = 1;
+  raftbox.pb.BaseRsp base_rsp = 1;
   int64 term = 2;
   bool vote_granted = 3;
 }
@@ -100,14 +100,14 @@ message LogEntry{
   int32 op_type = 3;
   string key = 4;
   string value = 5;
-  adviskv.pb.PeerMember config_member = 6;
-  adviskv.pb.ReplicaID config_replica_id = 7;
+  raftbox.pb.PeerMember config_member = 6;
+  raftbox.pb.ReplicaID config_replica_id = 7;
   string request_id = 8;
 }
 
 message AppendEntriesRequest{
-  adviskv.pb.ReplicaID from = 1;
-  adviskv.pb.ReplicaID to = 2;
+  raftbox.pb.ReplicaID from = 1;
+  raftbox.pb.ReplicaID to = 2;
   int64 term = 3;
   int64 prev_log_index = 4;
   int64 prev_log_term = 5;
@@ -116,15 +116,15 @@ message AppendEntriesRequest{
 }
 
 message AppendEntriesResponse{
-  adviskv.pb.BaseRsp base_rsp = 1;
+  raftbox.pb.BaseRsp base_rsp = 1;
   int64 term = 2;
   bool success = 3;
   int64 last_log_index = 4;
 }
 
 message InstallSnapshotRequest {
-  adviskv.pb.ReplicaID from = 1;
-  adviskv.pb.ReplicaID to = 2;
+  raftbox.pb.ReplicaID from = 1;
+  raftbox.pb.ReplicaID to = 2;
   int64 term = 3;
   int64 apply_index = 4;
   int64 apply_term = 5;
@@ -134,7 +134,7 @@ message InstallSnapshotRequest {
 }
 
 message InstallSnapshotResponse {
-  adviskv.pb.BaseRsp base_rsp = 1;
+  raftbox.pb.BaseRsp base_rsp = 1;
   int64 term = 2;
   int64 snapshot_watermark = 3;
 }
@@ -145,10 +145,10 @@ message TestGetReplicaStateRequest {
 }
 
 message TestGetReplicaStateResponse {
-  adviskv.pb.BaseRsp base_rsp = 1;
+  raftbox.pb.BaseRsp base_rsp = 1;
   bool exists = 2;
-  adviskv.pb.RaftRole role = 3;
-  adviskv.pb.StorageReplicaStatus status = 4;
+  raftbox.pb.RaftRole role = 3;
+  raftbox.pb.StorageReplicaStatus status = 4;
   int64 current_term = 5;
   int64 commit_index = 6;
   int64 last_applied = 7;

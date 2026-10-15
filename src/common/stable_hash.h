@@ -4,7 +4,7 @@
 
 #include "common/model/type.h"
 
-namespace adviskv {
+namespace raftbox {
 
 inline constexpr uint64 K_FNV1A64_OFFSET_BASIS = 0xcbf29ce484222325ULL;
 inline constexpr uint64 K_FNV1A64_PRIME = 0x100000001b3ULL;
@@ -45,4 +45,4 @@ inline ShardIndex stable_shard_index(std::string_view key, int32_t shard_count) 
     return static_cast<ShardIndex>(hash.get_hash() % static_cast<uint64>(shard_count));
 }
 
-}  // namespace adviskv
+}  // namespace raftbox

@@ -19,7 +19,7 @@
 #include "storage/raft/core/raft_core.h"
 #include "storage/raft/state_machine/state_machine.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 class ReplicaManager;
 class ReplicaApplier;
@@ -173,4 +173,4 @@ public:
 
 using ReplicaPtr = std::shared_ptr<Replica>;
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

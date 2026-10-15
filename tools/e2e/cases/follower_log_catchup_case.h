@@ -9,7 +9,7 @@
 #include "heavy_case_util.h"
 #include "sdk/model.h"
 
-namespace adviskv::e2e {
+namespace raftbox::e2e {
 namespace {
 constexpr const char* K_FOLLOWER_LOG_CATCHUP_BASE_PREFIX =
     "follower-log-catchup-base";
@@ -111,4 +111,4 @@ inline bool run_follower_log_catchup_verify_case(const Options& options) {
     return true;
 }
 
-}  // namespace adviskv::e2e
+}  // namespace raftbox::e2e

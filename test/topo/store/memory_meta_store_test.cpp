@@ -6,7 +6,7 @@
 
 #include "topo/store/memory_metastore.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 namespace {
 
 Table make_table(TableID table_id, const std::string& table_name,
@@ -220,4 +220,4 @@ TEST(MemoryMetaStoreTest, CloneMemorySnapshotCopiesCurrentDataIndependently) {
 }
 
 }  // namespace
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

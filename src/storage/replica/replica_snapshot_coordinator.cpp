@@ -13,7 +13,7 @@
 #include "storage/raft/state_machine/state_machine.h"
 #include "storage/replica/replica_loop.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 ReplicaSnapshotCoordinator::ReplicaSnapshotCoordinator(ReplicaContext& context, ReplicaLoop& loop,
                                                        int32_t raft_do_snapshot_limit)
@@ -167,8 +167,8 @@ void ReplicaSnapshotCoordinator::try_take_snapshot() {
     }
     if (last_apply_index - snapshot_index < raft_do_snapshot_limit_) return;
 
-    ADVISKV_METRICS_COUNTER("storage_replica_take_snapshot_request");
-    ADVISKV_METRICS_TIMER("storage_replica_take_snapshot");
+    RAFTBOX_METRICS_COUNTER("storage_replica_take_snapshot_request");
+    RAFTBOX_METRICS_TIMER("storage_replica_take_snapshot");
 
     InstallSnapshotContext install_context;
     SnapshotData snapshot_data;
@@ -229,4 +229,4 @@ void ReplicaSnapshotCoordinator::try_take_snapshot() {
             context_.replica_id.to_string(), install_context.snapshot_index, install_context.snapshot_term);
 }
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

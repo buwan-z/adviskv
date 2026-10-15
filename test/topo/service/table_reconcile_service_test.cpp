@@ -17,7 +17,7 @@
 #include "topo/service/route_service.h"
 #include "topo/service/table_service.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 namespace {
 
 class FakeNodeSelector : public NodeSelector {
@@ -1006,4 +1006,4 @@ TEST(TableServiceReconcileTest, FailedDropTableWillNotRetry) {
     expect_table_phase_and_msg(store, TablePhase::FAILED, "manual failure");
 }
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

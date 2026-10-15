@@ -8,7 +8,7 @@
 #include "storage/raft/core/raft_core.h"
 #include "storage/raft/state_machine/state_machine.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 Status RaftCore::truncate_log(LogIndex new_snapshot_index) {
     if (new_snapshot_index > raft_apply_.last_applied()) {
@@ -145,4 +145,4 @@ Status RaftCore::prepare_install_snapshot(const InstallSnapshotParam& param, Raf
 
     return Status::OK();
 }
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

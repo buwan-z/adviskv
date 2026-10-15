@@ -9,7 +9,7 @@
 #include "e2e_options.h"
 #include "sdk/model.h"
 
-namespace adviskv::e2e {
+namespace raftbox::e2e {
 
 class E2EContext;
 
@@ -49,4 +49,4 @@ bool wait_replica_snapshot_index_at_least_for_test(
     int64_t target_snapshot_index, const Options& options,
     std::chrono::milliseconds timeout);
 
-}  // namespace adviskv::e2e
+}  // namespace raftbox::e2e

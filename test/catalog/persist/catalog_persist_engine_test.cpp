@@ -9,7 +9,7 @@
 #include "catalog/store/catalog_store.h"
 #include "catalog/model/model.h"
 
-namespace adviskv::catalog {
+namespace raftbox::catalog {
 namespace {
 
 class CatalogPersistEngineTest : public ::testing::Test {
@@ -161,4 +161,4 @@ TEST_F(CatalogPersistEngineTest, LoadFromNonExistentDir) {
 }
 
 }  // namespace
-}  // namespace adviskv::catalog
+}  // namespace raftbox::catalog

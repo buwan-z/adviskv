@@ -10,7 +10,7 @@
 #include "topo/service/node_service.h"
 #include "topo/service/replica_group_service.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 namespace {
 
 Node make_node(const NodeID& id, int32_t port = 18080) {
@@ -370,4 +370,4 @@ TEST(NodeHeartbeatServiceTest, HeartbeatReturnsErrorWhenNodeMissing) {
     EXPECT_TRUE(node.is_empty());
 }
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

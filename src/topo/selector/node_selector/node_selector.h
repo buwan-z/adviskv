@@ -9,7 +9,7 @@
 #include "topo/model/param.h"
 #include "topo/store/topo_store.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 
 // 这个就是传进来一堆nodes，然后我们要选择出来replica_count个node，去放置replica。
 // 所以这个selector是专门给一个shard分配的。 基本单位是shard
@@ -31,4 +31,4 @@ private:
     TopoStore* store_;
 };
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

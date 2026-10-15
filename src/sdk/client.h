@@ -11,7 +11,7 @@
 #include "sdk/route_cache.h"
 #include "sdk/storage_client.h"
 #include "sdk/topo_route_client.h"
-namespace adviskv::sdk {
+namespace raftbox::sdk {
 
 class KVClient {
 public:
@@ -65,4 +65,4 @@ private:
     StorageClient storage_client_;
 };
 
-}  // namespace adviskv::sdk
+}  // namespace raftbox::sdk

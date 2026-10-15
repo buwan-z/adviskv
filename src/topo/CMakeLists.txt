@@ -27,7 +27,7 @@ add_executable(topo
 )
 
 target_link_libraries(topo PRIVATE
-    adviskv_topo_lib
+    raftbox_topo_lib
 )
 
 add_executable(topo_test
@@ -35,33 +35,33 @@ add_executable(topo_test
 )
 
 target_link_libraries(topo_test PRIVATE
-    adviskv_topo_test_lib
+    raftbox_topo_test_lib
 )
 
-add_library(adviskv_topo_lib
+add_library(raftbox_topo_lib
     ${TOPO_LIB_SOURCES}
 )
 
-target_link_libraries(adviskv_topo_lib PUBLIC
-    adviskv_common
+target_link_libraries(raftbox_topo_lib PUBLIC
+    raftbox_common
 )
 
-target_include_directories(adviskv_topo_lib PUBLIC
+target_include_directories(raftbox_topo_lib PUBLIC
     ${CMAKE_SOURCE_DIR}/src
 )
 
-add_library(adviskv_topo_test_lib
+add_library(raftbox_topo_test_lib
     ${TOPO_LIB_SOURCES}
 )
 
-target_link_libraries(adviskv_topo_test_lib PUBLIC
-    adviskv_common
+target_link_libraries(raftbox_topo_test_lib PUBLIC
+    raftbox_common
 )
 
-target_include_directories(adviskv_topo_test_lib PUBLIC
+target_include_directories(raftbox_topo_test_lib PUBLIC
     ${CMAKE_SOURCE_DIR}/src
 )
 
-target_compile_definitions(adviskv_topo_test_lib PUBLIC
-    ADVISKV_ENABLE_CRASH_TEST
+target_compile_definitions(raftbox_topo_test_lib PUBLIC
+    RAFTBOX_ENABLE_CRASH_TEST
 )

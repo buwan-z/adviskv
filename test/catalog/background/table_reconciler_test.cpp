@@ -13,7 +13,7 @@
 #include "catalog/service/topo_client.h"
 #include "topo/model/model.h"
 
-namespace adviskv::catalog {
+namespace raftbox::catalog {
 namespace {
 
 class FakeTopoClient : public ITopoClient {
@@ -404,4 +404,4 @@ TEST_F(TableReconcilerTest, DroppingTableFailedInTopoMarksFailedWithError) {
 
 }  // namespace
 
-}  // namespace adviskv::catalog
+}  // namespace raftbox::catalog

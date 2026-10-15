@@ -9,8 +9,8 @@ case "$BUILD_DIR" in
   /*) ;;
   *) BUILD_DIR="$ROOT_DIR/$BUILD_DIR" ;;
 esac
-ADVISKVCTL="$BUILD_DIR/bin/adviskvctl"
-CLIENT_CONF="${CLIENT_CONF:-conf/adviskvctl.yaml}"
+RAFTBOXCTL="$BUILD_DIR/bin/raftboxctl"
+CLIENT_CONF="${CLIENT_CONF:-conf/raftboxctl.yaml}"
 
 cleanup() {
   echo
@@ -40,12 +40,12 @@ fi
 require_binary "$BUILD_DIR/bin/topo"
 require_binary "$BUILD_DIR/bin/catalog"
 require_binary "$BUILD_DIR/bin/storage"
-require_binary "$ADVISKVCTL"
+require_binary "$RAFTBOXCTL"
 
 trap cleanup EXIT INT TERM
 
 echo "[demo] starting local cluster"
 "$PYTHON" "$ROOT_DIR/scripts/internal/local_cluster.py" start
 
-echo "[demo] opening AdvisKV shell"
-"$ADVISKVCTL" --conf="$CLIENT_CONF"
+echo "[demo] opening RaftBox shell"
+"$RAFTBOXCTL" --conf="$CLIENT_CONF"

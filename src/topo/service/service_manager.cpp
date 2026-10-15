@@ -2,7 +2,7 @@
 
 #include "topo/selector/node_selector/node_selector.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 
 ServiceManager::ServiceManager(TopoStore* store, NodeSelector* selector)
         : table_service_(store), node_service_(store), route_service_(store), replica_group_service_(store, selector) {}
@@ -51,4 +51,4 @@ Status ServiceManager::reconcile_routes() { return route_service_.reconcile_all(
 
 Status ServiceManager::reconcile_replica_groups() { return replica_group_service_.reconcile_all(); }
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

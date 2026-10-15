@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package adviskv.catalog.rpc;
+package raftbox.catalog.rpc;
 
 import "common.proto";
 
@@ -10,7 +10,7 @@ message CreateDBRequest {
 }
 
 message CreateDBResponse {
-  adviskv.pb.BaseRsp base_rsp = 1;
+  raftbox.pb.BaseRsp base_rsp = 1;
   int32 db_id = 2;
 }
 
@@ -19,7 +19,7 @@ message DropDBRequest {
 }
 
 message DropDBResponse {
-  adviskv.pb.BaseRsp base_rsp = 1;
+  raftbox.pb.BaseRsp base_rsp = 1;
   int32 db_id = 2;
 }
 
@@ -29,13 +29,13 @@ message CreateTableRequest {
   int32 shard_count = 3;
   int32 replica_count = 4;
   string resource_pool = 5;
-  adviskv.pb.EngineType engine_type = 6;
+  raftbox.pb.EngineType engine_type = 6;
 }
 
 message CreateTableResponse {
-  adviskv.pb.BaseRsp base_rsp = 1;
+  raftbox.pb.BaseRsp base_rsp = 1;
   int32 table_id = 2;
-  adviskv.pb.CatalogTableState table_state = 3;
+  raftbox.pb.CatalogTableState table_state = 3;
   string operation_id = 4;
 }
 
@@ -45,9 +45,9 @@ message DropTableRequest {
 }
 
 message DropTableResponse {
-  adviskv.pb.BaseRsp base_rsp = 1;
+  raftbox.pb.BaseRsp base_rsp = 1;
   int32 table_id = 2;
-  adviskv.pb.CatalogTableState table_state = 3;
+  raftbox.pb.CatalogTableState table_state = 3;
   string operation_id = 4;
 }
 
@@ -58,9 +58,9 @@ message AlterTableReplicaCountRequest {
 }
 
 message AlterTableReplicaCountResponse {
-  adviskv.pb.BaseRsp base_rsp = 1;
+  raftbox.pb.BaseRsp base_rsp = 1;
   int32 table_id = 2;
-  adviskv.pb.CatalogTableState table_state = 3;
+  raftbox.pb.CatalogTableState table_state = 3;
   string operation_id = 4;
 }
 
@@ -72,15 +72,15 @@ message GetTableRequest {
 }
 
 message GetTableResponse {
-  adviskv.pb.BaseRsp base_rsp = 1;
+  raftbox.pb.BaseRsp base_rsp = 1;
   int32 db_id = 2;
   int32 table_id = 3;
   int32 shard_count = 4;
   int32 replica_count = 5;
-  adviskv.pb.CatalogTableState table_state = 6;
+  raftbox.pb.CatalogTableState table_state = 6;
   string last_error_msg = 7;
   string operation_id = 8;
-  adviskv.pb.EngineType engine_type = 9;
+  raftbox.pb.EngineType engine_type = 9;
 }
 
 

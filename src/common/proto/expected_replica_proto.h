@@ -9,7 +9,7 @@
 #include "common/proto/peer_member_proto.h"
 #include "common/proto/rpc_alias.h"
 
-namespace adviskv {
+namespace raftbox {
 
 inline bool encode_pb_expected_replica_type(ExpectedReplicaType in, topo_rpc::ExpectedReplicaType& out) {
     switch (in) {
@@ -92,4 +92,4 @@ inline bool decode_pb_expected_replica(const topo_rpc::ExpectedReplica& in, Expe
     return true;
 }
 
-}  // namespace adviskv
+}  // namespace raftbox

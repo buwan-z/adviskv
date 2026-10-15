@@ -3,7 +3,7 @@
 #include "common.pb.h"
 #include "common/model/replica_role.h"
 
-namespace adviskv {
+namespace raftbox {
 
 inline bool decode_pb_raft_role(pb::RaftRole in, ReplicaRole& out) {
     switch (in) {
@@ -43,4 +43,4 @@ inline bool encode_pb_raft_role(ReplicaRole in, pb::RaftRole& out) {
     }
 }
 
-}  // namespace adviskv
+}  // namespace raftbox

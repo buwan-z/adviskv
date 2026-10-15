@@ -16,7 +16,7 @@
 #include "catalog/model/param.h"
 // #include "catalog/persist/i_catalog_persist_engine.h"
 
-namespace adviskv::catalog {
+namespace raftbox::catalog {
 
 class ICatalogPersistEngine;
 
@@ -66,4 +66,4 @@ private:
     std::unordered_map<DatabaseID, std::unordered_set<TableID>> db_id2table_ids_;
 };
 
-}  // namespace adviskv::catalog
+}  // namespace raftbox::catalog

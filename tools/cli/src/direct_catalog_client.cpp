@@ -10,7 +10,7 @@
 #include "common/proto/proto.h"
 #include "catalog/proto/catalog_table_state_proto.h"
 
-namespace adviskv::cli {
+namespace raftbox::cli {
 
 DirectCatalogClient::DirectCatalogClient(const CatalogCliTarget& target) : target_(target) {
     const std::string endpoint = fmt::format("{}:{}", target_.endpoint.ip, target_.endpoint.port);
@@ -146,4 +146,4 @@ Status DirectCatalogClient::get_table(const std::string& db_name, const std::str
     return Status::OK();
 }
 
-}  // namespace adviskv::cli
+}  // namespace raftbox::cli

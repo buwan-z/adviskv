@@ -7,7 +7,7 @@
 #include "storage/model/model.h"
 #include "storage/raft/grpc_raft_rpc_transport.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 RaftSender::RaftSender(int32_t timeout_ms) : RaftSender(std::make_unique<GrpcRaftRpcTransport>(), timeout_ms) {}
 
@@ -44,13 +44,13 @@ Status RaftSender::send_pre_vote(const PeerMember& member, const PreVoteParam& p
 
 Status RaftSender::send_append_entries(const PeerMember& member, const AppendEntriesParam& param,
                                        AppendEntriesResult& result) const {
-    ADVISKV_METRICS_TIMER("storage_raft_append_entries_rpc");
-    ADVISKV_METRICS_COUNTER("storage_raft_append_entries_rpc_request");
+    RAFTBOX_METRICS_TIMER("storage_raft_append_entries_rpc");
+    RAFTBOX_METRICS_COUNTER("storage_raft_append_entries_rpc_request");
     if (param.entries.empty()) {
-        ADVISKV_METRICS_COUNTER("storage_raft_append_entries_rpc_heartbeat");
+        RAFTBOX_METRICS_COUNTER("storage_raft_append_entries_rpc_heartbeat");
     } else {
-        ADVISKV_METRICS_COUNTER("storage_raft_append_entries_rpc_log");
-        ADVISKV_METRICS_COUNTER("storage_raft_append_entries_rpc_entry", static_cast<int64_t>(param.entries.size()));
+        RAFTBOX_METRICS_COUNTER("storage_raft_append_entries_rpc_log");
+        RAFTBOX_METRICS_COUNTER("storage_raft_append_entries_rpc_entry", static_cast<int64_t>(param.entries.size()));
     }
 
     LOG_DEBUG(
@@ -69,14 +69,14 @@ Status RaftSender::send_append_entries(const PeerMember& member, const AppendEnt
 
     Status status = transport_->append_entries(member, param, timeout_ms_, result);
     if (status.fail()) {
-        ADVISKV_METRICS_COUNTER("storage_raft_append_entries_rpc_failure");
+        RAFTBOX_METRICS_COUNTER("storage_raft_append_entries_rpc_failure");
         return status;
     }
-    ADVISKV_METRICS_COUNTER("storage_raft_append_entries_rpc_success");
+    RAFTBOX_METRICS_COUNTER("storage_raft_append_entries_rpc_success");
     if (result.success) {
-        ADVISKV_METRICS_COUNTER("storage_raft_append_entries_rpc_accepted");
+        RAFTBOX_METRICS_COUNTER("storage_raft_append_entries_rpc_accepted");
     } else {
-        ADVISKV_METRICS_COUNTER("storage_raft_append_entries_rpc_rejected");
+        RAFTBOX_METRICS_COUNTER("storage_raft_append_entries_rpc_rejected");
     }
     return Status::OK();
 }
@@ -133,4 +133,4 @@ Status RaftSender::send_install_snapshot(const PeerMember& member, const Install
     return Status::OK();
 }
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

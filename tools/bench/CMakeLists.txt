@@ -6,7 +6,7 @@ add_executable(bench_client
 )
 
 target_link_libraries(bench_client PRIVATE
-    adviskv_sdk
+    raftbox_sdk
 )
 
 target_include_directories(bench_client PRIVATE

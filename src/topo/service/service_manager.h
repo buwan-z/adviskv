@@ -10,7 +10,7 @@
 #include "topo/service/route_service.h"
 #include "topo/service/table_service.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 
 class NodeSelector;
 class TopoStore;
@@ -48,4 +48,4 @@ private:
     ReplicaGroupService replica_group_service_;
 };
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

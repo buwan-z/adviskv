@@ -16,7 +16,7 @@
 #include "common/metrics/metrics.h"
 #include "common/status.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 namespace {
 
 static constexpr int64 K_MAX_TOPO_META_PAYLOAD_BYTES = 256 * 1024 * 1024;
@@ -338,8 +338,8 @@ Status TopoPersistEngine::init() {
 Status TopoPersistEngine::close() { return Status::OK(); }
 
 Status TopoPersistEngine::save_topo_meta(const TopoPersistedRecord& record) {
-    ADVISKV_METRICS_TIMER("topo_persist_save_topo_meta");
-    ADVISKV_METRICS_COUNTER("topo_persist_save_topo_meta_request");
+    RAFTBOX_METRICS_TIMER("topo_persist_save_topo_meta");
+    RAFTBOX_METRICS_COUNTER("topo_persist_save_topo_meta_request");
 
     if (!init_flag_) return Status::NOT_INIT("topo persist engine is not init");
 
@@ -405,4 +405,4 @@ Status TopoPersistEngine::load_topo_meta(TopoPersistedRecord& record) {
     return Status::OK();
 }
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

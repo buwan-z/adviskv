@@ -4,7 +4,7 @@
 
 #include "common/define.h"
 
-namespace adviskv {
+namespace raftbox {
 
 template <typename T>
 class Optional : public std::optional<T> {
@@ -31,4 +31,4 @@ public:
     DEFINE_OPERATOR_NOT_EQUAL(Optional<T>)
 };
 
-}  // namespace adviskv
+}  // namespace raftbox

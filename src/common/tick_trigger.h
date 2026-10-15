@@ -6,7 +6,7 @@
 #include "common/log.h"
 #include "common/model/type.h"
 
-namespace adviskv {
+namespace raftbox {
 // 计数触发器。limit 可以是固定值，也可以由函数动态生成。
 // limit 为 0 时，下一次 tick 会立即触发；limit 不能为负数。
 class TickTrigger {
@@ -97,4 +97,4 @@ private:
     TickLimitFunc limit_func_;
     int32_t limit_cnt_{0};
 };
-}  // namespace adviskv
+}  // namespace raftbox

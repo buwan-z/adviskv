@@ -3,7 +3,7 @@
 #include "e2e_case_util.h"
 #include "e2e_options.h"
 
-namespace adviskv::e2e {
+namespace raftbox::e2e {
 
 // Catalog 崩溃恢复场景：
 // 1. seed: 创建 DB + table，写入一批 KV
@@ -30,4 +30,4 @@ inline bool run_catalog_crash_verify_case(const Options& options) {
     return true;
 }
 
-}  // namespace adviskv::e2e
+}  // namespace raftbox::e2e

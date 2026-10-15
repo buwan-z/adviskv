@@ -10,7 +10,7 @@
 #include "storage/raft/raft_membership.h"
 #include "storage/raft/raft_peer_progress.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 // 负责Raft的复制相关内容
 class RaftReplication {
@@ -49,4 +49,4 @@ private:
     RaftPeerProgress peer_progress_;
 };
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

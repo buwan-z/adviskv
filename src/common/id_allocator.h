@@ -2,7 +2,7 @@
 
 #include <type_traits>
 
-namespace adviskv {
+namespace raftbox {
 
 template <typename T>
 class IDAllocator {
@@ -20,4 +20,4 @@ private:
     T cur_id_{0};
 };
 
-}  // namespace adviskv
+}  // namespace raftbox

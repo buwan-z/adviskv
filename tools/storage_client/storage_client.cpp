@@ -11,7 +11,7 @@
 #include "common/status.h"
 #include "topo/model/model.h"
 
-namespace adviskv::tools {
+namespace raftbox::tools {
 
 // 这个里面如果没有的话，就去create，然后放到cache里面
 rpc::StorageService::Stub* StorageClient::make_stub(const std::string& ip,
@@ -138,4 +138,4 @@ Status StorageClient::get_replica_info(const GetReplicaInfoParam& param,
     out.term = replica.term();
     return Status::OK();
 }
-}  // namespace adviskv::tools
+}  // namespace raftbox::tools

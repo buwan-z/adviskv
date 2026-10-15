@@ -3,7 +3,7 @@
 #include "common.pb.h"
 #include "common/model/engine_type.h"
 
-namespace adviskv {
+namespace raftbox {
 
 inline bool decode_pb_engine_type(pb::EngineType in, EngineType& out) {
     switch (in) {
@@ -25,4 +25,4 @@ inline bool encode_pb_engine_type(EngineType in, pb::EngineType& out) {
     }
 }
 
-}  // namespace adviskv
+}  // namespace raftbox

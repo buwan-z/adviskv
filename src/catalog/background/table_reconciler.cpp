@@ -8,7 +8,7 @@
 #include "catalog/model/model.h"
 #include "topo/model/model.h"
 
-namespace adviskv::catalog {
+namespace raftbox::catalog {
 
 namespace {
 
@@ -236,4 +236,4 @@ void TableReconciler::run() {
     reconcile_tables<DropTablePolicy>(*catalog_store_, *topo_client_);
 }
 
-}  // namespace adviskv::catalog
+}  // namespace raftbox::catalog

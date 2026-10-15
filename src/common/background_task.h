@@ -12,7 +12,7 @@
 #include "common/model/type.h"
 #include "common/status.h"
 
-namespace adviskv {
+namespace raftbox {
 
 /*
 主要就是继承实现run函数。
@@ -44,4 +44,4 @@ private:
     std::unique_ptr<std::thread> thread_;
 };
 
-}  // namespace adviskv
+}  // namespace raftbox

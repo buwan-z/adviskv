@@ -2,7 +2,7 @@
 #include "common/background_task.h"
 #include "common/model/type.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 class ReplicaManager;
 
@@ -16,4 +16,4 @@ private:
     ReplicaManager* manager_;
 };
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

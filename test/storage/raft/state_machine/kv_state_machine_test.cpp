@@ -11,7 +11,7 @@
 #include "storage/persist/persist_engine.h"
 #include "test/test_env.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 namespace {
 
 namespace fs = std::filesystem;
@@ -24,7 +24,7 @@ LogEntry make_entry(Term term, LogIndex index, WriteOpType op_type,
 class KvStateMachineTest : public ::testing::Test {
    protected:
     void SetUp() override {
-        base_dir_ = adviskv::test::make_unique_test_dir("kv_state_machine",
+        base_dir_ = raftbox::test::make_unique_test_dir("kv_state_machine",
                                                         sequence_++);
         ASSERT_TRUE(fs::create_directories(base_dir_)) << base_dir_.string();
     }
@@ -251,4 +251,4 @@ TEST_F(KvStateMachineTest, SnapshotRestoresRequestIdRecords) {
 }
 
 }  // namespace
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

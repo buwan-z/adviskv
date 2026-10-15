@@ -7,7 +7,7 @@
 #include "sdk/config.h"
 #include "sdk/model.h"
 
-namespace adviskv::sdk {
+namespace raftbox::sdk {
 
 class TopoRouteClient;
 
@@ -40,4 +40,4 @@ private:
     std::unique_ptr<RefreshTask> refresh_task_;
 };
 
-}  // namespace adviskv::sdk
+}  // namespace raftbox::sdk

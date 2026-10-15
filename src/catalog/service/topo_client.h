@@ -12,7 +12,7 @@
 #include "catalog/model/model.h"
 #include "topo.grpc.pb.h"
 
-namespace adviskv::catalog {
+namespace raftbox::catalog {
 
 struct TopoTableStatus {
     int32_t table_id{-1};
@@ -49,4 +49,4 @@ private:
     int32_t timeout_ms_{3000};
 };
 
-}  // namespace adviskv::catalog
+}  // namespace raftbox::catalog

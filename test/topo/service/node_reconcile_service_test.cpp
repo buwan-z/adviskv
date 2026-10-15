@@ -8,7 +8,7 @@
 #include "topo/store/topo_store.h"
 #include "topo/store/topo_store_test_helper.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 namespace {
 
 Node make_heartbeat_node(const NodeID& node_id, NodeStatus status,
@@ -332,4 +332,4 @@ TEST(NodeServiceReconcileTest, StartupGraceAllowsOfflineNodesWithNewHeartbeatRec
     EXPECT_EQ(replica->state.phase, ReplicaPhase::READY);
 }
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

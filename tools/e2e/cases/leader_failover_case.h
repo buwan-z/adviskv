@@ -4,7 +4,7 @@
 #include "e2e_case_util.h"
 #include "e2e_options.h"
 
-namespace adviskv::e2e {
+namespace raftbox::e2e {
 
 // leader崩溃了后切主，然后再回来之后要成为follower追上，并且后续可以继续操作
 
@@ -21,4 +21,4 @@ inline bool run_leader_failover_verify_case(const Options& options) {
                            true);
 }
 
-}  // namespace adviskv::e2e
+}  // namespace raftbox::e2e

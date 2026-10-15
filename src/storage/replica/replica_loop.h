@@ -20,7 +20,7 @@
 #include "storage/model/param.h"
 #include "storage/replica/replica.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 /*
 大概说一下，这里，Event代表的意思就是我们异步去提交一些事件，我们并不在乎它的这个
@@ -254,4 +254,4 @@ private:
     std::unordered_map<std::string, InflightProposal> inflight_;
 };
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

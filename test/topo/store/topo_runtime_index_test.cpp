@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <vector>
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 namespace {
 
 Table make_table(TableID table_id, const std::string& db_name,
@@ -120,4 +120,4 @@ TEST(TopoRuntimeIndexTest, NormalIndexFlowWorks) {
         StatusCode::TABLE_NOT_FOUND);
 }
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

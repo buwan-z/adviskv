@@ -7,7 +7,7 @@
 #include "common/status.h"
 #include "storage/model/model.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 struct Snapshot {
     LogIndex apply_index{0};
@@ -43,4 +43,4 @@ public:
     virtual Status for_each_request(const std::function<Status(const RequestRecord&)>& fn) const = 0;
 };
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

@@ -11,7 +11,7 @@
 
 #include <fmt/core.h>
 
-namespace adviskv {
+namespace raftbox {
 
 class ArgParser {
 public:
@@ -83,4 +83,4 @@ private:
     std::vector<Option> options_;
 };
 
-}  // namespace adviskv
+}  // namespace raftbox

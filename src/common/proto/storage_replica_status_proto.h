@@ -3,7 +3,7 @@
 #include "common.pb.h"
 #include "common/model/storage_replica_status.h"
 
-namespace adviskv {
+namespace raftbox {
 
 inline bool decode_pb_storage_replica_status(pb::StorageReplicaStatus in, StorageReplicaStatus& out) {
     switch (in) {
@@ -43,4 +43,4 @@ inline bool encode_pb_storage_replica_status(StorageReplicaStatus in, pb::Storag
     }
 }
 
-}  // namespace adviskv
+}  // namespace raftbox

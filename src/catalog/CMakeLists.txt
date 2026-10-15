@@ -13,33 +13,33 @@ add_executable(catalog
 )
 
 target_link_libraries(catalog PRIVATE
-    adviskv_catalog_lib
+    raftbox_catalog_lib
 )
 
-add_library(adviskv_catalog_lib
+add_library(raftbox_catalog_lib
     ${CATALOG_LIB_SOURCES}
 )
 
-target_link_libraries(adviskv_catalog_lib PUBLIC
-    adviskv_common
+target_link_libraries(raftbox_catalog_lib PUBLIC
+    raftbox_common
 )
 
-target_include_directories(adviskv_catalog_lib PUBLIC
+target_include_directories(raftbox_catalog_lib PUBLIC
     ${CMAKE_SOURCE_DIR}/src
 )
 
-add_library(adviskv_catalog_test_lib
+add_library(raftbox_catalog_test_lib
     ${CATALOG_LIB_SOURCES}
 )
 
-target_link_libraries(adviskv_catalog_test_lib PUBLIC
-    adviskv_common
+target_link_libraries(raftbox_catalog_test_lib PUBLIC
+    raftbox_common
 )
 
-target_include_directories(adviskv_catalog_test_lib PUBLIC
+target_include_directories(raftbox_catalog_test_lib PUBLIC
     ${CMAKE_SOURCE_DIR}/src
 )
 
-target_compile_definitions(adviskv_catalog_test_lib PUBLIC
-    ADVISKV_ENABLE_CRASH_TEST
+target_compile_definitions(raftbox_catalog_test_lib PUBLIC
+    RAFTBOX_ENABLE_CRASH_TEST
 )

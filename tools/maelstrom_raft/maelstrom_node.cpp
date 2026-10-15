@@ -13,7 +13,7 @@
 #include "common/status.h"
 #include "storage/raft/state_machine/state_machine.h"
 
-namespace adviskv::maelstrom {
+namespace raftbox::maelstrom {
 namespace {
 
 constexpr TableID kTableId = 1;
@@ -1048,4 +1048,4 @@ std::string MaelstromRaftNode::value_to_string(const Json& value) {
     return value.dump();
 }
 
-}  // namespace adviskv::maelstrom
+}  // namespace raftbox::maelstrom

@@ -5,7 +5,7 @@
 
 #include "common/define.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 
 std::unique_ptr<ITopoMetaStore> MemoryMetaStore::clone_memory_snapshot() const {
     auto copied = std::make_unique<MemoryMetaStore>();
@@ -162,4 +162,4 @@ Status MemoryMetaStore::list_replica_groups(std::vector<ReplicaGroupPtr>& out) c
     return Status::OK();
 }
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

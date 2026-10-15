@@ -14,7 +14,7 @@
 
 namespace fs = std::filesystem;
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 namespace {
 
 Table make_table(TableID table_id, const std::string& db_name,
@@ -305,7 +305,7 @@ TEST(TopoStoreTest, RebuildsRuntimeIndexWhenReplicaDeleteIndexUpdateFails) {
 }
 
 TEST(TopoStoreTest, RouteOnlyWriteDoesNotCreatePersistentSnapshot) {
-    fs::path data_dir = adviskv::test::make_unique_test_dir(
+    fs::path data_dir = raftbox::test::make_unique_test_dir(
         "topo_store_route_only", persistent_sequence++);
     std::error_code ec;
     fs::remove_all(data_dir, ec);
@@ -338,7 +338,7 @@ TEST(TopoStoreTest, RouteOnlyWriteDoesNotCreatePersistentSnapshot) {
 
 // 检测 PERSISTENT 类型的 TopoStore 写入后，重新加载仍能恢复 table 和 group；node 当前仍是内存态。
 TEST(TopoStoreTest, WriteWithPersistentStoreSurvivesReload) {
-    fs::path data_dir = adviskv::test::make_unique_test_dir(
+    fs::path data_dir = raftbox::test::make_unique_test_dir(
         "topo_store_persistent", persistent_sequence++);
     std::error_code ec;
     fs::remove_all(data_dir, ec);
@@ -402,4 +402,4 @@ TEST(TopoStoreTest, WriteWithPersistentStoreSurvivesReload) {
     fs::remove_all(data_dir, ec);
 }
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

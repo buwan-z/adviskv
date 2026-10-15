@@ -6,7 +6,7 @@
 
 #include "topo/store/runtime_store.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 namespace {
 
 Node make_node(const NodeID& id, const std::string& resource_pool,
@@ -123,4 +123,4 @@ TEST(TopoRuntimeStoreTest, CloneCopiesRuntimeObjectsIndependently) {
     ASSERT_EQ(route->replicas.size(), 2U);
 }
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

@@ -1,6 +1,4 @@
-<p align="center">
-  <img src="docs/assets/adviskv.jpeg" alt="AdvisKV banner" width="960" />
-</p>
+<h1 align="center">RaftBox | A Raft-based Distributed KV Storage System</h1>
 
 <p align="center">
   <img src="https://img.shields.io/badge/C%2B%2B-17-00599C?logo=c%2B%2B&logoColor=white" alt="C++17" />
@@ -13,7 +11,7 @@
   <a href="README.md">中文版本</a>
 </p>
 
-AdvisKV is a distributed Key-Value storage system built from scratch with **C++17 + gRPC + Protobuf + Raft**. Users access data with a `db + table + key` model: `Catalog` manages databases, tables, and DDL, `Topo` manages Storage nodes, shard replicas, and routes, `Storage` replicates KV writes with Raft and uses WAL / snapshots for persistence and recovery, and the SDK sends requests to the corresponding shard leader.
+RaftBox is a distributed Key-Value storage system built from scratch with **C++17 + gRPC + Protobuf + Raft**. Users access data with a `db + table + key` model: `Catalog` manages databases, tables, and DDL, `Topo` manages Storage nodes, shard replicas, and routes, `Storage` replicates KV writes with Raft and uses WAL / snapshots for persistence and recovery, and the SDK sends requests to the corresponding shard leader.
 
 The current release is **v0.1.0**. It supports the main distributed KV path in a local multi-process environment, including database/table creation, sharding, replica-count changes, abnormal replica replacement, Raft leader election, log replication, snapshot catch-up, and restart recovery. Detailed scope and follow-up work are listed in the [version notes](docs/版本.md).
 
@@ -61,7 +59,7 @@ Recommended environment: Linux (Ubuntu 24.04), a C++17 compiler, CMake 3.20+, Ni
 git submodule update --init --recursive
 ./scripts/setup.sh
 ./scripts/build.sh
-./scripts/adviskvctl_demo.sh
+./scripts/raftboxctl_demo.sh
 ```
 
 To prepare the optional Maelstrom test environment, replace the setup command above with:
@@ -70,7 +68,7 @@ To prepare the optional Maelstrom test environment, replace the setup command ab
 ./scripts/setup.sh --with-maelstrom-test
 ```
 
-`adviskvctl_demo.sh` starts a local `topo/catalog/storage` cluster and opens an interactive shell. Example commands:
+`raftboxctl_demo.sh` starts a local `topo/catalog/storage` cluster and opens an interactive shell. Example commands:
 
 ```text
 create_db demo_db dc1
@@ -82,14 +80,6 @@ route demo_db demo_table k1
 quit
 ```
 
-The local demo covers database/table creation, KV reads and writes, and route changes after `demo kill`:
-
-<p align="center">
-  <video src="docs/assets/adviskvctl_demo_video.mp4" controls width="720">
-    If your browser cannot play the embedded video, open the
-    <a href="docs/assets/adviskvctl_demo_video.mp4">adviskvctl demo video</a>.
-  </video>
-</p>
 
 Stop local processes:
 
@@ -116,7 +106,7 @@ Common build variables:
 
 ```bash
 BUILD_TYPE=Debug ./scripts/build.sh
-BUILD_TARGETS="catalog topo storage adviskvctl" ./scripts/build.sh
+BUILD_TARGETS="catalog topo storage raftboxctl" ./scripts/build.sh
 ```
 
 Main binaries are generated under `build/bin/` by default.
@@ -194,7 +184,7 @@ conf/       local config files
 proto/      gRPC / Protobuf definitions
 scripts/    build, test, demo and benchmark scripts
 src/        Catalog, Topo, Storage, SDK and common modules
-tools/      adviskvctl, e2e client, benchmark client, storage client
+tools/      raftboxctl, e2e client, benchmark client, storage client
 test/       GoogleTest and Python E2E tests
 docs/       design notes, version notes and benchmarks
 ```
@@ -211,4 +201,6 @@ The following limitations apply to **v0.1.0** and are also listed in the [versio
 
 ## License
 
-AdvisKV is licensed under the [MIT License](LICENSE).
+RaftBox is licensed under the [MIT License](LICENSE).
+
+[RaftBox naming migration](docs/raftbox-migration.md)

@@ -10,7 +10,7 @@
 #include "common/status.h"
 #include "storage/model/model.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 RaftMembership::RaftMembership(const std::vector<PeerMember>& voters) { reset_voters(voters); }
 
@@ -114,4 +114,4 @@ int RaftMembership::quorum_size() const {
 
 bool RaftMembership::has_quorum(int ack_count) const { return ack_count >= quorum_size(); }
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

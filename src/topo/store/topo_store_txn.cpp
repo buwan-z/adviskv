@@ -2,7 +2,7 @@
 
 #include "topo/store/topo_store.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 
 TopoStoreTxn::TopoStoreTxn(TopoStore* store) : store_(store) {}
 
@@ -60,4 +60,4 @@ Status TopoStoreTxn::list_replica_groups(std::vector<ReplicaGroup>& out) const {
     return store_->list_replica_groups(out);
 }
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

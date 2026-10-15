@@ -25,7 +25,7 @@ namespace {
 void print_usage() { fmt::print(stderr, "usage: topo --conf=<conf.yaml>\n"); }
 
 bool parse_args(int argc, char* argv[], std::string* conf_file) {
-    adviskv::ArgParser parser;
+    raftbox::ArgParser parser;
     parser.add_string("conf", *conf_file);
     if (!parser.parse(argc, argv)) return false;
     if (conf_file->empty()) {
@@ -36,19 +36,19 @@ bool parse_args(int argc, char* argv[], std::string* conf_file) {
 }
 
 void init_conf(const char* conf_file) {
-    auto& conf_mgr = adviskv::ConfMgr::get_instance();
-    conf_mgr.LoadFromFile(adviskv::path_from_project_root(conf_file).string());
+    auto& conf_mgr = raftbox::ConfMgr::get_instance();
+    conf_mgr.LoadFromFile(raftbox::path_from_project_root(conf_file).string());
 }
 
 void init_logger() {
-    adviskv::LogConfig config;
+    raftbox::LogConfig config;
     config.logger_name = CONF_GET_STR("logger_name");
-    config.log_dir = adviskv::path_from_config("log_dir").string();
+    config.log_dir = raftbox::path_from_config("log_dir").string();
     config.log_filename = CONF_GET_STR("log_filename");
     config.log_level = CONF_GET_STR("log_level");
     config.log_to_console = CONF_GET_BOOL("log_to_console");
     config.log_to_file = CONF_GET_BOOL("log_to_file");
-    adviskv::Logger::get_instance().init(config);
+    raftbox::Logger::get_instance().init(config);
     LOG_DEBUG(
             "logger config: logger_name={}, log_dir={}, log_filename={}, "
             "log_level={}, log_to_console={}, log_to_file={}",
@@ -57,7 +57,7 @@ void init_logger() {
 }
 
 void init_metrics() {
-    adviskv::MetricsOptions options;
+    raftbox::MetricsOptions options;
     options.http_enable = CONF_GET_BOOL("metrics_http_enable", false);
     if (options.http_enable) {
         options.http_host = CONF_GET_STR("metrics_http_host", options.http_host);
@@ -65,7 +65,7 @@ void init_metrics() {
         options.http_path = CONF_GET_STR("metrics_http_path", options.http_path);
     }
 
-    adviskv::Status status = adviskv::AdvisMetrics::get_instance().init(options);
+    raftbox::Status status = raftbox::RaftBoxMetrics::get_instance().init(options);
     if (status.ok()) {
         if (options.http_enable) {
             LOG_INFO("metrics http server listening on {}:{}{}", options.http_host, options.http_port,
@@ -77,7 +77,7 @@ void init_metrics() {
 }
 
 std::string get_metastore_data_dir() {
-    return adviskv::path_from_project_root(CONF_GET_STR("data_dir", std::string("build/demo/data/topo"))).string();
+    return raftbox::path_from_project_root(CONF_GET_STR("data_dir", std::string("build/demo/data/topo"))).string();
 }
 
 }  // namespace
@@ -99,14 +99,14 @@ int main(int argc, char* argv[]) {
     }
 
     {
-        using namespace adviskv::topo;
+        using namespace raftbox::topo;
 
         int32_t listen_port = CONF_GET_INT("port");
         std::string listen_host = CONF_GET_STR("listen_host", std::string("127.0.0.1"));
 
         const std::string metastore_data_dir = get_metastore_data_dir();
         auto topo_store = std::make_unique<TopoStore>(PersistentMetaStoreParam{metastore_data_dir});
-        if (adviskv::Status status = topo_store->init(); status.fail()) {
+        if (raftbox::Status status = topo_store->init(); status.fail()) {
             LOG_ERROR("failed to init TOPO metastore: {}", status.to_string());
             return 1;
         }
@@ -121,10 +121,10 @@ int main(int argc, char* argv[]) {
         auto replica_group_reconcile_task = std::make_unique<ReplicaGroupReconcileTask>(service_manager.get());
         auto route_task = std::make_unique<RouteUpdateCheckTask>(service_manager.get());
         auto heartbeat_check_task = std::make_unique<HeartBeatCheckTask>(service_manager.get());
-        heartbeat_check_task->start(adviskv::Milliseconds(3000));
-        table_reconcile_task->start(adviskv::Milliseconds(3000));
-        replica_group_reconcile_task->start(adviskv::Milliseconds(3000));
-        route_task->start(adviskv::Milliseconds(3000));
+        heartbeat_check_task->start(raftbox::Milliseconds(3000));
+        table_reconcile_task->start(raftbox::Milliseconds(3000));
+        replica_group_reconcile_task->start(raftbox::Milliseconds(3000));
+        route_task->start(raftbox::Milliseconds(3000));
 
         grpc::ServerBuilder builder;
         builder.AddListeningPort(fmt::format("{}:{}", listen_host, listen_port), grpc::InsecureServerCredentials());

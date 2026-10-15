@@ -4,10 +4,10 @@
 #include "topo.pb.h"
 #include "storage.pb.h"
 
-namespace adviskv {
+namespace raftbox {
 
-namespace catalog_rpc = ::adviskv::catalog::rpc;
-namespace topo_rpc = ::adviskv::topo::rpc;
-namespace storage_rpc = ::adviskv::rpc;
+namespace catalog_rpc = ::raftbox::catalog::rpc;
+namespace topo_rpc = ::raftbox::topo::rpc;
+namespace storage_rpc = ::raftbox::rpc;
 
-}  // namespace adviskv
+}  // namespace raftbox

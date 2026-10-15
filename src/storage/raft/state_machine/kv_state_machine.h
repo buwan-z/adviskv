@@ -9,7 +9,7 @@
 #include "storage/engine/kv_engine.h"
 #include "storage/model/model.h"
 #include "storage/raft/state_machine/state_machine.h"
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 class KvStateMachine : public StateMachine {
 public:
@@ -36,4 +36,4 @@ private:
     std::unordered_map<std::string, RequestRecord> request_records_;
 };
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

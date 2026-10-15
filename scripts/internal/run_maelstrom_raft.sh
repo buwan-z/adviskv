@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# Run Maelstrom lin-kv against AdvisKV's maelstrom_raft_node.
+# Run Maelstrom lin-kv against RaftBox's maelstrom_raft_node.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 MAELSTROM_BIN="${MAELSTROM_BIN:-${ROOT}/third_party/maelstrom/maelstrom}"
 NODE_BIN="${NODE_BIN:-${ROOT}/build/bin/maelstrom_raft_node}"
-export ADVISKV_MAELSTROM_DATA="${ADVISKV_MAELSTROM_DATA:-/tmp/adviskv_maelstrom}"
+export RAFTBOX_MAELSTROM_DATA="${RAFTBOX_MAELSTROM_DATA:-/tmp/raftbox_maelstrom}"
 
 # Jepsen/Maelstrom always write results to ./store under the process CWD.
 # Default: tools/maelstrom_raft/store (override with MAELSTROM_STORE_DIR = parent of store/).
@@ -24,13 +24,13 @@ if [[ ! -x "${NODE_BIN}" ]]; then
   exit 1
 fi
 
-mkdir -p "${ADVISKV_MAELSTROM_DATA}"
+mkdir -p "${RAFTBOX_MAELSTROM_DATA}"
 mkdir -p "${MAELSTROM_STORE_DIR}"
 
 # Fresh node data dir for each run unless KEEP_MAELSTROM_DATA=1
 if [[ "${KEEP_MAELSTROM_DATA:-0}" != "1" ]]; then
-  rm -rf "${ADVISKV_MAELSTROM_DATA}/n"* "${ADVISKV_MAELSTROM_DATA}/logs" 2>/dev/null || true
-  mkdir -p "${ADVISKV_MAELSTROM_DATA}/logs"
+  rm -rf "${RAFTBOX_MAELSTROM_DATA}/n"* "${RAFTBOX_MAELSTROM_DATA}/logs" 2>/dev/null || true
+  mkdir -p "${RAFTBOX_MAELSTROM_DATA}/logs"
 fi
 
 NODE_COUNT="${NODE_COUNT:-3}"
@@ -42,7 +42,7 @@ EXTRA_ARGS=("$@")
 
 echo "Using Maelstrom: ${MAELSTROM_BIN}"
 echo "Using node:      ${NODE_BIN}"
-echo "Data dir:        ${ADVISKV_MAELSTROM_DATA}"
+echo "Data dir:        ${RAFTBOX_MAELSTROM_DATA}"
 echo "Results store:   ${MAELSTROM_STORE_DIR}/store  (latest -> store/latest)"
 
 # Note: without gnuplot, Maelstrom may exit non-zero with :valid? :unknown even when

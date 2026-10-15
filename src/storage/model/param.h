@@ -8,7 +8,7 @@
 
 #include "storage/model/model.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 struct WriteProposal {
     WriteOpType op{WriteOpType::NONE};
@@ -119,4 +119,4 @@ struct ReplicaInitParam {
     DEFINE_OPERATOR_NOT_EQUAL(ReplicaInitParam)
 };
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

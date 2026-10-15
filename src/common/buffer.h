@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-namespace adviskv {
+namespace raftbox {
 
 class EncodeBuffer {
 public:
@@ -65,4 +65,4 @@ private:
     size_t pos_{0};
 };
 
-}  // namespace adviskv
+}  // namespace raftbox

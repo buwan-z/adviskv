@@ -119,7 +119,7 @@ class Diagram:
         cell("legend",footer,textstyle+"fontSize=16;",40,self.height-72,self.width-80,25)
         cell("legend2","连线标签：gRPC = 跨进程；调用 = 进程内；虚线 = 队列/事件回调；磁盘 = 文件读写",textstyle+"fontSize=16;",40,self.height-42,self.width-80,25)
         xml=ET.tostring(mxfile,encoding="unicode")
-        (OUT / f"{self.name}.drawio").write_text(xml+"\n")
+        (OUT / f"{self.name}.drawio").write_bytes((xml+"\n").encode("utf-8"))
 
         svg=ET.Element("svg",xmlns="http://www.w3.org/2000/svg",width=str(self.width),height=str(self.height),viewBox=f"0 0 {self.width} {self.height}",content=xml,role="img",**{"aria-labelledby":"diagram-title diagram-desc"})
         ET.SubElement(svg,"title",id="diagram-title").text=self.title
@@ -164,7 +164,7 @@ class Diagram:
             for j,line in enumerate(lines):text(x,y-(len(lines)-1)*10+j*20+5,line,15)
         text(40,self.height-55,footer,16,False,'start')
         text(40,self.height-25,"连线标签：gRPC = 跨进程；调用 = 进程内；虚线 = 队列/事件回调；磁盘 = 文件读写",16,False,'start')
-        ET.ElementTree(svg).write(OUT/f"{self.name}.svg",encoding='utf-8',xml_declaration=True)
+        (OUT / f"{self.name}.svg").write_bytes(ET.tostring(svg, encoding="utf-8", xml_declaration=True))
 
 
 def text_width(s,size):

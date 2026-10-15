@@ -11,7 +11,7 @@
 #include "catalog/persist/i_catalog_persist_engine.h"
 #include "catalog/persist/catalog_persist_engine.h"
 
-namespace adviskv::catalog {
+namespace raftbox::catalog {
 namespace {
 
 class FaultyCatalogPersistEngine : public ICatalogPersistEngine {
@@ -663,4 +663,4 @@ TEST_F(CatalogStoreTest, DeleteDbAllowsOnlyDeletedTables) {
 }
 
 }  // namespace
-}  // namespace adviskv::catalog
+}  // namespace raftbox::catalog

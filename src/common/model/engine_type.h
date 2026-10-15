@@ -2,10 +2,10 @@
 
 #include "common/types.h"
 
-namespace adviskv {
+namespace raftbox {
 
 enum class EngineType : int8 {
     MAP = 0,
 };
 
-}  // namespace adviskv
+}  // namespace raftbox

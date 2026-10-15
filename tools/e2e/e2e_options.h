@@ -5,7 +5,7 @@
 
 #include "sdk/config.h"
 
-namespace adviskv::e2e {
+namespace raftbox::e2e {
 
 struct Options {
     std::string case_name{"basic_kv"};
@@ -29,4 +29,4 @@ struct Options {
     bool enable_sdk_log_callback{true};  // 是否允许sdk内部的日志输出
 };
 
-}  // namespace adviskv::e2e
+}  // namespace raftbox::e2e

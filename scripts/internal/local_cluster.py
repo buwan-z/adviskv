@@ -435,7 +435,7 @@ def start_spec(cluster: LocalCluster, spec: ServiceSpec) -> None:
 
 
 def handle_cli(argv: list[str]) -> int:
-    parser = argparse.ArgumentParser(description="Manage local AdvisKV demo cluster")
+    parser = argparse.ArgumentParser(description="Manage local RaftBox demo cluster")
     parser.add_argument("command", choices=["start", "stop", "kill", "restart", "status"])
     parser.add_argument("service", nargs="?", help="topo, catalog, storage-N")
     args = parser.parse_args(argv)

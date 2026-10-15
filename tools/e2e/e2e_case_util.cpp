@@ -8,7 +8,7 @@
 #include "e2e_route_util.h"
 #include "e2e_table_util.h"
 
-namespace adviskv::e2e {
+namespace raftbox::e2e {
 
 bool run_seed_case(const Options& options, const std::string& prefix,
                    bool print_leader) {
@@ -69,4 +69,4 @@ bool run_verify_case(const Options& options, const std::string& prefix,
            print_current_leader(&context, prefix + "-key-000");
 }
 
-}  // namespace adviskv::e2e
+}  // namespace raftbox::e2e

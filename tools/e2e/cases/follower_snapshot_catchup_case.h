@@ -13,7 +13,7 @@
 
 // TODO 感觉这里的实现有点啰嗦了，以后要好好整改一下这些API
 
-namespace adviskv::e2e {
+namespace raftbox::e2e {
 namespace {
 constexpr const char* K_FOLLOWER_SNAPSHOT_CATCHUP_BASE_PREFIX =
     "follower-snapshot-catchup-base";
@@ -174,4 +174,4 @@ inline bool run_follower_snapshot_catchup_verify_case(const Options& options) {
     return true;
 }
 
-}  // namespace adviskv::e2e
+}  // namespace raftbox::e2e

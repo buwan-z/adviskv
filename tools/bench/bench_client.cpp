@@ -24,7 +24,7 @@
 #include "e2e_table_util.h"
 #include "sdk/client.h"
 
-namespace adviskv::bench {
+namespace raftbox::bench {
 namespace {
 
 using Clock = std::chrono::steady_clock;
@@ -184,7 +184,7 @@ bool init_metrics(const BenchOptions& options) {
     metrics_options.http_port = options.metrics_http_port;
     metrics_options.http_path = options.metrics_http_path;
 
-    Status status = AdvisMetrics::get_instance().init(metrics_options);
+    Status status = RaftBoxMetrics::get_instance().init(metrics_options);
     if (status.fail()) {
         fmt::print(stderr, "metrics init failed: {}\n", status.to_string());
         return false;
@@ -196,11 +196,11 @@ bool init_metrics(const BenchOptions& options) {
 }
 
 void record_stage_result(const std::string& stage, bool success) {
-    ADVISKV_METRICS_COUNTER("bench_stage_" + stage + "_done");
+    RAFTBOX_METRICS_COUNTER("bench_stage_" + stage + "_done");
     if (success) {
-        ADVISKV_METRICS_COUNTER("bench_stage_" + stage + "_success");
+        RAFTBOX_METRICS_COUNTER("bench_stage_" + stage + "_success");
     } else {
-        ADVISKV_METRICS_COUNTER("bench_stage_" + stage + "_failure");
+        RAFTBOX_METRICS_COUNTER("bench_stage_" + stage + "_failure");
     }
 }
 
@@ -257,8 +257,8 @@ sdk::KVClient make_client(const BenchOptions& options) {
 }
 
 bool prepare_bench_table(const BenchOptions& options) {
-    ADVISKV_METRICS_TIMER("bench_stage_prepare_table");
-    ADVISKV_METRICS_COUNTER("bench_stage_prepare_table_start");
+    RAFTBOX_METRICS_TIMER("bench_stage_prepare_table");
+    RAFTBOX_METRICS_COUNTER("bench_stage_prepare_table_start");
 
     e2e::Options e2e_options = to_e2e_options(options);
     e2e::E2EContext context(e2e_options);
@@ -268,8 +268,8 @@ bool prepare_bench_table(const BenchOptions& options) {
 }
 
 bool prepare_read_dataset(const BenchOptions& options) {
-    ADVISKV_METRICS_TIMER("bench_stage_prepare_read_dataset");
-    ADVISKV_METRICS_COUNTER("bench_stage_prepare_read_dataset_start");
+    RAFTBOX_METRICS_TIMER("bench_stage_prepare_read_dataset");
+    RAFTBOX_METRICS_COUNTER("bench_stage_prepare_read_dataset_start");
 
     sdk::KVClient client = make_client(options);
     for (int64_t i = 0; i < options.key_count; ++i) {
@@ -353,9 +353,9 @@ BenchResult run_phase(const BenchOptions& options, int64_t request_count,
     if (request_count <= 0) {
         return BenchResult{};
     }
-    ADVISKV_METRICS_TIMER(record_stats ? "bench_stage_workload"
+    RAFTBOX_METRICS_TIMER(record_stats ? "bench_stage_workload"
                                        : "bench_stage_warmup");
-    ADVISKV_METRICS_COUNTER(record_stats ? "bench_stage_workload_start"
+    RAFTBOX_METRICS_COUNTER(record_stats ? "bench_stage_workload_start"
                                          : "bench_stage_warmup_start");
 
     BenchStats stats;
@@ -472,27 +472,27 @@ void print_result(const BenchOptions& options, const BenchResult& result) {
 }
 
 }  // namespace
-}  // namespace adviskv::bench
+}  // namespace raftbox::bench
 
 int main(int argc, char** argv) {
-    adviskv::bench::BenchOptions options;
+    raftbox::bench::BenchOptions options;
 
-    if (!adviskv::bench::parse_args(argc, argv, &options)) return 1;
+    if (!raftbox::bench::parse_args(argc, argv, &options)) return 1;
 
-    if (!adviskv::bench::validate_options(options)) {
+    if (!raftbox::bench::validate_options(options)) {
         return 1;
     }
 
-    if (!adviskv::bench::init_metrics(options)) {
+    if (!raftbox::bench::init_metrics(options)) {
         return 1;
     }
 
-    if (!adviskv::bench::prepare_bench_table(options)) {
+    if (!raftbox::bench::prepare_bench_table(options)) {
         return 1;
     }
 
     if ((options.workload == "get" || options.workload == "mixed")) {
-        if (!adviskv::bench::prepare_read_dataset(options)) {
+        if (!raftbox::bench::prepare_read_dataset(options)) {
             return 1;
         }
     }
@@ -500,12 +500,12 @@ int main(int argc, char** argv) {
     if (options.warmup_requests > 0) {
         fmt::print("warmup start: requests={}\n", options.warmup_requests);
         IGNORE_RESULT(
-            adviskv::bench::run_phase(options, options.warmup_requests, false));
+            raftbox::bench::run_phase(options, options.warmup_requests, false));
         fmt::print("warmup done\n");
     }
 
     const int64_t route_refresh_baseline =
-        adviskv::AdvisMetrics::get_instance().counter_value(
+        raftbox::RaftBoxMetrics::get_instance().counter_value(
             "sdk_route_cache_refresh_table_routes_request");
 
     if (!options.workload_ready_file.empty()) {
@@ -516,7 +516,7 @@ int main(int argc, char** argv) {
                        options.workload_ready_file);
             return 1;
         }
-        ready << adviskv::bench::wall_time_ns() << '\n';
+        ready << raftbox::bench::wall_time_ns() << '\n';
         ready.flush();
         if (!ready.good()) {
             fmt::print(stderr, "failed to write workload_ready_file '{}'\n",
@@ -525,30 +525,30 @@ int main(int argc, char** argv) {
         }
     }
 
-    adviskv::bench::BenchResult result =
-        adviskv::bench::run_phase(options, options.requests, true);
+    raftbox::bench::BenchResult result =
+        raftbox::bench::run_phase(options, options.requests, true);
     if (!result.ok) {
         return 1;
     }
-    auto& metrics = adviskv::AdvisMetrics::get_instance();
+    auto& metrics = raftbox::RaftBoxMetrics::get_instance();
     result.sdk_unknown_final =
             metrics.counter_value("sdk_put_unknown_final") +
             metrics.counter_value("sdk_delete_unknown_final");
     result.sdk_route_refreshes =
         metrics.counter_value("sdk_route_cache_refresh_table_routes_request") -
         route_refresh_baseline;
-    adviskv::bench::print_result(options, result);
+    raftbox::bench::print_result(options, result);
     bool write_json_ok = false;
     {
-        ADVISKV_METRICS_TIMER("bench_stage_write_json");
-        ADVISKV_METRICS_COUNTER("bench_stage_write_json_start");
-        write_json_ok = adviskv::bench::write_json(options, result);
+        RAFTBOX_METRICS_TIMER("bench_stage_write_json");
+        RAFTBOX_METRICS_COUNTER("bench_stage_write_json_start");
+        write_json_ok = raftbox::bench::write_json(options, result);
     }
     if (!write_json_ok) {
-        adviskv::bench::record_stage_result("write_json", false);
+        raftbox::bench::record_stage_result("write_json", false);
         return 1;
     }
-    adviskv::bench::record_stage_result("write_json", true);
+    raftbox::bench::record_stage_result("write_json", true);
 
     if (options.metrics_hold_seconds > 0) {
         fmt::print("[bench] hold for metrics scrape: seconds={}\n",

@@ -14,7 +14,7 @@
 #include "topo/store/topo_store.h"
 #include "topo/store/topo_store_txn.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 
 RouteService::RouteService(TopoStore* store) : store_(store) {}
 
@@ -154,8 +154,8 @@ Status RouteService::reconcile_all() {
 }
 
 Status RouteService::check_shard_route(const Table& table, ShardIndex shard_index) {
-    ADVISKV_METRICS_TIMER("topo_route_check_shard_route");
-    ADVISKV_METRICS_COUNTER("topo_route_check_shard_route_request");
+    RAFTBOX_METRICS_TIMER("topo_route_check_shard_route");
+    RAFTBOX_METRICS_COUNTER("topo_route_check_shard_route_request");
 
     ShardID shard_id{table.table_id, shard_index};
     Status route_status{Status::OK()};
@@ -163,7 +163,7 @@ Status RouteService::check_shard_route(const Table& table, ShardIndex shard_inde
     Status status = store_->write_with([&](TopoStoreTxn& txn) -> Status {
         auto clear_route_and_return = [&](const std::string& msg) -> Status {
             route_status = Status::ROUTE_NOT_FOUND(msg);
-            ADVISKV_METRICS_COUNTER("topo_route_delete_shard_route_request");
+            RAFTBOX_METRICS_COUNTER("topo_route_delete_shard_route_request");
             RETURN_IF_INVALID_STATUS(txn.delete_shard_route(shard_id))
             LOG_WARN(
                     "[RouteService] check_shard_route, clear_route_and_return, route not ready, table_id={}, shard_index={}, msg={}",
@@ -180,7 +180,7 @@ Status RouteService::check_shard_route(const Table& table, ShardIndex shard_inde
             (current_table->state.phase != TablePhase::CREATING && current_table->state.phase != TablePhase::RESIZING &&
              current_table->state.phase != TablePhase::READY) ||
             shard_index < 0 || shard_index >= current_table->spec.shard_count) {
-            ADVISKV_METRICS_COUNTER("topo_route_delete_shard_route_request");
+            RAFTBOX_METRICS_COUNTER("topo_route_delete_shard_route_request");
             RETURN_IF_INVALID_STATUS(txn.delete_shard_route(shard_id))
             return Status::OK();
         }
@@ -269,7 +269,7 @@ Status RouteService::check_shard_route(const Table& table, ShardIndex shard_inde
             route.replicas.push_back(std::move(follower_entry));
         }
 
-        ADVISKV_METRICS_COUNTER("topo_route_put_shard_route_request");
+        RAFTBOX_METRICS_COUNTER("topo_route_put_shard_route_request");
         return txn.put_shard_route(route);
     });
     RETURN_IF_INVALID_STATUS(status)
@@ -277,4 +277,4 @@ Status RouteService::check_shard_route(const Table& table, ShardIndex shard_inde
     return route_status;
 }
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

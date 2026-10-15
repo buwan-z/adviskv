@@ -7,7 +7,7 @@
 
 #include "common/status.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 namespace {
 
 TEST(StorageServiceTest, ManagementRpcsRequireTestApiFlag) {
@@ -39,4 +39,4 @@ TEST(StorageServiceTest, ManagementRpcsRequireTestApiFlag) {
 }
 
 }  // namespace
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

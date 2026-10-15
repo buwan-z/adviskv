@@ -20,7 +20,7 @@
 
 namespace fs = std::filesystem;
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 namespace {
 
 class FakeTopoService final : public topo_rpc::TopoService::Service {
@@ -217,7 +217,7 @@ TEST(NodeAgentConfTest, RejectsInvalidConfig) {
 class NodeAgentTest : public ::testing::Test {
 protected:
     void SetUp() override {
-        base_dir_ = adviskv::test::make_unique_test_dir("node_agent", sequence_++);
+        base_dir_ = raftbox::test::make_unique_test_dir("node_agent", sequence_++);
         ASSERT_TRUE(fs::create_directories(base_dir_)) << base_dir_.string();
         if (!fake_topo_.start()) {
             GTEST_SKIP() << "local gRPC listener is unavailable in this "
@@ -440,4 +440,4 @@ TEST_F(NodeAgentTest, RegisterTaskRetriesAfterFailedRegister) {
 }
 
 }  // namespace
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

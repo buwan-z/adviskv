@@ -5,7 +5,7 @@
 #include "common/proto/peer_member_proto.h"
 #include "common/proto/raft_member_type_proto.h"
 
-namespace adviskv {
+namespace raftbox {
 
 inline bool encode_pb_raft_member(const RaftMember& in, pb::RaftMember& out) {
     if (!encode_pb_peer_member(in.peer, *out.mutable_peer())) {
@@ -26,4 +26,4 @@ inline bool decode_pb_raft_member(const pb::RaftMember& in, RaftMember& out) {
     return decode_pb_raft_member_type(in.member_type(), out.member_type);
 }
 
-}  // namespace adviskv
+}  // namespace raftbox

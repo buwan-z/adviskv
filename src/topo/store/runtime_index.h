@@ -10,7 +10,7 @@
 #include "common/status.h"
 #include "topo/model/model.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 
 using ReplicaKey = ReplicaID;
 using ShardKey = ShardID;
@@ -72,4 +72,4 @@ private:
 
     std::unordered_map<NodeID, std::string> node_pool_index_;
 };
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

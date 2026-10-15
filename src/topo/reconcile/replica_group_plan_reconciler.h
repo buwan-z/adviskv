@@ -5,7 +5,7 @@
 #include "topo/model/model.h"
 #include "topo/service/replica_group_service.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 
 // 这个是全权由ReplicaGroupService去负责
 class ReplicaGroupPlanReconciler {
@@ -23,4 +23,4 @@ private:
     ReplicaGroupReconcileContext ctx_;
 };
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

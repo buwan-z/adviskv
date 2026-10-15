@@ -10,7 +10,7 @@
 #include "common/model/type.h"
 #include "common/status.h"
 
-namespace adviskv {
+namespace raftbox {
 
 /*
 
@@ -105,4 +105,4 @@ public:
     }
 };
 
-}  // namespace adviskv
+}  // namespace raftbox

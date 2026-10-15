@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build and verify the smallest complete AdvisKV cluster workflow."""
+"""Build and verify the smallest complete RaftBox cluster workflow."""
 
 import os
 import shutil
@@ -60,7 +60,7 @@ sys.path.insert(0, str(ROOT_DIR))
 sys.path.insert(0, str(ROOT_DIR / "test"))
 
 from e2e.cluster import (  # noqa: E402
-    AdvisKVCluster,
+    RaftBoxCluster,
     BUILD_DIR,
     build_targets,
     clean_data_dirs,
@@ -89,12 +89,12 @@ def main() -> int:
     signal.signal(signal.SIGTERM, _interrupt)
     print("[verify] building Catalog, Topo, Storage, E2E client and CLI", flush=True)
     try:
-        build_targets("topo topo_test catalog storage e2e_client adviskvctl")
+        build_targets("topo topo_test catalog storage e2e_client raftboxctl")
         print(f"[verify] resetting local test data: {BUILD_DIR / 'e2e_test'}", flush=True)
         clean_data_dirs()
         write_e2e_configs()
 
-        cluster = AdvisKVCluster()
+        cluster = RaftBoxCluster()
         try:
             cluster.start()
             result = cluster.run_case(db="verify_db", table="verify_table", key_count=16)

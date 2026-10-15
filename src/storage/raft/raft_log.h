@@ -8,7 +8,7 @@
 #include "common/model/type.h"
 #include "storage/model/param.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 // 专门处理raft node 内部的log相关的内容
 class RaftLog {
@@ -53,4 +53,4 @@ private:
     Term snapshot_term_{0};
 };
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

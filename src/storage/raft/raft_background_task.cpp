@@ -3,7 +3,7 @@
 #include "storage/replica/replica.h"
 #include "storage/replica/replica_manager.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 RaftTickTask::RaftTickTask(ReplicaManager* manager) : BackgroundTask(), manager_(manager) {}
 
@@ -15,4 +15,4 @@ void RaftTickTask::run() {
     }
 }
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

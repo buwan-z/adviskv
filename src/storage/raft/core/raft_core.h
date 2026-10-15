@@ -15,7 +15,7 @@
 #include "storage/raft/raft_membership.h"
 #include "storage/raft/raft_replication.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 // 上锁的逻辑都交给了外部，需持有 raft_core_mutex_。
 class RaftCore {
@@ -174,4 +174,4 @@ private:
     State state_{State::READY};
 };
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

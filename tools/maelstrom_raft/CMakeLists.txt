@@ -11,6 +11,6 @@ target_include_directories(maelstrom_raft_node PRIVATE
 )
 
 target_link_libraries(maelstrom_raft_node PRIVATE
-    adviskv_storage_lib
+    raftbox_storage_lib
     nlohmann_json::nlohmann_json
 )

@@ -4,7 +4,7 @@
 
 #include "e2e_options.h"
 
-namespace adviskv::e2e {
+namespace raftbox::e2e {
 
 // prepare table + write_dataset
 bool run_seed_case(const Options& options, const std::string& prefix,
@@ -16,4 +16,4 @@ bool run_verify_case(const Options& options, const std::string& prefix,
                      const std::string& after_key_suffix = "",
                      bool print_leader = false);
 
-}  // namespace adviskv::e2e
+}  // namespace raftbox::e2e

@@ -8,7 +8,7 @@
 #include "common/status.h"
 #include "topo/model/model.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 
 #define ITOPO_RUNTIME_STORE_METHODS(X)                                                     \
     X(Status upsert_node(const Node& node))                                               \
@@ -33,4 +33,4 @@ private:
     std::unordered_map<ShardID, ShardRoutePtr, ShardIDHash> shard_routes_;
 };
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

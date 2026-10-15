@@ -30,7 +30,7 @@
 #include "common/status.h"
 #include "storage/model/model.h"
 #include "storage/raft/state_machine/state_machine.h"
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 namespace {
 
@@ -254,41 +254,41 @@ Status PersistEngine::close() {
 }
 
 Status PersistEngine::append_wal(const LogEntry& entry) {
-    ADVISKV_METRICS_TIMER("storage_persist_append_wal");
-    ADVISKV_METRICS_COUNTER("storage_persist_append_wal_request");
+    RAFTBOX_METRICS_TIMER("storage_persist_append_wal");
+    RAFTBOX_METRICS_COUNTER("storage_persist_append_wal_request");
 
     std::unique_lock lock{mutex_};
     Status status = write_wal_to_disk(wal_fd_, entry);
     if (status.fail()) {
-        ADVISKV_METRICS_COUNTER("storage_persist_append_wal_failure");
+        RAFTBOX_METRICS_COUNTER("storage_persist_append_wal_failure");
         return status;
     }
     if (::fsync(wal_fd_) != 0) {
-        ADVISKV_METRICS_COUNTER("storage_persist_append_wal_fsync_failure");
+        RAFTBOX_METRICS_COUNTER("storage_persist_append_wal_fsync_failure");
         return Status::ERROR("fsync != 0");
     }
-    ADVISKV_METRICS_COUNTER("storage_persist_append_wal_success");
+    RAFTBOX_METRICS_COUNTER("storage_persist_append_wal_success");
     return Status::OK();
 }
 
 Status PersistEngine::append_wal_batch(const std::vector<LogEntry>& entries) {
-    ADVISKV_METRICS_TIMER("storage_persist_append_wal_batch");
-    ADVISKV_METRICS_COUNTER("storage_persist_append_wal_batch_request");
-    ADVISKV_METRICS_COUNTER("storage_persist_append_wal_batch_entry", static_cast<int64_t>(entries.size()));
+    RAFTBOX_METRICS_TIMER("storage_persist_append_wal_batch");
+    RAFTBOX_METRICS_COUNTER("storage_persist_append_wal_batch_request");
+    RAFTBOX_METRICS_COUNTER("storage_persist_append_wal_batch_entry", static_cast<int64_t>(entries.size()));
 
     std::unique_lock lock{mutex_};
     for (const LogEntry& entry : entries) {
         Status status = write_wal_to_disk(wal_fd_, entry);
         if (status.fail()) {
-            ADVISKV_METRICS_COUNTER("storage_persist_append_wal_batch_failure");
+            RAFTBOX_METRICS_COUNTER("storage_persist_append_wal_batch_failure");
             return status;
         }
     }
     if (::fsync(wal_fd_) != 0) {
-        ADVISKV_METRICS_COUNTER("storage_persist_append_wal_batch_fsync_failure");
+        RAFTBOX_METRICS_COUNTER("storage_persist_append_wal_batch_fsync_failure");
         return Status::ERROR("fsync != 0");
     }
-    ADVISKV_METRICS_COUNTER("storage_persist_append_wal_batch_success");
+    RAFTBOX_METRICS_COUNTER("storage_persist_append_wal_batch_success");
     return Status::OK();
 }
 
@@ -298,7 +298,7 @@ Status PersistEngine::read_wal_batch(std::vector<LogEntry>& entries) {
 }
 
 Status PersistEngine::rewrite_wal(const std::vector<LogEntry>& entries) {
-    ADVISKV_METRICS_TIMER("storage_persist_rewrite_wal");
+    RAFTBOX_METRICS_TIMER("storage_persist_rewrite_wal");
     std::unique_lock lock{mutex_};
     return rewrite_wal_unlocked(entries);
 }
@@ -344,14 +344,14 @@ Status PersistEngine::rewrite_wal_unlocked(const std::vector<LogEntry>& entries)
     });
 
     {
-        ADVISKV_METRICS_TIMER("storage_persist_rewrite_wal_write");
+        RAFTBOX_METRICS_TIMER("storage_persist_rewrite_wal_write");
         for (const LogEntry& entry : entries) {
             RETURN_IF_INVALID_STATUS(write_wal_to_disk(fd, entry))
         }
     }
 
     {
-        ADVISKV_METRICS_TIMER("storage_persist_rewrite_wal_fsync");
+        RAFTBOX_METRICS_TIMER("storage_persist_rewrite_wal_fsync");
         if (::fsync(fd) != 0) {
             return Status::ERROR("failed to fsync wal tmp file");
         }
@@ -374,7 +374,7 @@ Status PersistEngine::rewrite_wal_unlocked(const std::vector<LogEntry>& entries)
         return Status::ERROR("failed to rename wal tmp file");
     }
     {
-        ADVISKV_METRICS_TIMER("storage_persist_rewrite_wal_dir_fsync");
+        RAFTBOX_METRICS_TIMER("storage_persist_rewrite_wal_dir_fsync");
         RETURN_IF_INVALID_STATUS(func::fsync_dir(dir_path_))
     }
 
@@ -611,8 +611,8 @@ Status PersistEngine::finish_snapshot_receive() {
 
 // 只把状态机内容落成 snapshot 文件，不修改 WAL
 Status PersistEngine::write_snapshot(const SnapshotData& snapshot, const std::vector<RaftMember>& members) {
-    ADVISKV_METRICS_COUNTER("storage_persist_write_snapshot_request");
-    ADVISKV_METRICS_TIMER("storage_persist_write_snapshot");
+    RAFTBOX_METRICS_COUNTER("storage_persist_write_snapshot_request");
+    RAFTBOX_METRICS_TIMER("storage_persist_write_snapshot");
 
     LogIndex apply_index = snapshot.apply_index;
     Term apply_term = snapshot.apply_term;
@@ -663,13 +663,13 @@ Status PersistEngine::write_snapshot(const SnapshotData& snapshot, const std::ve
             RETURN_IF_INVALID_STATUS(func::write_value(fd, record.payload_hash))
             ++request_count;
         }
-        ADVISKV_METRICS_COUNTER("storage_persist_snapshot_request_records_written", request_count);
+        RAFTBOX_METRICS_COUNTER("storage_persist_snapshot_request_records_written", request_count);
 
         off_t end_pos = ::lseek(fd, 0, SEEK_END);
         if (end_pos < 0) {
             return Status::ERROR("lseek snapshot end failed");
         }
-        ADVISKV_METRICS_COUNTER("storage_persist_snapshot_bytes_written", static_cast<int64_t>(end_pos));
+        RAFTBOX_METRICS_COUNTER("storage_persist_snapshot_bytes_written", static_cast<int64_t>(end_pos));
 
         int64 payload_len = static_cast<int64>(end_pos) - sizeof(int64);  // 这个len是没有算上自己的
 
@@ -868,4 +868,4 @@ Status PersistEngine::read_wal_from_disk(const std::string& path, WalReadResult&
 
 Status PersistEngine::clear_wal() { return rewrite_wal({}); }
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

@@ -15,7 +15,7 @@
 
 #include <fmt/core.h>
 
-namespace adviskv {
+namespace raftbox {
 
 #define RETURN_IF_INVALID_CONDITION(cond, msg)            \
     if (!(cond)) {                                        \
@@ -23,8 +23,8 @@ namespace adviskv {
     }
 
 #define RETURN_IF_INVALID_STATUS(s1)                     \
-    if (auto&& advis_status = s1; advis_status.fail()) { \
-        return advis_status;                             \
+    if (auto&& raftbox_status = s1; raftbox_status.fail()) { \
+        return raftbox_status;                             \
     }
 
 #define RETURN_IF_INVALID_PARAM(param)                     \
@@ -83,4 +83,4 @@ constexpr To to(From&& x) noexcept {
     return static_cast<To>(std::forward<From>(x));
 }
 
-}  // namespace adviskv
+}  // namespace raftbox

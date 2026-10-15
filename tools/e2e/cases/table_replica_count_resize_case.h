@@ -11,7 +11,7 @@
 #include "e2e_options.h"
 #include "e2e_table_util.h"
 
-namespace adviskv::e2e {
+namespace raftbox::e2e {
 
 // 覆盖 table replica_count 扩缩容闭环：
 // 先以 3 副本建表并写入数据，再依次扩容到 4、扩容到 5、缩容回 3。
@@ -88,4 +88,4 @@ inline bool run_table_replica_count_resize_case(const Options& options) {
     return true;
 }
 
-}  // namespace adviskv::e2e
+}  // namespace raftbox::e2e

@@ -18,7 +18,7 @@
 #include "storage/raft/core/raft_core.h"
 #include "storage/replica/replica_message_dispatcher.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 namespace {
 
@@ -283,7 +283,7 @@ Status ReplicaLoop::handle_call(PreVoteCall& call) {
 }
 
 Status ReplicaLoop::handle_call(AppendEntriesCall& call) {
-    ADVISKV_METRICS_TIMER("storage_replica_append_entries_raft_step_execute");
+    RAFTBOX_METRICS_TIMER("storage_replica_append_entries_raft_step_execute");
     return run_step([this, &call](RaftEffects& effects) {
         context_.raft_core.handle_append_entries(call.param, call.result, effects);
         return Status::OK();
@@ -331,8 +331,8 @@ Status ReplicaLoop::handle_call(RemoveMemberCall& call) {
 }
 
 Status ReplicaLoop::run_step(RaftStepFunc&& step) {
-    ADVISKV_METRICS_TIMER("storage_replica_raft_loop_step");
-    ADVISKV_METRICS_COUNTER("storage_replica_raft_loop_step_request");
+    RAFTBOX_METRICS_TIMER("storage_replica_raft_loop_step");
+    RAFTBOX_METRICS_COUNTER("storage_replica_raft_loop_step_request");
 
     RaftEffects effects;
     {
@@ -343,10 +343,10 @@ Status ReplicaLoop::run_step(RaftStepFunc&& step) {
     }
     Status send_status = context_.message_dispatcher.async_send(std::move(effects.messages));
     if (send_status.fail()) {
-        ADVISKV_METRICS_COUNTER("storage_replica_raft_loop_step_failure");
+        RAFTBOX_METRICS_COUNTER("storage_replica_raft_loop_step_failure");
         return send_status;
     }
-    ADVISKV_METRICS_COUNTER("storage_replica_raft_loop_step_success");
+    RAFTBOX_METRICS_COUNTER("storage_replica_raft_loop_step_success");
     return Status::OK();
 }
 
@@ -385,7 +385,7 @@ void ReplicaLoop::resolve_inflight_proposals() {
             proposal.committed = true;
             for (const auto& waiter : proposal.waiters) {
                 if (!complete_proposal_commit(waiter, Status::OK())) {
-                    ADVISKV_METRICS_COUNTER("storage_replica_request_commit_after_timeout");
+                    RAFTBOX_METRICS_COUNTER("storage_replica_request_commit_after_timeout");
                 }
             }
         }
@@ -491,19 +491,19 @@ Status ReplicaLoop::propose_batch_from_queue(std::vector<ProposalBatchItem>& act
             continue;
         }
 
-        ADVISKV_METRICS_COUNTER("storage_replica_request_record_check_request");
+        RAFTBOX_METRICS_COUNTER("storage_replica_request_record_check_request");
         RequestRecord committed_record;
         Status find_status;
         {
-            ADVISKV_METRICS_TIMER("storage_replica_request_record_check");
+            RAFTBOX_METRICS_TIMER("storage_replica_request_record_check");
             std::lock_guard lock(context_.state_machine_mutex);
             {
-                ADVISKV_METRICS_TIMER("storage_replica_request_record_lookup");
+                RAFTBOX_METRICS_TIMER("storage_replica_request_record_lookup");
                 find_status = context_.state_machine.find_request(write->request_id, committed_record);
             }
         }
         if (find_status.ok()) {
-            ADVISKV_METRICS_COUNTER("storage_replica_request_record_hit");
+            RAFTBOX_METRICS_COUNTER("storage_replica_request_record_hit");
             Status status = committed_record.matches(*write)
                                     ? Status::OK()
                                     : Status::INVALID_ARGUMENT("request_id was reused with a different write");
@@ -511,11 +511,11 @@ Status ReplicaLoop::propose_batch_from_queue(std::vector<ProposalBatchItem>& act
 
             continue;
         } else if (find_status.code() != StatusCode::KEY_NOT_FOUND) {
-            ADVISKV_METRICS_COUNTER("storage_replica_request_record_error");
+            RAFTBOX_METRICS_COUNTER("storage_replica_request_record_error");
             complete_proposal_commit(item.waiter, find_status);
             continue;
         }
-        ADVISKV_METRICS_COUNTER("storage_replica_request_record_miss");
+        RAFTBOX_METRICS_COUNTER("storage_replica_request_record_miss");
 
         // 说明在状态机里面没有找到request_id对应的操作
         // 去检查一下inflight里面有没有
@@ -525,10 +525,10 @@ Status ReplicaLoop::propose_batch_from_queue(std::vector<ProposalBatchItem>& act
                 complete_proposal_commit(item.waiter,
                                          Status::INVALID_ARGUMENT("request_id was reused with a different write"));
             } else if (proposal.committed) {
-                ADVISKV_METRICS_COUNTER("storage_replica_request_pending_deduplicated");
+                RAFTBOX_METRICS_COUNTER("storage_replica_request_pending_deduplicated");
                 complete_proposal_commit(item.waiter, Status::OK());
             } else {
-                ADVISKV_METRICS_COUNTER("storage_replica_request_pending_deduplicated");
+                RAFTBOX_METRICS_COUNTER("storage_replica_request_pending_deduplicated");
                 proposal.waiters.push_back(item.waiter);
             }
             continue;
@@ -688,4 +688,4 @@ bool ReplicaLoop::enqueue(QueueTask&& task) {
     return runner_.submit(std::move(task));
 }
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

@@ -4,7 +4,7 @@
 #include "common/define.h"
 #include "common/model/topo_table_status.h"
 
-namespace adviskv {
+namespace raftbox {
 
 inline bool decode_pb_topo_table_desired(pb::TopoTableDesired in, TopoTableDesired& out) {
     switch (in) {
@@ -82,4 +82,4 @@ inline bool encode_pb_topo_table_phase(TopoTablePhase in, pb::TopoTablePhase& ou
     }
 }
 
-}  // namespace adviskv
+}  // namespace raftbox

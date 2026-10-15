@@ -14,9 +14,9 @@
 #include "common/status.h"
 #include "common/stable_hash.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
-using ReplicaStatus = ::adviskv::StorageReplicaStatus;
+using ReplicaStatus = ::raftbox::StorageReplicaStatus;
 
 using LogIndex = int64_t;
 
@@ -264,4 +264,4 @@ struct RaftEffects {
     }
 };
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

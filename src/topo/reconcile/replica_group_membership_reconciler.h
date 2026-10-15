@@ -7,7 +7,7 @@
 #include "topo/model/model.h"
 #include "topo/service/replica_group_service.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 
 class ReplicaGroupMembershipReconciler {
 private:
@@ -25,4 +25,4 @@ private:
     ReplicaGroupReconcileContext ctx_;
 };
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

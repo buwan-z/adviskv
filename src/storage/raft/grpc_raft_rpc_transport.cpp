@@ -9,7 +9,7 @@
 #include "common/proto/proto.h"
 #include "storage/proto/storage_model_proto.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 namespace {
 
 auto get_system_clock_now() { return std::chrono::system_clock::now(); }
@@ -186,4 +186,4 @@ rpc::StorageService::StubInterface* GrpcRaftRpcTransport::stub_for(const PeerMem
     return raw;
 }
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

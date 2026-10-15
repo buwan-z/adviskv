@@ -4,7 +4,7 @@
 #include <mutex>
 #include <thread>
 
-namespace adviskv {
+namespace raftbox {
 
 void BackgroundTask::start(Milliseconds interval, bool run_immediately) {
     if (interval.count() <= 0) {
@@ -45,4 +45,4 @@ void BackgroundTask::loop(Milliseconds interval, bool run_immediately) {
     }
 }
 
-}  // namespace adviskv
+}  // namespace raftbox

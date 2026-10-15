@@ -7,7 +7,7 @@
 #include "common/status.h"
 #include "topo/model/model.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 
 struct TopoPersistedRecord {
     std::unordered_map<TableID, Table> tables;
@@ -44,4 +44,4 @@ private:
     bool init_flag_{false};
 };
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

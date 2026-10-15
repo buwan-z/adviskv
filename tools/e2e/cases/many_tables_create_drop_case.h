@@ -18,7 +18,7 @@
 #include "e2e_table_util.h"
 #include "sdk/client.h"
 
-namespace adviskv::e2e {
+namespace raftbox::e2e {
 
 namespace many_tables_detail {
 
@@ -217,4 +217,4 @@ inline bool run_many_tables_create_drop_case(const Options& options) {
     return true;
 }
 
-}  // namespace adviskv::e2e
+}  // namespace raftbox::e2e

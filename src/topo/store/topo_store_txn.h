@@ -7,7 +7,7 @@
 #include "common/status.h"
 #include "topo/model/model.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 
 class TopoStore;
 
@@ -53,4 +53,4 @@ private:
     friend class TopoStore;
 };
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

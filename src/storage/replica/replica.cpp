@@ -23,7 +23,7 @@
 #include "storage/replica/replica_read_index_checker.h"
 #include "storage/replica/replica_snapshot_coordinator.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 namespace {
 
@@ -126,7 +126,7 @@ Status Replica::put(const PutParam& param) {
     // // apply 已提交的日志到 engine
     // // 这里推动raftnode里的apply_index是交给了replica外层去控制。
     // {
-    //     ADVISKV_METRICS_TIMER("storage_replica_put_apply_committed");
+    //     RAFTBOX_METRICS_TIMER("storage_replica_put_apply_committed");
     //     std::lock_guard lock(state_machine_mutex_);
     //     RETURN_IF_INVALID_STATUS(
     //         fault_if_fail(applier_->apply_committed_entries()))
@@ -241,7 +241,7 @@ Status Replica::del(const DelParam& param) {
     // // 已经被多数派提交。此时它后续可能提交成功，也可能在 leader 变化后失效，
     // // 因此对客户端而言属于“结果未决”，而不是普通失败。
     // {
-    //     ADVISKV_METRICS_TIMER("storage_replica_delete_apply_committed");
+    //     RAFTBOX_METRICS_TIMER("storage_replica_delete_apply_committed");
     //     std::lock_guard lock(state_machine_mutex_);
     //     RETURN_IF_INVALID_STATUS(
     //         fault_if_fail(applier_->apply_committed_entries()))
@@ -289,7 +289,7 @@ Status Replica::handle_append_entries(const AppendEntriesParam& param, AppendEnt
 
     // 这里是作为follower那边的handle，会更新commit_idx
     {
-        ADVISKV_METRICS_TIMER("storage_replica_handle_append_entries_raft_step");
+        RAFTBOX_METRICS_TIMER("storage_replica_handle_append_entries_raft_step");
         AppendEntriesCall call{param};
         loop_->sync_submit(&call);
         RETURN_IF_INVALID_STATUS(call.status)
@@ -343,23 +343,23 @@ void Replica::notify_apply_task() {
 }
 
 void Replica::apply_committed_entries_from_task() {
-    ADVISKV_METRICS_TIMER("storage_replica_async_apply_committed");
-    ADVISKV_METRICS_COUNTER("storage_replica_async_apply_committed_request");
+    RAFTBOX_METRICS_TIMER("storage_replica_async_apply_committed");
+    RAFTBOX_METRICS_COUNTER("storage_replica_async_apply_committed_request");
 
     OperGate::Guard guard;
     if (oper_gate_.acquire(guard).fail()) {
-        ADVISKV_METRICS_COUNTER("storage_replica_async_apply_committed_skipped");
+        RAFTBOX_METRICS_COUNTER("storage_replica_async_apply_committed_skipped");
         return;
     }
     if (ensure_local_state_running().fail() || !applier_) {
-        ADVISKV_METRICS_COUNTER("storage_replica_async_apply_committed_skipped");
+        RAFTBOX_METRICS_COUNTER("storage_replica_async_apply_committed_skipped");
         return;
     }
 
     {
         std::lock_guard lock(raft_core_mutex_);
         if (raft_core_->commit_index() <= raft_core_->last_applied()) {
-            ADVISKV_METRICS_COUNTER("storage_replica_async_apply_committed_none");
+            RAFTBOX_METRICS_COUNTER("storage_replica_async_apply_committed_none");
             return;
         }
     }
@@ -367,12 +367,12 @@ void Replica::apply_committed_entries_from_task() {
     std::lock_guard lock(state_machine_mutex_);
     Status status = fault_if_fail(applier_->apply_committed_entries());
     if (status.fail()) {
-        ADVISKV_METRICS_COUNTER("storage_replica_async_apply_committed_failure");
+        RAFTBOX_METRICS_COUNTER("storage_replica_async_apply_committed_failure");
         LOG_WARN("async apply committed entries failed, replica_id={}, status={}", replica_id_.to_string(),
                  status.to_string());
         return;
     }
-    ADVISKV_METRICS_COUNTER("storage_replica_async_apply_committed_success");
+    RAFTBOX_METRICS_COUNTER("storage_replica_async_apply_committed_success");
 }
 
 void Replica::on_tick() {
@@ -490,4 +490,4 @@ ReplicaStatus Replica::get_status() const {
     return ReplicaStatus::INITIALIZING;
 }
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

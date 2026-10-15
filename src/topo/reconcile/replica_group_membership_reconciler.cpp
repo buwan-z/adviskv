@@ -18,7 +18,7 @@
 #include "topo/store/topo_store.h"
 #include "topo/store/topo_store_txn.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 
 namespace {
 
@@ -457,4 +457,4 @@ Status ReplicaGroupMembershipReconciler::remove_specific_members(const ReplicaGr
     });
 }
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

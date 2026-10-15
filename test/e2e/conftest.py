@@ -1,7 +1,7 @@
 import pytest
 
 from .cluster import (
-    AdvisKVCluster,
+    RaftBoxCluster,
     STORAGE_COUNT,
     build_e2e_targets,
     clean_data_dirs,
@@ -27,12 +27,12 @@ def build_targets():
 
 @pytest.fixture()
 def cluster(request):
-    """Start a fresh local AdvisKV cluster for one e2e test."""
+    """Start a fresh local RaftBox cluster for one e2e test."""
     clean_data_dirs()
     storage_count, service_envs = _cluster_options_from_request(request)
     write_e2e_configs(storage_count=storage_count)
 
-    test_cluster = AdvisKVCluster(storage_count=storage_count,
+    test_cluster = RaftBoxCluster(storage_count=storage_count,
                                   service_envs=service_envs)
     try:
         test_cluster.start()

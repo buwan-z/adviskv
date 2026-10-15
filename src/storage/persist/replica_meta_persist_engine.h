@@ -7,7 +7,7 @@
 #include "common/status.h"
 #include "storage/model/param.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 struct ReplicaMetaPayload {
     ReplicaInitParam init_param{};  // runtime 里的 data_dir / raft timeout
@@ -42,4 +42,4 @@ private:
     std::string data_dir_;
 };
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

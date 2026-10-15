@@ -15,7 +15,7 @@
 #include "common/framed_record_codec.h"
 #include "common/func.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 namespace {
 
 constexpr int64 K_MAX_REPLICA_META_PAYLOAD_BYTES = 1024 * 1024;
@@ -158,4 +158,4 @@ std::vector<std::filesystem::path> ReplicaMetaPersistEngine::scan_replica_meta_f
     return paths;
 }
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

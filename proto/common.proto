@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package adviskv.pb;
+package raftbox.pb;
 
 message BaseRsp {
     int32 code = 1;
@@ -92,12 +92,12 @@ message Endpoint {
 }
 
 message PeerMember {
-  adviskv.pb.ReplicaID replica_id = 1;
+  raftbox.pb.ReplicaID replica_id = 1;
   string node_id = 2;
-  adviskv.pb.Endpoint endpoint = 3;
+  raftbox.pb.Endpoint endpoint = 3;
 }
 
 message RaftMember {
-  adviskv.pb.PeerMember peer = 1;
-  adviskv.pb.RaftMemberType member_type = 2;
+  raftbox.pb.PeerMember peer = 1;
+  raftbox.pb.RaftMemberType member_type = 2;
 }

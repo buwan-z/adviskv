@@ -10,7 +10,7 @@
 #include "e2e_options.h"
 #include "e2e_table_util.h"
 
-namespace adviskv::e2e {
+namespace raftbox::e2e {
 namespace {
 
 inline bool run_create_table_crash_prepare_case(const Options& options,
@@ -81,4 +81,4 @@ inline bool run_create_table_crash_after_persist_verify_case(
                                               "after-recovery");
 }
 
-}  // namespace adviskv::e2e
+}  // namespace raftbox::e2e

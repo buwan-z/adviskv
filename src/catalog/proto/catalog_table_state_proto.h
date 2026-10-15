@@ -4,7 +4,7 @@
 #include "common/define.h"
 #include "catalog/model/model.h"
 
-namespace adviskv::catalog {
+namespace raftbox::catalog {
 
 inline bool decode_pb_catalog_table_state(pb::CatalogTableState in, TableState& out) {
     switch (in) {
@@ -56,4 +56,4 @@ inline bool encode_pb_catalog_table_state(TableState in, pb::CatalogTableState& 
     }
 }
 
-}  // namespace adviskv::catalog
+}  // namespace raftbox::catalog

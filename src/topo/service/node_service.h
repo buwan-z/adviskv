@@ -7,7 +7,7 @@
 #include "topo/model/model.h"
 #include "topo/model/param.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 
 class TopoStore;
 class TopoStoreTxn;
@@ -41,4 +41,4 @@ private:
     int64_t start_ts_ms_;
 };
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

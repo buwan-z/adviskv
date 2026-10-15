@@ -10,7 +10,7 @@
 #include "storage/model/param.h"
 #include "storage/raft/core/raft_core.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 /*
 
@@ -166,7 +166,7 @@ void RaftCore::handle_append_entries(const AppendEntriesParam& param, AppendEntr
     }
 
     if (param.term < election_.current_term()) {
-        ADVISKV_METRICS_COUNTER("storage_raft_handle_append_entries_stale_term");
+        RAFTBOX_METRICS_COUNTER("storage_raft_handle_append_entries_stale_term");
         LOG_INFO(
                 "[RaftCore Append] handle_append_entries, param.term:{} < "
                 "election_.current_term:{}",
@@ -201,14 +201,14 @@ void RaftCore::handle_append_entries(const AppendEntriesParam& param, AppendEntr
                     "param.prev_log_index:{} < snapshot_index_:{}",
                     self_id_.to_string(), param.prev_log_index, raft_log_.snapshot_index());
         } else if (raft_log_.term_at(param.prev_log_index) != param.prev_log_term) {
-            ADVISKV_METRICS_COUNTER("storage_raft_handle_append_entries_prev_mismatch");
+            RAFTBOX_METRICS_COUNTER("storage_raft_handle_append_entries_prev_mismatch");
             return;
         }
     }
     // if (param.prev_log_index < snapshot_index_) {
     //     //
     //     压测情况下leader那边高并发发送，follower来不及回复，prev_log_index没更新，follower这边接收到的消息过多导致自己跑了快照，就会触发这种情况
-    //     ADVISKV_METRICS_COUNTER(
+    //     RAFTBOX_METRICS_COUNTER(
     //         "storage_raft_handle_append_entries_prev_behind_snapshot");
     //     LOG_WARN(
     //         "raft node: follower receive append entries: "
@@ -227,7 +227,7 @@ void RaftCore::handle_append_entries(const AppendEntriesParam& param, AppendEntr
     } else {
         RaftLog::AppendEntriesResult append_result;
         {
-            ADVISKV_METRICS_TIMER("storage_raft_handle_append_entries_log");
+            RAFTBOX_METRICS_TIMER("storage_raft_handle_append_entries_log");
             Status append_status = raft_log_.append_entries_from_leader(param.entries, append_result);
             if (append_status.fail()) {
                 LOG_WARN(
@@ -250,14 +250,14 @@ void RaftCore::handle_append_entries(const AppendEntriesParam& param, AppendEntr
 
     // 不管是否有entry，也就是不管是日志追加还是心跳，都会需要更新commit_idx
     {
-        ADVISKV_METRICS_TIMER("storage_raft_handle_append_entries_commit");
+        RAFTBOX_METRICS_TIMER("storage_raft_handle_append_entries_commit");
         raft_apply_.advance_commit_index_from_leader(param.leader_commit);
     }
     finish_recovering();
 
     result.success = true;
     result.term = election_.current_term();
-    ADVISKV_METRICS_COUNTER("storage_raft_handle_append_entries_success");
+    RAFTBOX_METRICS_COUNTER("storage_raft_handle_append_entries_success");
 }
 
 Status RaftCore::handle_append_response(const ReplicaID& from, const AppendEntriesParam& sent_param,
@@ -265,7 +265,7 @@ Status RaftCore::handle_append_response(const ReplicaID& from, const AppendEntri
     RETURN_IF_INVALID_STATUS(ensure_ready())
 
     if (result.term > election_.current_term()) {
-        ADVISKV_METRICS_COUNTER("storage_raft_handle_append_response_higher_term");
+        RAFTBOX_METRICS_COUNTER("storage_raft_handle_append_response_higher_term");
         become_follower(result.term, effects);
         return Status::NOT_LEADER("higher term");
     }
@@ -280,12 +280,12 @@ Status RaftCore::handle_append_response(const ReplicaID& from, const AppendEntri
     }
 
     if (!election_.is_leader()) {
-        ADVISKV_METRICS_COUNTER("storage_raft_handle_append_response_not_leader");
+        RAFTBOX_METRICS_COUNTER("storage_raft_handle_append_response_not_leader");
         return Status::NOT_LEADER();
     }
 
     if (result.success) {
-        ADVISKV_METRICS_COUNTER("storage_raft_handle_append_response_success");
+        RAFTBOX_METRICS_COUNTER("storage_raft_handle_append_response_success");
         LOG_DEBUG(
                 "[RaftCore Append] leader replica:{} append enrties to replica:{} "
                 "success.",
@@ -294,7 +294,7 @@ Status RaftCore::handle_append_response(const ReplicaID& from, const AppendEntri
         try_update_commit_index(effects);
         maybe_promote_ready_learner(effects);
     } else {
-        ADVISKV_METRICS_COUNTER("storage_raft_handle_append_response_reject");
+        RAFTBOX_METRICS_COUNTER("storage_raft_handle_append_response_reject");
         // prev_log 对不上
 
         // 需要先确认一下关于response的时效性
@@ -324,7 +324,7 @@ void RaftCore::handle_append_send_failed(const ReplicaID& from, const AppendEntr
     if (!election_.is_leader()) return;
     UNUSED(param);
 
-    ADVISKV_METRICS_COUNTER("storage_raft_append_entries_send_failed");
+    RAFTBOX_METRICS_COUNTER("storage_raft_append_entries_send_failed");
     LOG_WARN(
             "[RaftCore Append] leader replica:{} append entries send to "
             "replica:{} failed, status:{}",
@@ -351,8 +351,8 @@ void RaftCore::try_update_commit_index(RaftEffects& effects) {
             // 的及时更新，如果是删除follower的话到还好，但是如果是删除leader的话就得有这个，不然quorum没有及时更新，影响正确性，最直观的例子比如是2个节点的情况
             broadcast_append_entries(effects);
         }
-        ADVISKV_METRICS_COUNTER("storage_raft_commit_index_advance");
-        ADVISKV_METRICS_COUNTER("storage_raft_committed_entry",
+        RAFTBOX_METRICS_COUNTER("storage_raft_commit_index_advance");
+        RAFTBOX_METRICS_COUNTER("storage_raft_committed_entry",
                                 static_cast<int64_t>(result.new_commit_index - result.old_commit_index));
     }
 }
@@ -430,4 +430,4 @@ void RaftCore::maybe_promote_ready_learner(RaftEffects& effects) {
     }
 }
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

@@ -7,7 +7,7 @@
 #include "common/metrics/metrics.h"
 #include "storage/persist/persist_engine.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 namespace {
 
@@ -58,7 +58,7 @@ Status ReplicaMessageDispatcher::sync_send_install_snapshot(const PeerMember& ta
 void ReplicaMessageDispatcher::send_task(RaftMessage msg) {
     switch (msg.type) {
         case RaftMessageType::REQUEST_VOTE: {
-            ADVISKV_METRICS_TIMER("storage_raft_flush_messages_request_vote");
+            RAFTBOX_METRICS_TIMER("storage_raft_flush_messages_request_vote");
 
             RequestVoteResult result;
             Status status = sender_.send_request_vote(msg.target, msg.vote_param, result);
@@ -70,7 +70,7 @@ void ReplicaMessageDispatcher::send_task(RaftMessage msg) {
             break;
         }
         case RaftMessageType::PRE_VOTE: {
-            ADVISKV_METRICS_TIMER("storage_raft_flush_messages_pre_vote");
+            RAFTBOX_METRICS_TIMER("storage_raft_flush_messages_pre_vote");
 
             PreVoteResult result;
             Status status = sender_.send_pre_vote(msg.target, msg.pre_vote_param, result);
@@ -93,7 +93,7 @@ void ReplicaMessageDispatcher::send_task(RaftMessage msg) {
             break;
         }
         case RaftMessageType::INSTALL_SNAPSHOT: {
-            ADVISKV_METRICS_TIMER("storage_raft_flush_messages_install_snapshot");
+            RAFTBOX_METRICS_TIMER("storage_raft_flush_messages_install_snapshot");
 
             InstallSnapshotResult result;
             Status status;
@@ -120,4 +120,4 @@ void ReplicaMessageDispatcher::callback(Event event) {
     event_callback_(std::move(event));
 }
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

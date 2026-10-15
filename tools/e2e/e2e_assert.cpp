@@ -8,7 +8,7 @@
 #include <cstdlib>
 #include <thread>
 
-namespace adviskv::e2e {
+namespace raftbox::e2e {
 namespace {
 
 using Clock = std::chrono::steady_clock;
@@ -135,4 +135,4 @@ bool base_rsp_ok(int32_t code, const std::string& msg,
     return false;
 }
 
-}  // namespace adviskv::e2e
+}  // namespace raftbox::e2e

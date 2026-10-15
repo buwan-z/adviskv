@@ -3,7 +3,7 @@
 #include "common/status.h"
 #include "catalog/model/model.h"
 
-namespace adviskv::catalog {
+namespace raftbox::catalog {
 
 struct CatalogPersistedRecord {
     std::unordered_map<DatabaseID, DatabaseDesc> db_desc_map;
@@ -23,4 +23,4 @@ public:
     virtual Status load_catalog(CatalogPersistedRecord& record) = 0;
 };
 
-}  // namespace adviskv::catalog
+}  // namespace raftbox::catalog

@@ -8,7 +8,7 @@
 #include "common/status.h"
 #include "topo/store/topo_store.h"
 #include "topo/store/topo_store_test_helper.h"
-namespace adviskv::topo {
+namespace raftbox::topo {
 namespace {
 
 Table make_table() {
@@ -160,4 +160,4 @@ TEST(RouteServiceTest, GetRouteRequiresExactlyOneWritableLeader) {
     }
 }
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

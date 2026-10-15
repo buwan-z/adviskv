@@ -10,7 +10,7 @@
 #include "common/status.h"
 #include "topo.pb.h"
 
-namespace adviskv::catalog {
+namespace raftbox::catalog {
 
 Status TopoClient::call_place_table(const TableDesc& table_desc) {
     topo_rpc::PlaceTableRequest request;
@@ -106,4 +106,4 @@ Status TopoClient::call_alter_table_replica_count(const TableDesc& table_desc) {
     return Status::OK();
 }
 
-}  // namespace adviskv::catalog
+}  // namespace raftbox::catalog

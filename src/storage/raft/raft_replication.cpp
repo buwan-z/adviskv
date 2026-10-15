@@ -9,7 +9,7 @@
 #include "storage/model/model.h"
 #include "storage/raft/raft_log.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 namespace {
 
@@ -181,4 +181,4 @@ RaftMessageOr RaftReplication::build_append_entries_message(const PeerMember& me
     return msg;
 }
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

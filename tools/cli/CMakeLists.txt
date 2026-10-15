@@ -1,13 +1,13 @@
-add_executable(adviskvctl
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/adviskvctl.cpp
+add_executable(raftboxctl
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/raftboxctl.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/direct_catalog_client.cpp
 )
 
-target_link_libraries(adviskvctl PRIVATE
-    adviskv_sdk
+target_link_libraries(raftboxctl PRIVATE
+    raftbox_sdk
 )
 
-target_include_directories(adviskvctl PRIVATE
+target_include_directories(raftboxctl PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${CMAKE_SOURCE_DIR}/src
 )

@@ -14,13 +14,13 @@
 
 namespace fs = std::filesystem;
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 namespace {
 
 class ReplicaTest : public ::testing::Test {
    protected:
     void SetUp() override {
-        base_dir_ = adviskv::test::make_unique_test_dir("replica", sequence_++);
+        base_dir_ = raftbox::test::make_unique_test_dir("replica", sequence_++);
         ASSERT_TRUE(fs::create_directories(base_dir_)) << base_dir_.string();
     }
 
@@ -572,4 +572,4 @@ TEST_F(ReplicaTest, SnapshotCatchupRecoveryFinishesWhenSnapshotCoversTarget) {
 }
 
 }  // namespace
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

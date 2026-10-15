@@ -3,7 +3,7 @@
 #include <cstddef>
 #include <cstdint>
 
-namespace adviskv {
+namespace raftbox {
 
 inline uint32_t compute_crc32(const uint8_t* data, size_t len) {
     static uint32_t crc32_tab[256];
@@ -29,4 +29,4 @@ inline uint32_t compute_crc32(const uint8_t* data, size_t len) {
     return crc ^ 0xFFFFFFFF;
 }
 
-}  // namespace adviskv
+}  // namespace raftbox

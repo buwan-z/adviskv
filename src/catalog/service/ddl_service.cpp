@@ -4,7 +4,7 @@
 #include "common/status.h"
 #include "catalog/store/catalog_store.h"
 
-namespace adviskv::catalog {
+namespace raftbox::catalog {
 
 DdlService::DdlService(CatalogStore* catalog_store, ITopoClient* topo_client) {
     catalog_store_ = catalog_store;
@@ -156,4 +156,4 @@ Status DdlService::get_table(const GetTableParam& param, TableDesc* table_desc) 
     }
 }
 
-}  // namespace adviskv::catalog
+}  // namespace raftbox::catalog

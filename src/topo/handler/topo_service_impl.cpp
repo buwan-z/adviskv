@@ -17,7 +17,7 @@
 #include "topo/model/param.h"
 #include "topo/service/service_manager.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 
 TopoServiceImpl::TopoServiceImpl(ServiceManager* service_manager) : service_manager_(service_manager) {}
 
@@ -297,4 +297,4 @@ grpc::Status TopoServiceImpl::GetTableRoutes(grpc::ServerContext* context, const
     return grpc::Status::OK;
 }
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

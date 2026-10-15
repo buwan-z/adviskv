@@ -1,4 +1,4 @@
-AdvisKV metrics report
+RaftBox metrics report
 started_at: 2026-08-15 22:13:07
 duration_s: 42.3
 samples: 280

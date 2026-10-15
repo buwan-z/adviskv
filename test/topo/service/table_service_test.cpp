@@ -9,7 +9,7 @@
 #include "topo/store/topo_store.h"
 #include "topo/store/topo_store_test_helper.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 namespace {
 
 PlaceTableParam make_place_table_param() {
@@ -319,4 +319,4 @@ TEST(TableServiceTest, GetTableStatusReturnsStoredTableAndChecksOperationId) {
     EXPECT_EQ(missing.code(), StatusCode::TABLE_NOT_FOUND);
 }
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

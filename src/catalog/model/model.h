@@ -6,7 +6,7 @@
 #include "common/define.h"
 #include "common/model/type.h"
 
-namespace adviskv::catalog {
+namespace raftbox::catalog {
 
 enum class TableState : int32_t { ADDING = 1, NORMAL = 2, FAILED = 3, DROPPING = 4, DELETED = 5, ALTERING = 6 };
 
@@ -60,4 +60,4 @@ struct TableDesc {
     DEFINE_OPERATOR_NOT_EQUAL(TableDesc)
 };
 
-}  // namespace adviskv::catalog
+}  // namespace raftbox::catalog

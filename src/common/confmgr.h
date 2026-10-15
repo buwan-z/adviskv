@@ -8,7 +8,7 @@
 #include "common/define.h"
 #include "common/log.h"
 
-namespace adviskv {
+namespace raftbox {
 
 class ConfMgr {
 public:
@@ -60,9 +60,9 @@ private:
     YAML::Node root_node_;
 };
 
-#define CONF_GET_INT(...) (adviskv::ConfMgr::get_instance().Get<int>(__VA_ARGS__))
-#define CONF_GET_DOUBLE(...) (adviskv::ConfMgr::get_instance().Get<double>(__VA_ARGS__))
-#define CONF_GET_STR(...) (adviskv::ConfMgr::get_instance().Get<std::string>(__VA_ARGS__))
-#define CONF_GET_BOOL(...) (adviskv::ConfMgr::get_instance().Get<bool>(__VA_ARGS__))
+#define CONF_GET_INT(...) (raftbox::ConfMgr::get_instance().Get<int>(__VA_ARGS__))
+#define CONF_GET_DOUBLE(...) (raftbox::ConfMgr::get_instance().Get<double>(__VA_ARGS__))
+#define CONF_GET_STR(...) (raftbox::ConfMgr::get_instance().Get<std::string>(__VA_ARGS__))
+#define CONF_GET_BOOL(...) (raftbox::ConfMgr::get_instance().Get<bool>(__VA_ARGS__))
 
-}  // namespace adviskv
+}  // namespace raftbox

@@ -10,7 +10,7 @@
 #include "topo/store/topo_store_test_helper.h"
 #include "topo/selector/node_selector/node_selector.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 namespace {
 
 constexpr TableID K_TEST_TABLE_ID = 1001;
@@ -361,4 +361,4 @@ TEST(RouteServiceReconcileTest, CheckShardRouteReloadsCurrentTableState) {
     EXPECT_TRUE(route.is_empty());
 }
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

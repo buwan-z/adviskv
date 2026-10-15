@@ -1,6 +1,6 @@
 #include "storage/raft/core/raft_core.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 void RaftCore::update_raft_meta(const RaftMeta& meta) { election_.update_meta(meta); }
 
@@ -23,4 +23,4 @@ void RaftCore::finish_recovering() {
     election_tick_trigger_.reset();
 }
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

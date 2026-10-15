@@ -5,7 +5,7 @@
 #include "catalog/model/param.h"
 #include "catalog/service/topo_client.h"
 
-namespace adviskv::catalog {
+namespace raftbox::catalog {
 
 class DdlService {
 public:
@@ -24,4 +24,4 @@ private:
     CatalogStore* catalog_store_;
 };
 
-}  // namespace adviskv::catalog
+}  // namespace raftbox::catalog

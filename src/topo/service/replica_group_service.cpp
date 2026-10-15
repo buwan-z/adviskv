@@ -15,7 +15,7 @@
 #include "topo/store/topo_store.h"
 #include "topo/store/topo_store_txn.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 
 namespace {
 
@@ -343,4 +343,4 @@ Status ReplicaGroupService::reconcile_all() {
     return Status::OK();
 }
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

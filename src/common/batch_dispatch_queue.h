@@ -13,7 +13,7 @@
 
 #include "common/define.h"
 
-namespace adviskv {
+namespace raftbox {
 
 template <typename Item>
 class BatchDispatchQueue {
@@ -132,4 +132,4 @@ private:
     std::thread timer_thread_;
 };
 
-}  // namespace adviskv
+}  // namespace raftbox

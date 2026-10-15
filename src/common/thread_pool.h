@@ -10,7 +10,7 @@
 
 #include "common/define.h"
 
-namespace adviskv {
+namespace raftbox {
 
 class ThreadPool {
 public:
@@ -41,4 +41,4 @@ private:
     bool started_{false};
 };
 
-}  // namespace adviskv
+}  // namespace raftbox

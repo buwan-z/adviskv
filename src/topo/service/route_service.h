@@ -7,7 +7,7 @@
 #include "topo/model/model.h"
 #include "topo/model/param.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 
 class TopoStore;
 
@@ -29,4 +29,4 @@ protected:
     TopoStore* store_{nullptr};
 };
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

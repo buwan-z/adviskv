@@ -5,9 +5,9 @@
 
 #include "common/confmgr.h"
 
-namespace adviskv {
+namespace raftbox {
 
-inline std::filesystem::path project_root_dir() { return std::filesystem::path(ADVISKV_PROJECT_ROOT); }
+inline std::filesystem::path project_root_dir() { return std::filesystem::path(RAFTBOX_PROJECT_ROOT); }
 
 // 这个是直接从项目的根目录出发的路径， path填写是相对的
 inline std::filesystem::path path_from_project_root(const std::filesystem::path& path) {
@@ -25,4 +25,4 @@ inline std::filesystem::path path_from_config(const std::string& key) {
     return path_from_project_root((ConfMgr::get_instance().Get<std::string>(key)));
 }
 
-}  // namespace adviskv
+}  // namespace raftbox

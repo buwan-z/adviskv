@@ -4,7 +4,7 @@
 
 #include "catalog/persist/i_catalog_persist_engine.h"
 
-namespace adviskv::catalog {
+namespace raftbox::catalog {
 
 class CatalogPersistEngine : public ICatalogPersistEngine {
 public:
@@ -27,4 +27,4 @@ private:
     const std::string catalog_data_tmp_path_;
 };
 
-}  // namespace adviskv::catalog
+}  // namespace raftbox::catalog

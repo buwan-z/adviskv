@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-namespace adviskv {
+namespace raftbox {
 
 enum class ReplicaRole : int8_t {
     FOLLOWER = 0,
@@ -34,4 +34,4 @@ inline bool is_valid_replica_role(int32_t value) {
     ReplicaRole out = ReplicaRole::FOLLOWER;
     return decode_replica_role(value, out);
 }
-}  // namespace adviskv
+}  // namespace raftbox

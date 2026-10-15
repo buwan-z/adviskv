@@ -8,7 +8,7 @@
 #include <unordered_map>
 
 #include "common/define.h"
-namespace adviskv::topo {
+namespace raftbox::topo {
 
 template <typename T>
 class KeyLock {
@@ -80,4 +80,4 @@ using ReadKeyLockGuard = typename KeyLock<T>::template KeyLockGuard<std::shared_
 
 #undef KEY_CONCACT
 #undef KEY_CONCACT_INNER
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

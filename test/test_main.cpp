@@ -10,17 +10,17 @@
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
 
-    adviskv::ConfMgr::get_instance().LoadFromFile(
-        (adviskv::path_from_project_root("conf/test.yaml").string()));
+    raftbox::ConfMgr::get_instance().LoadFromFile(
+        (raftbox::path_from_project_root("conf/test.yaml").string()));
 
-    adviskv::LogConfig config;
+    raftbox::LogConfig config;
     config.logger_name = CONF_GET_STR("logger_name");
-    config.log_dir = adviskv::path_from_config("log_dir").string();
+    config.log_dir = raftbox::path_from_config("log_dir").string();
     config.log_filename = CONF_GET_STR("log_filename");
     config.log_level = CONF_GET_STR("log_level");
     config.log_to_console = CONF_GET_BOOL("log_to_console");
     config.log_to_file = CONF_GET_BOOL("log_to_file");
-    adviskv::Logger::get_instance().init(config);
+    raftbox::Logger::get_instance().init(config);
 
     return RUN_ALL_TESTS();
 }

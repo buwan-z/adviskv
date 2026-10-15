@@ -12,7 +12,7 @@
 
 namespace fs = std::filesystem;
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 namespace {
 
 class BlockingInstallSnapshotTransport final : public IRaftRpcTransport {
@@ -74,7 +74,7 @@ class RaftSenderTest : public ::testing::Test {
    protected:
     void SetUp() override {
         base_dir_ =
-            adviskv::test::make_unique_test_dir("raft_sender", sequence_++);
+            raftbox::test::make_unique_test_dir("raft_sender", sequence_++);
         ASSERT_TRUE(fs::create_directories(base_dir_)) << base_dir_.string();
 
         member_.node_id = "node-2";
@@ -158,4 +158,4 @@ TEST_F(RaftSenderTest, InstallSnapshotInflightIsNotOwnedBySender) {
 }
 
 }  // namespace
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

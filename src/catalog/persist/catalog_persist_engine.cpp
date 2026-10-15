@@ -13,7 +13,7 @@
 #include "common/framed_record_codec.h"
 #include "common/log.h"
 
-namespace adviskv::catalog {
+namespace raftbox::catalog {
 namespace {
 
 static constexpr int64 K_MAX_CATALOG_PAYLOAD_BYTES = 64 * 1024 * 1024;
@@ -192,4 +192,4 @@ Status CatalogPersistEngine::load_catalog(CatalogPersistedRecord& record) {
     return Status::OK();
 }
 
-}  // namespace adviskv::catalog
+}  // namespace raftbox::catalog

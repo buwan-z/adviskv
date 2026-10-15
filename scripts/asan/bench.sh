@@ -5,6 +5,6 @@ source "$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)/env.sh"
 
 cd "$ROOT_DIR"
 BUILD_TARGETS="topo catalog storage bench_client" \
-  ./scripts/build.sh -DADVISKV_SANITIZER=address
+  ./scripts/build.sh -DRAFTBOX_SANITIZER=address
 
 SKIP_BUILD=1 exec ./scripts/bench.sh "$@"

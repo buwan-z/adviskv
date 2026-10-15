@@ -1,4 +1,4 @@
-<h1 align="center">AdvisKV</h1>
+<h1 align="center">RaftBox｜基于 Raft 的分布式 KV 存储系统</h1>
 
 <p align="center">
   <b>C++17 分布式 KV 存储系统</b><br/>
@@ -7,7 +7,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/C%2B%2B-17-00599C?logo=c%2B%2B&logoColor=white" alt="C++17" />
-  <img src="https://github.com/advisedy/adviskv/actions/workflows/ci.yml/badge.svg" alt="CI" />
+  <img src="https://github.com/buwan-z/raftbox/actions/workflows/ci.yml/badge.svg" alt="CI" />
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="MIT License" /></a>
   <img src="https://img.shields.io/badge/Recommended-Linux%20%7C%20Ubuntu%2024.04-2ea44a" alt="Recommended environment: Linux (Ubuntu 24.04)" />
   <img src="https://img.shields.io/badge/Status-v0.1.0-blue" alt="Status v0.1.0" />
@@ -25,7 +25,7 @@
 
 ## 项目简介
 
-AdvisKV 是我用 C++17 从零实现的分布式 Key-Value 存储系统。客户端以 `db + table + key` 访问数据：Catalog 管理库表与 DDL，Topo 管理节点、分片副本与路由，Storage 通过 Raft 复制写入，并配合 WAL / Snapshot 做持久化与恢复，SDK 将请求路由到对应分片 Leader。
+RaftBox 是我用 C++17 从零实现的分布式 Key-Value 存储系统。客户端以 `db + table + key` 访问数据：Catalog 管理库表与 DDL，Topo 管理节点、分片副本与路由，Storage 通过 Raft 复制写入，并配合 WAL / Snapshot 做持久化与恢复，SDK 将请求路由到对应分片 Leader。
 
 当前版本为 **v0.1.0**。已支持能力见下一节，边界见文末 [当前限制](#当前限制)；更细的说明与链接见 [版本说明](docs/版本.md)。
 
@@ -57,13 +57,13 @@ python3 scripts/verify_project.py
 ./scripts/setup.sh --with-maelstrom-test
 ```
 
-启动本地集群并打开 `adviskvctl`：
+启动本地集群并打开 `raftboxctl`：
 
 ```bash
-./scripts/adviskvctl_demo.sh
+./scripts/raftboxctl_demo.sh
 ```
 
-如果验证入口输出 `using build-make`，则改用 `BUILD_DIR=build-make ./scripts/adviskvctl_demo.sh`。
+如果验证入口输出 `using build-make`，则改用 `BUILD_DIR=build-make ./scripts/raftboxctl_demo.sh`。
 
 在交互式 shell 中执行：
 
@@ -77,11 +77,6 @@ route demo_db demo_table k1
 quit
 ```
 
-本地演示：
-
-<p align="center">
-  <img src="docs/assets/adviskvctl_demo.gif" alt="adviskvctl demo" width="960" />
-</p>
 
 Demo 退出时会清理本地进程；也可以手动执行：
 
@@ -100,7 +95,7 @@ cmake --build build --parallel
 
 ```bash
 BUILD_TYPE=Release ./scripts/build.sh
-BUILD_TARGETS="catalog topo storage adviskvctl" ./scripts/build.sh
+BUILD_TARGETS="catalog topo storage raftboxctl" ./scripts/build.sh
 ```
 
 主要二进制位于 `build/bin/`。
@@ -108,7 +103,7 @@ BUILD_TARGETS="catalog topo storage adviskvctl" ./scripts/build.sh
 ## 架构
 
 <p align="center">
-  <img src="docs/assets/mermaid/minimal-overview.png" alt="AdvisKV architecture overview" width="820" />
+  <img src="docs/assets/mermaid/minimal-overview.png" alt="RaftBox architecture overview" width="820" />
 </p>
 
 | 模块 | 作用 |
@@ -224,7 +219,7 @@ conf/       配置文件
 proto/      gRPC / Protobuf 定义
 scripts/    构建、测试、demo 和 benchmark 脚本
 src/        Catalog / Topo / Storage / SDK 与通用模块
-tools/      adviskvctl、E2E 客户端、benchmark 客户端、Storage 客户端
+tools/      raftboxctl、E2E 客户端、benchmark 客户端、Storage 客户端
 test/       GoogleTest 和 Python E2E 测试
 docs/       设计文档、版本说明与 benchmark
 ```
@@ -238,3 +233,5 @@ docs/       设计文档、版本说明与 benchmark
 - 坏副本替换：新副本升为 voter 后，若原坏副本恢复，当前会把新副本踢掉，行为还可以再优化。
 - 暂不支持分片分裂（split）与动态 rebalance；分片数在建表时固定。
 - Catalog 与 Topo 目前仍是单进程，尚未做控制面高可用。
+
+[RaftBox naming migration](docs/raftbox-migration.md)

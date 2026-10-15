@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# Shared defaults for AdvisKV scripts. Source from other scripts.
+# Shared defaults for RaftBox scripts. Source from other scripts.
 # Day-to-day paths:
-#   .adviskv_deps/   deps (setup.sh)
+#   .raftbox_deps/   deps (setup.sh)
 #   build/           binaries + local runs (demo/unit_test/e2e_test/bench); see conf/README.md
 #   third_party/vcpkg/  vcpkg tool only
 
-if [[ -n "${ADVISKV_ENV_LOADED:-}" ]]; then
+if [[ -n "${RAFTBOX_ENV_LOADED:-}" ]]; then
   return 0 2>/dev/null || exit 0
 fi
 
@@ -19,5 +19,5 @@ case "$BUILD_DIR" in
 esac
 
 export ROOT_DIR BUILD_TYPE BUILD_DIR
-ADVISKV_ENV_LOADED=1
-export ADVISKV_ENV_LOADED
+RAFTBOX_ENV_LOADED=1
+export RAFTBOX_ENV_LOADED

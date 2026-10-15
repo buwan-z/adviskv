@@ -14,7 +14,7 @@
 #include "topo/store/topo_store.h"
 #include "topo/store/topo_store_txn.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 
 namespace {
 bool has_exactly_one_writable_leader(const ShardRoute& route) {
@@ -464,4 +464,4 @@ Status TableService::ensure_all_shards_deleted(TopoStoreTxn& txn, Table& table, 
     return Status::OK();
 }
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

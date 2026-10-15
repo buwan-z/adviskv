@@ -11,7 +11,7 @@
 #include "common/model/type.h"
 #include "storage/model/param.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 LogIndex RaftLog::last_log_index() const {
     if (log_entries_.empty()) return snapshot_index_;
@@ -105,7 +105,7 @@ Status RaftLog::append_entries_from_leader(const std::vector<LogEntry>& entries,
 
     std::vector<LogEntry> updated_entries;
     {
-        ADVISKV_METRICS_TIMER("storage_raft_log_copy_entries");
+        RAFTBOX_METRICS_TIMER("storage_raft_log_copy_entries");
         updated_entries = log_entries_;
     }
     std::vector<LogEntry> new_entries;
@@ -128,7 +128,7 @@ Status RaftLog::append_entries_from_leader(const std::vector<LogEntry>& entries,
     };
 
     {
-        ADVISKV_METRICS_TIMER("storage_raft_log_merge_entries");
+        RAFTBOX_METRICS_TIMER("storage_raft_log_merge_entries");
         for (const LogEntry& entry : entries) {
             LogIndex index = entry.index;
 
@@ -227,4 +227,4 @@ void RaftLog::update_entries(const std::vector<LogEntry>& entries) {
     log_entries_ = entries;
 }
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

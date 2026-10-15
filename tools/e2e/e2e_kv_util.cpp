@@ -15,7 +15,7 @@
 #include "sdk/config.h"
 #include "sdk/log.h"
 
-namespace adviskv::e2e {
+namespace raftbox::e2e {
 
 namespace {
 using Clock = std::chrono::steady_clock;
@@ -85,16 +85,16 @@ sdk::KVClient make_kv_client(const Options& options) {
         conf.log.callback = [](sdk::LogLevel level, std::string_view message) {
             switch (level) {
                 case sdk::LogLevel::DEBUG:
-                    LOG_DEBUG("[adviskv_sdk] {}", message);
+                    LOG_DEBUG("[raftbox_sdk] {}", message);
                     break;
                 case sdk::LogLevel::INFO:
-                    LOG_INFO("[adviskv_sdk] {}", message);
+                    LOG_INFO("[raftbox_sdk] {}", message);
                     break;
                 case sdk::LogLevel::WARN:
-                    LOG_WARN("[adviskv_sdk] {}", message);
+                    LOG_WARN("[raftbox_sdk] {}", message);
                     break;
                 case sdk::LogLevel::ERROR:
-                    LOG_ERROR("[adviskv_sdk] {}", message);
+                    LOG_ERROR("[raftbox_sdk] {}", message);
                     break;
             }
         };
@@ -235,4 +235,4 @@ bool verify_dataset(sdk::KVClient* client, const Options& options,
                       make_case_kvs(prefix, options.key_count));
 }
 
-}  // namespace adviskv::e2e
+}  // namespace raftbox::e2e

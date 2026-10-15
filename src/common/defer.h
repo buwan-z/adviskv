@@ -5,7 +5,7 @@
 
 #include "common/define.h"
 
-namespace adviskv {
+namespace raftbox {
 
 template <typename F>
 class ScopeExit {
@@ -34,4 +34,4 @@ auto Defer(F&& fn) {
     return ScopeExit<std::decay_t<F>>(std::forward<F>(fn));
 }
 
-}  // namespace adviskv
+}  // namespace raftbox

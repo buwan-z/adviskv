@@ -5,7 +5,7 @@
 #include "common/model/type.h"
 #include "storage/model/model.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 class RaftLog;
 
@@ -32,4 +32,4 @@ private:
     LogIndex last_applied_{0};
 };
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

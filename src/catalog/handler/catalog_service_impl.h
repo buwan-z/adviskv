@@ -3,7 +3,7 @@
 #include "catalog.grpc.pb.h"
 #include "catalog.pb.h"
 
-namespace adviskv::catalog {
+namespace raftbox::catalog {
 
 class DdlService;
 class CatalogStore;
@@ -31,4 +31,4 @@ private:
     DdlService* ddl_service_;
 };
 
-}  // namespace adviskv::catalog
+}  // namespace raftbox::catalog

@@ -1,7 +1,7 @@
 build/
 build-*/
 
-.adviskv_deps/
+.raftbox_deps/
 CMakeUserPresets.json
 
 .venv/

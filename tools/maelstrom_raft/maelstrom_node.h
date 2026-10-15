@@ -18,7 +18,7 @@
 #include "storage/raft/core/raft_core.h"
 #include "storage/raft/state_machine/kv_state_machine.h"
 
-namespace adviskv::maelstrom {
+namespace raftbox::maelstrom {
 
 using Json = nlohmann::json;
 

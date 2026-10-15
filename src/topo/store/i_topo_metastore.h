@@ -6,7 +6,7 @@
 #include "common/status.h"
 #include "topo/model/model.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 
 enum class TopoMetaStoreType {
     MEMORY = 0,
@@ -46,4 +46,4 @@ public:
 #undef X
 };
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

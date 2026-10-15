@@ -4,7 +4,7 @@
 
 #include "common/log.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 RaftPeerProgress::RaftPeerProgress(ReplicaID replica_id, const RaftMembership& membership) : self_id_(replica_id) {
     for (const PeerMember& member : membership.peer_members()) {
@@ -140,4 +140,4 @@ bool RaftPeerProgress::match_index_at_least(ReplicaID replica_id, LogIndex log_i
     return get_match_index(replica_id) >= log_index;
 }
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

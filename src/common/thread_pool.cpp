@@ -1,6 +1,6 @@
 #include "common/thread_pool.h"
 
-namespace adviskv {
+namespace raftbox {
 
 ThreadPool::ThreadPool(size_t worker_count) { start(worker_count); }
 
@@ -85,4 +85,4 @@ void ThreadPool::worker_loop() {
     }
 }
 
-}  // namespace adviskv
+}  // namespace raftbox

@@ -22,25 +22,25 @@
 #include "sdk/topo_route_client.h"
 namespace {
 
-using adviskv::DatabaseID;
-using adviskv::EngineType;
-using adviskv::ShardIndex;
-using adviskv::Status;
-using adviskv::TableID;
-using adviskv::cli::DirectCatalogClient;
-using adviskv::cli::CatalogCliTarget;
-using adviskv::cli::TableInfo;
+using raftbox::DatabaseID;
+using raftbox::EngineType;
+using raftbox::ShardIndex;
+using raftbox::Status;
+using raftbox::TableID;
+using raftbox::cli::DirectCatalogClient;
+using raftbox::cli::CatalogCliTarget;
+using raftbox::cli::TableInfo;
 
-struct AdvisKvCtlConfig {
+struct RaftBoxCtlConfig {
     CatalogCliTarget catalog;
-    adviskv::sdk::KVClientConf sdk;
+    raftbox::sdk::KVClientConf sdk;
 };
 
 void print_usage() {
     fmt::print(
-            "usage: adviskvctl [--conf=<adviskvctl.yaml>]\n"
+            "usage: raftboxctl [--conf=<raftboxctl.yaml>]\n"
             "\n"
-            "Defaults to conf/adviskvctl.yaml and enters interactive shell.\n");
+            "Defaults to conf/raftboxctl.yaml and enters interactive shell.\n");
 }
 
 void print_help() {
@@ -135,33 +135,33 @@ void print_status(const Status& status) {
     fmt::print("ERR code={} msg={}\n", static_cast<int>(status.code()), status.msg());
 }
 
-std::string table_state_to_string(adviskv::catalog::TableState state) {
+std::string table_state_to_string(raftbox::catalog::TableState state) {
     switch (state) {
-        case adviskv::catalog::TableState::ADDING:
+        case raftbox::catalog::TableState::ADDING:
             return "ADDING";
-        case adviskv::catalog::TableState::NORMAL:
+        case raftbox::catalog::TableState::NORMAL:
             return "NORMAL";
-        case adviskv::catalog::TableState::FAILED:
+        case raftbox::catalog::TableState::FAILED:
             return "FAILED";
-        case adviskv::catalog::TableState::DROPPING:
+        case raftbox::catalog::TableState::DROPPING:
             return "DROPPING";
-        case adviskv::catalog::TableState::DELETED:
+        case raftbox::catalog::TableState::DELETED:
             return "DELETED";
-        case adviskv::catalog::TableState::ALTERING:
+        case raftbox::catalog::TableState::ALTERING:
             return "ALTERING";
     }
     return "UNKNOWN";
 }
 
-std::string replica_role_to_string(adviskv::ReplicaRole role) {
+std::string replica_role_to_string(raftbox::ReplicaRole role) {
     switch (role) {
-        case adviskv::ReplicaRole::FOLLOWER:
+        case raftbox::ReplicaRole::FOLLOWER:
             return "FOLLOWER";
-        case adviskv::ReplicaRole::LEADER:
+        case raftbox::ReplicaRole::LEADER:
             return "LEADER";
-        case adviskv::ReplicaRole::CANDIDATE:
+        case raftbox::ReplicaRole::CANDIDATE:
             return "CANDIDATE";
-        case adviskv::ReplicaRole::PRE_CANDIDATE:
+        case raftbox::ReplicaRole::PRE_CANDIDATE:
             return "PRE_CANDIDATE";
     }
     return "UNKNOWN";
@@ -181,11 +181,11 @@ std::string quote_value(const std::string& value) {
     return quoted;
 }
 
-bool load_config(const std::string& path, AdvisKvCtlConfig* config) {
+bool load_config(const std::string& path, RaftBoxCtlConfig* config) {
     if (config == nullptr)
         return false;
     try {
-        adviskv::ConfMgr::get_instance().LoadFromFile(adviskv::path_from_project_root(path).string());
+        raftbox::ConfMgr::get_instance().LoadFromFile(raftbox::path_from_project_root(path).string());
 
         config->catalog.endpoint.ip = CONF_GET_STR("catalog_host");
         config->catalog.endpoint.port = CONF_GET_INT("catalog_port");
@@ -206,9 +206,9 @@ bool load_config(const std::string& path, AdvisKvCtlConfig* config) {
     }
 }
 
-class AdvisKvCtl {
+class RaftBoxCtl {
 public:
-    explicit AdvisKvCtl(AdvisKvCtlConfig config) : config_(std::move(config)), catalog_client_(config_.catalog) {
+    explicit RaftBoxCtl(RaftBoxCtlConfig config) : config_(std::move(config)), catalog_client_(config_.catalog) {
     }
 
     bool execute(const std::vector<std::string>& tokens) {
@@ -254,18 +254,18 @@ public:
     }
 
 private:
-    adviskv::sdk::KVClient make_kv_client(const std::string& db, const std::string& table) const {
-        adviskv::sdk::KVClientConf conf = config_.sdk;
+    raftbox::sdk::KVClient make_kv_client(const std::string& db, const std::string& table) const {
+        raftbox::sdk::KVClientConf conf = config_.sdk;
         conf.db_name = db;
         conf.table_name = table;
-        return adviskv::sdk::KVClient(conf);
+        return raftbox::sdk::KVClient(conf);
     }
 
-    adviskv::sdk::TopoRouteClient make_route_client(const std::string& db, const std::string& table) const {
-        adviskv::sdk::KVClientConf conf = config_.sdk;
+    raftbox::sdk::TopoRouteClient make_route_client(const std::string& db, const std::string& table) const {
+        raftbox::sdk::KVClientConf conf = config_.sdk;
         conf.db_name = db;
         conf.table_name = table;
-        return adviskv::sdk::TopoRouteClient(conf);
+        return raftbox::sdk::TopoRouteClient(conf);
     }
 
     void create_db(const std::vector<std::string>& tokens) const {
@@ -382,20 +382,20 @@ private:
             fmt::print("timeout_ms should be an integer\n");
             return;
         }
-        const auto deadline = std::chrono::steady_clock::now() + adviskv::Milliseconds(timeout_ms);
+        const auto deadline = std::chrono::steady_clock::now() + raftbox::Milliseconds(timeout_ms);
         TableInfo table_info;
         while (std::chrono::steady_clock::now() < deadline) {
             if (!fetch_table(tokens[1], tokens[2], &table_info))
                 return;
-            if (table_info.table_state == adviskv::catalog::TableState::NORMAL) {
+            if (table_info.table_state == raftbox::catalog::TableState::NORMAL) {
                 fmt::print("OK table_state=NORMAL\n");
                 return;
             }
-            if (table_info.table_state == adviskv::catalog::TableState::FAILED) {
+            if (table_info.table_state == raftbox::catalog::TableState::FAILED) {
                 print_table(table_info);
                 return;
             }
-            std::this_thread::sleep_for(adviskv::Milliseconds(500));
+            std::this_thread::sleep_for(raftbox::Milliseconds(500));
         }
         fmt::print("ERR wait_table timeout\n");
         print_table(table_info);
@@ -439,15 +439,15 @@ private:
             fmt::print("usage: route <db> <table> <key>\n");
             return;
         }
-        adviskv::sdk::RouteInfo route_info;
+        raftbox::sdk::RouteInfo route_info;
         auto route_client = make_route_client(tokens[1], tokens[2]);
-        adviskv::sdk::TableRouteInfo table_routes;
+        raftbox::sdk::TableRouteInfo table_routes;
         Status status = route_client.get_table_routes(&table_routes);
         if (status.fail()) {
             print_status(status);
             return;
         }
-        ShardIndex shard = adviskv::stable_shard_index(tokens[3], table_routes.shard_count);
+        ShardIndex shard = raftbox::stable_shard_index(tokens[3], table_routes.shard_count);
         if (shard < 0 || static_cast<size_t>(shard) >= table_routes.routes.size()) {
             fmt::print("ERR invalid shard={} shard_count={}\n", shard, table_routes.shard_count);
             return;
@@ -465,7 +465,7 @@ private:
             return;
         }
 
-        adviskv::sdk::TableRouteInfo table_routes;
+        raftbox::sdk::TableRouteInfo table_routes;
         auto route_client = make_route_client(tokens[1], tokens[2]);
         Status status = route_client.get_table_routes(&table_routes);
         if (status.fail()) {
@@ -482,7 +482,7 @@ private:
         }
     }
 
-    void print_route(const adviskv::sdk::RouteInfo& route_info, const std::string& indent) const {
+    void print_route(const raftbox::sdk::RouteInfo& route_info, const std::string& indent) const {
         fmt::print("{}shard: table_id={} shard_id={}\n", indent, route_info.table_id, route_info.shard_id);
         fmt::print("{}replicas:\n", indent);
         for (const auto& replica : route_info.replicas) {
@@ -512,7 +512,7 @@ private:
             fmt::print("invalid demo action\n");
             return;
         }
-        std::string command = "cd " + adviskv::project_root_dir().string() +
+        std::string command = "cd " + raftbox::project_root_dir().string() +
                               " && python3 scripts/internal/local_cluster.py " + action;
         if (tokens.size() == 3) {
             if (!valid_demo_token(tokens[2])) {
@@ -528,14 +528,14 @@ private:
         }
     }
 
-    AdvisKvCtlConfig config_;
+    RaftBoxCtlConfig config_;
     DirectCatalogClient catalog_client_;
 };
 
 bool parse_global_args(int argc, char* argv[], std::string* conf_file, std::vector<std::string>* command_tokens) {
     if (conf_file == nullptr || command_tokens == nullptr)
         return false;
-    *conf_file = "conf/adviskvctl.yaml";
+    *conf_file = "conf/raftboxctl.yaml";
     for (int i = 1; i < argc; ++i) {
         std::string arg = argv[i];
         if (arg == "--help" || arg == "-h") {
@@ -552,12 +552,12 @@ bool parse_global_args(int argc, char* argv[], std::string* conf_file, std::vect
     return true;
 }
 
-void run_interactive(AdvisKvCtl* ctl) {
-    fmt::print("AdvisKV shell. Type \"help\" for commands.\n");
+void run_interactive(RaftBoxCtl* ctl) {
+    fmt::print("RaftBox shell. Type \"help\" for commands.\n");
     std::string line;
     while (true) {
         fmt::println("");
-        fmt::print("adviskv> ");
+        fmt::print("raftbox> ");
         std::cout.flush();
         if (!std::getline(std::cin, line)) {
             fmt::print("\n");
@@ -580,13 +580,13 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    AdvisKvCtlConfig config;
+    RaftBoxCtlConfig config;
     if (!load_config(conf_file, &config))
         return 1;
 
     fmt::print("connected catalog {}:{}, topo {}:{}\n", config.catalog.endpoint.ip, config.catalog.endpoint.port,
                config.sdk.topo_host, config.sdk.topo_port);
-    AdvisKvCtl ctl(std::move(config));
+    RaftBoxCtl ctl(std::move(config));
     if (!command_tokens.empty()) {
         ctl.execute(command_tokens);
         return 0;

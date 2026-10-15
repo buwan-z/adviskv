@@ -7,7 +7,7 @@
 #include "topo/store/memory_metastore.h"
 #include "topo/store/persistent_metastore.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 namespace {
 
 Table make_table(TableID table_id, const std::string& table_name) {
@@ -160,4 +160,4 @@ TEST(PersistentMetaStoreTest, InitRejectsNullInjectedDependencies) {
     }
 }
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

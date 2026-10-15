@@ -11,14 +11,14 @@
 
 namespace fs = std::filesystem;
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 namespace {
 
 class WalCrashInjectionTest : public ::testing::Test {
    protected:
     void SetUp() override {
         base_dir_ =
-            adviskv::test::make_unique_test_dir("wal_crash_injection", seq_++);
+            raftbox::test::make_unique_test_dir("wal_crash_injection", seq_++);
         ASSERT_TRUE(fs::create_directories(base_dir_)) << base_dir_.string();
     }
 
@@ -36,23 +36,23 @@ class WalCrashInjectionTest : public ::testing::Test {
     void save_basic_wal() const {
         PersistEngine persist(base_dir_.string(), replica_id_);
         Status status = persist.init();
-        ASSERT_TRUE(status.ok()) << adviskv::test::status_debug_string(status);
+        ASSERT_TRUE(status.ok()) << raftbox::test::status_debug_string(status);
 
         status = persist.append_wal_batch({
             make_entry(1, 1, "stable-1", "value-1"),
             make_entry(1, 2, "stable-2", "value-2"),
         });
-        ASSERT_TRUE(status.ok()) << adviskv::test::status_debug_string(status);
+        ASSERT_TRUE(status.ok()) << raftbox::test::status_debug_string(status);
 
         status = persist.save_raft_meta(RaftMeta{1, std::nullopt});
-        ASSERT_TRUE(status.ok()) << adviskv::test::status_debug_string(status);
+        ASSERT_TRUE(status.ok()) << raftbox::test::status_debug_string(status);
         ASSERT_TRUE(persist.close().ok());
     }
 
     void expect_append_wal_crashes_at(const char* crash_point) const {
         ASSERT_EXIT(
             {
-                ::setenv("ADVISKV_ENABLE_CRASH_POINT", crash_point, 1);
+                ::setenv("RAFTBOX_ENABLE_CRASH_POINT", crash_point, 1);
 
                 PersistEngine persist(base_dir_.string(), replica_id_);
                 Status status = persist.init();
@@ -73,11 +73,11 @@ class WalCrashInjectionTest : public ::testing::Test {
     void assert_recovery_truncates_crashed_tail() const {
         PersistEngine recovered(base_dir_.string(), replica_id_);
         Status status = recovered.init();
-        ASSERT_TRUE(status.ok()) << adviskv::test::status_debug_string(status);
+        ASSERT_TRUE(status.ok()) << raftbox::test::status_debug_string(status);
 
         PersistEngine::RecoverResult result;
         status = recovered.recover(result);
-        ASSERT_TRUE(status.ok()) << adviskv::test::status_debug_string(status);
+        ASSERT_TRUE(status.ok()) << raftbox::test::status_debug_string(status);
 
         ASSERT_EQ(result.wal_entries.size(), 2U);
         EXPECT_EQ(result.wal_entries[0].index, 1);
@@ -86,18 +86,18 @@ class WalCrashInjectionTest : public ::testing::Test {
 
         std::vector<LogEntry> entries_after_repair;
         status = recovered.read_wal_batch(entries_after_repair);
-        ASSERT_TRUE(status.ok()) << adviskv::test::status_debug_string(status);
+        ASSERT_TRUE(status.ok()) << raftbox::test::status_debug_string(status);
         ASSERT_EQ(entries_after_repair.size(), 2U);
         EXPECT_EQ(entries_after_repair.back().key, "stable-2");
     }
     void assert_recovery_not_truncates_crashed_tail() const {
         PersistEngine recovered(base_dir_.string(), replica_id_);
         Status status = recovered.init();
-        ASSERT_TRUE(status.ok()) << adviskv::test::status_debug_string(status);
+        ASSERT_TRUE(status.ok()) << raftbox::test::status_debug_string(status);
 
         PersistEngine::RecoverResult result;
         status = recovered.recover(result);
-        ASSERT_TRUE(status.ok()) << adviskv::test::status_debug_string(status);
+        ASSERT_TRUE(status.ok()) << raftbox::test::status_debug_string(status);
 
         ASSERT_EQ(result.wal_entries.size(), 3U);
         EXPECT_EQ(result.wal_entries[0].index, 1);
@@ -107,7 +107,7 @@ class WalCrashInjectionTest : public ::testing::Test {
 
         std::vector<LogEntry> entries_after_repair;
         status = recovered.read_wal_batch(entries_after_repair);
-        ASSERT_TRUE(status.ok()) << adviskv::test::status_debug_string(status);
+        ASSERT_TRUE(status.ok()) << raftbox::test::status_debug_string(status);
         ASSERT_EQ(entries_after_repair.size(), 3U);
         EXPECT_EQ(entries_after_repair.back().key, "crash-key");
     }
@@ -152,4 +152,4 @@ TEST_F(WalCrashInjectionTest, RecoverTruncatesPayloadPartialWriteCrash) {
 }
 
 }  // namespace
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

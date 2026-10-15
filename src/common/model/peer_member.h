@@ -9,7 +9,7 @@
 #include "common/model/ids.h"
 #include "common/types.h"
 
-namespace adviskv {
+namespace raftbox {
 
 struct PeerMember {
     NodeID node_id;
@@ -31,4 +31,4 @@ struct PeerMember {
     }
 };
 
-}  // namespace adviskv
+}  // namespace raftbox

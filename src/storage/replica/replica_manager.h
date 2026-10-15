@@ -12,7 +12,7 @@
 #include "storage/persist/replica_meta_persist_engine.h"
 #include "storage/raft/raft_background_task.h"
 #include "storage/replica/replica.h"
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 class ReplicaManager {
 public:
@@ -44,4 +44,4 @@ private:
     ReplicaMetaPersistEngine meta_persist_;
 };
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

@@ -202,8 +202,8 @@ def run_and_tee(command: list[str], env: dict[str, str]) -> subprocess.Completed
     )
 
 
-class AdvisKVCluster(LocalCluster):
-    """AdvisKV-specific local cluster facade used by e2e tests."""
+class RaftBoxCluster(LocalCluster):
+    """RaftBox-specific local cluster facade used by e2e tests."""
 
     def __init__(self,
                  storage_count: int = STORAGE_COUNT,
@@ -286,4 +286,4 @@ class AdvisKVCluster(LocalCluster):
 
 
 def run_e2e_client(*args: str) -> subprocess.CompletedProcess:
-    return AdvisKVCluster().run_client(*args)
+    return RaftBoxCluster().run_client(*args)

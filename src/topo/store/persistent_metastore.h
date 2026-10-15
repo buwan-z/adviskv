@@ -8,7 +8,7 @@
 #include "topo/persist/topo_persist_engine.h"
 #include "topo/store/i_topo_metastore.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 
 class PersistentMetaStore : public ITopoMetaStore {
 public:
@@ -32,4 +32,4 @@ private:
     std::unique_ptr<ITopoPersistEngine> persist_engine_;
 };
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

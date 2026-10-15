@@ -6,7 +6,7 @@
 #include "common/status.h"
 #include "storage/model/model.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 class RaftMembership {
 public:
@@ -34,4 +34,4 @@ private:
     std::vector<RaftMember> members_;
 };
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

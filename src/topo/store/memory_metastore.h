@@ -4,7 +4,7 @@
 
 #include "topo/store/i_topo_metastore.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 
 class MemoryMetaStore : public ITopoMetaStore {
 public:
@@ -21,4 +21,4 @@ protected:
     std::unordered_map<ShardID, ReplicaGroupPtr, ShardIDHash> replica_groups_;
 };
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

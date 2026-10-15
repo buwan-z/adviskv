@@ -1,6 +1,6 @@
-# AdvisKV v0.1.0 Get Benchmark
+# RaftBox v0.1.0 Get Benchmark
 
-这份报告记录 AdvisKV v0.1.0 在本地环境下的 `get` benchmark，用于观察当前读链路的吞吐和延迟表现，并验证在压测环境下能否稳定完成请求。
+这份报告记录 RaftBox v0.1.0 在本地环境下的 `get` benchmark，用于观察当前读链路的吞吐和延迟表现，并验证在压测环境下能否稳定完成请求。
 
 ## 测试范围
 

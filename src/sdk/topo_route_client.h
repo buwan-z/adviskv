@@ -10,7 +10,7 @@
 #include "sdk/model.h"
 #include "topo.grpc.pb.h"
 
-namespace adviskv::sdk {
+namespace raftbox::sdk {
 
 class TopoRouteClient {
 public:
@@ -25,4 +25,4 @@ private:
     std::unique_ptr<topo_rpc::TopoService::Stub> stub_;
 };
 
-}  // namespace adviskv::sdk
+}  // namespace raftbox::sdk

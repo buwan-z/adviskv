@@ -5,7 +5,7 @@
 
 #include "e2e_context.h"
 
-namespace adviskv::e2e {
+namespace raftbox::e2e {
 
 // 发起创建db
 bool create_db(E2EContext* context, std::string* error);
@@ -35,4 +35,4 @@ bool prepare_table(E2EContext* context);
 // drop_table + wait_table_deleted
 bool remove_table(E2EContext* context);
 
-}  // namespace adviskv::e2e
+}  // namespace raftbox::e2e

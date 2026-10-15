@@ -7,7 +7,7 @@
 #include "e2e_options.h"
 #include "sdk/client.h"
 
-namespace adviskv::e2e {
+namespace raftbox::e2e {
 
 // 根据option直接构造出来client
 sdk::KVClient make_kv_client(const Options& options);
@@ -42,4 +42,4 @@ bool write_dataset(sdk::KVClient* client, const Options& options,
 bool verify_dataset(sdk::KVClient* client, const Options& options,
                     const std::string& prefix);
 
-}  // namespace adviskv::e2e
+}  // namespace raftbox::e2e

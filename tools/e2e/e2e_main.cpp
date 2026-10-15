@@ -27,23 +27,23 @@ namespace {
 
 void init_conf(const char* conf_file) {
     const std::filesystem::path path{conf_file};
-    adviskv::ConfMgr::get_instance().LoadFromFile(adviskv::path_from_project_root(path).string());
+    raftbox::ConfMgr::get_instance().LoadFromFile(raftbox::path_from_project_root(path).string());
 }
 
 void init_e2e_logger() {
-    adviskv::LogConfig config;
+    raftbox::LogConfig config;
     config.logger_name = CONF_GET_STR("logger_name");
-    config.log_dir = adviskv::path_from_config("log_dir").string();
+    config.log_dir = raftbox::path_from_config("log_dir").string();
     config.log_filename = CONF_GET_STR("log_filename");
     config.log_level = CONF_GET_STR("log_level");
     config.log_to_console = CONF_GET_BOOL("log_to_console");
     config.log_to_file = CONF_GET_BOOL("log_to_file");
-    adviskv::Logger::get_instance().init(config);
+    raftbox::Logger::get_instance().init(config);
     LOG_INFO("e2e logger initialized, log_dir={}, log_filename={}", config.log_dir, config.log_filename);
 }
 
-bool parse_options(int argc, char** argv, std::string* conf_file, adviskv::e2e::Options* options) {
-    adviskv::ArgParser parser;
+bool parse_options(int argc, char** argv, std::string* conf_file, raftbox::e2e::Options* options) {
+    raftbox::ArgParser parser;
     parser.add_string("conf", *conf_file);
     parser.add_string("case", options->case_name);
     parser.add_string("catalog_host", options->catalog_host);
@@ -66,49 +66,49 @@ bool parse_options(int argc, char** argv, std::string* conf_file, adviskv::e2e::
 
 #define RUN_CASE(case_literal, fn)                       \
     if (options.case_name == case_literal) {             \
-        adviskv::e2e::print_case_start(case_literal);    \
+        raftbox::e2e::print_case_start(case_literal);    \
         const bool ok = fn(options);                     \
         if (ok) {                                        \
-            adviskv::e2e::print_case_pass(case_literal); \
+            raftbox::e2e::print_case_pass(case_literal); \
         } else {                                         \
-            adviskv::e2e::print_case_fail(case_literal); \
+            raftbox::e2e::print_case_fail(case_literal); \
         }                                                \
         return ok;                                       \
     }
 
-bool run_case(const adviskv::e2e::Options& options) {
-    RUN_CASE("basic_kv", adviskv::e2e::run_basic_kv_case)
-    RUN_CASE("restart_persistence_seed", adviskv::e2e::run_restart_persistence_seed_case)
-    RUN_CASE("restart_persistence_verify", adviskv::e2e::run_restart_persistence_verify_case)
+bool run_case(const raftbox::e2e::Options& options) {
+    RUN_CASE("basic_kv", raftbox::e2e::run_basic_kv_case)
+    RUN_CASE("restart_persistence_seed", raftbox::e2e::run_restart_persistence_seed_case)
+    RUN_CASE("restart_persistence_verify", raftbox::e2e::run_restart_persistence_verify_case)
     RUN_CASE("create_table_crash_before_persist_prepare",
-             adviskv::e2e::run_create_table_crash_before_persist_prepare_case)
+             raftbox::e2e::run_create_table_crash_before_persist_prepare_case)
     RUN_CASE("create_table_crash_before_persist_verify",
-             adviskv::e2e::run_create_table_crash_before_persist_verify_case)
+             raftbox::e2e::run_create_table_crash_before_persist_verify_case)
     RUN_CASE("create_table_crash_after_persist_prepare",
-             adviskv::e2e::run_create_table_crash_after_persist_prepare_case)
-    RUN_CASE("create_table_crash_after_persist_verify", adviskv::e2e::run_create_table_crash_after_persist_verify_case)
-    RUN_CASE("leader_failover_seed", adviskv::e2e::run_leader_failover_seed_case)
-    RUN_CASE("leader_failover_verify", adviskv::e2e::run_leader_failover_verify_case)
-    RUN_CASE("follower_log_catchup_prepare", adviskv::e2e::run_follower_log_catchup_prepare_case)
-    RUN_CASE("follower_log_catchup_write_gap", adviskv::e2e::run_follower_log_catchup_write_gap_case)
-    RUN_CASE("follower_log_catchup_verify", adviskv::e2e::run_follower_log_catchup_verify_case)
-    RUN_CASE("follower_snapshot_catchup_prepare", adviskv::e2e::run_follower_snapshot_catchup_prepare_case)
-    RUN_CASE("follower_snapshot_catchup_write_gap", adviskv::e2e::run_follower_snapshot_catchup_write_gap_case)
-    RUN_CASE("follower_snapshot_catchup_verify", adviskv::e2e::run_follower_snapshot_catchup_verify_case)
-    RUN_CASE("topo_crash_seed", adviskv::e2e::run_topo_crash_seed_case)
-    RUN_CASE("topo_crash_verify", adviskv::e2e::run_topo_crash_verify_case)
-    RUN_CASE("catalog_crash_seed", adviskv::e2e::run_catalog_crash_seed_case)
-    RUN_CASE("catalog_crash_verify", adviskv::e2e::run_catalog_crash_verify_case)
-    RUN_CASE("scale_to_zero", adviskv::e2e::run_scale_to_zero_case)
-    RUN_CASE("table_replica_count_resize", adviskv::e2e::run_table_replica_count_resize_case)
-    RUN_CASE("table_replica_count_resize_with_writes", adviskv::e2e::run_table_replica_count_resize_with_writes_case)
+             raftbox::e2e::run_create_table_crash_after_persist_prepare_case)
+    RUN_CASE("create_table_crash_after_persist_verify", raftbox::e2e::run_create_table_crash_after_persist_verify_case)
+    RUN_CASE("leader_failover_seed", raftbox::e2e::run_leader_failover_seed_case)
+    RUN_CASE("leader_failover_verify", raftbox::e2e::run_leader_failover_verify_case)
+    RUN_CASE("follower_log_catchup_prepare", raftbox::e2e::run_follower_log_catchup_prepare_case)
+    RUN_CASE("follower_log_catchup_write_gap", raftbox::e2e::run_follower_log_catchup_write_gap_case)
+    RUN_CASE("follower_log_catchup_verify", raftbox::e2e::run_follower_log_catchup_verify_case)
+    RUN_CASE("follower_snapshot_catchup_prepare", raftbox::e2e::run_follower_snapshot_catchup_prepare_case)
+    RUN_CASE("follower_snapshot_catchup_write_gap", raftbox::e2e::run_follower_snapshot_catchup_write_gap_case)
+    RUN_CASE("follower_snapshot_catchup_verify", raftbox::e2e::run_follower_snapshot_catchup_verify_case)
+    RUN_CASE("topo_crash_seed", raftbox::e2e::run_topo_crash_seed_case)
+    RUN_CASE("topo_crash_verify", raftbox::e2e::run_topo_crash_verify_case)
+    RUN_CASE("catalog_crash_seed", raftbox::e2e::run_catalog_crash_seed_case)
+    RUN_CASE("catalog_crash_verify", raftbox::e2e::run_catalog_crash_verify_case)
+    RUN_CASE("scale_to_zero", raftbox::e2e::run_scale_to_zero_case)
+    RUN_CASE("table_replica_count_resize", raftbox::e2e::run_table_replica_count_resize_case)
+    RUN_CASE("table_replica_count_resize_with_writes", raftbox::e2e::run_table_replica_count_resize_with_writes_case)
     RUN_CASE("table_replica_count_resize_disruption_prepare",
-             adviskv::e2e::run_table_replica_count_resize_disruption_prepare_case)
-    RUN_CASE("table_replica_count_resize_start_alter", adviskv::e2e::run_table_replica_count_resize_start_alter_case)
+             raftbox::e2e::run_table_replica_count_resize_disruption_prepare_case)
+    RUN_CASE("table_replica_count_resize_start_alter", raftbox::e2e::run_table_replica_count_resize_start_alter_case)
     RUN_CASE("table_replica_count_resize_disruption_verify",
-             adviskv::e2e::run_table_replica_count_resize_disruption_verify_case)
-    RUN_CASE("many_tables_create_drop", adviskv::e2e::run_many_tables_create_drop_case)
-    adviskv::e2e::print_fail("select case", fmt::format("unknown case '{}'", options.case_name));
+             raftbox::e2e::run_table_replica_count_resize_disruption_verify_case)
+    RUN_CASE("many_tables_create_drop", raftbox::e2e::run_many_tables_create_drop_case)
+    raftbox::e2e::print_fail("select case", fmt::format("unknown case '{}'", options.case_name));
     return false;
 }
 
@@ -119,7 +119,7 @@ bool run_case(const adviskv::e2e::Options& options) {
 int main(int argc, char** argv) {
     try {
         std::string conf_file;
-        adviskv::e2e::Options options;
+        raftbox::e2e::Options options;
         if (!parse_options(argc, argv, &conf_file, &options)) {
             return 1;
         }
@@ -131,7 +131,7 @@ int main(int argc, char** argv) {
         init_e2e_logger();
         return run_case(options) ? 0 : 1;
     } catch (const std::exception& e) {
-        adviskv::e2e::print_fail("fatal", e.what());
+        raftbox::e2e::print_fail("fatal", e.what());
         return 1;
     }
 }

@@ -21,7 +21,7 @@
 #include "storage/raft/core/raft_core.h"
 #include "test_env.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 namespace fs = std::filesystem;
 
 // 这边这个raft是逐个tick的测试，所以流程上来说没有测试raft的并发性。
@@ -55,7 +55,7 @@ class RaftCluster {
         temp_dirs_.clear();
 
         for (int i = 0; i < num_nodes; i++) {
-            auto dir = adviskv::test::make_unique_test_dir(
+            auto dir = raftbox::test::make_unique_test_dir(
                 "raft_cluster_t" + std::to_string(table_id) + "_n" +
                     std::to_string(i),
                 0);
@@ -201,7 +201,7 @@ class RaftCluster {
 
     void add_node(const PeerMember& member,
                   const std::vector<PeerMember>& initial_members) {
-        auto dir = adviskv::test::make_unique_test_dir(
+        auto dir = raftbox::test::make_unique_test_dir(
             "raft_cluster_t" + std::to_string(table_id_) + "_n" +
                 std::to_string(all_members_.size()),
             0);
@@ -1944,4 +1944,4 @@ TEST_F(RaftClusterTest, ReadIndexCountsRejectedAppendEntriesWithMatchingTerm) {
     EXPECT_GE(success_cnt, limit);
 }
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

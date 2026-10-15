@@ -3,7 +3,7 @@
 #include "common/background_task.h"
 #include "common/status.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 
 class ServiceManager;
 
@@ -53,4 +53,4 @@ private:
     ServiceManager* service_manager_{nullptr};
 };
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

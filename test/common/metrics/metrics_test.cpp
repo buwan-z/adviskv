@@ -11,7 +11,7 @@
 #include <cstring>
 #include <string>
 
-namespace adviskv {
+namespace raftbox {
 namespace {
 
 int find_free_port() {
@@ -70,43 +70,43 @@ std::string http_get(const std::string& host, int port,
     return response;
 }
 
-TEST(AdvisMetricsTest, DumpsPrometheusHistogramFormat) {
-    AdvisMetrics::get_instance().stop();
-    AdvisMetrics::get_instance().reset();
+TEST(RaftBoxMetricsTest, DumpsPrometheusHistogramFormat) {
+    RaftBoxMetrics::get_instance().stop();
+    RaftBoxMetrics::get_instance().reset();
 
-    AdvisMetrics::get_instance().record_latency("storage_put_handler", 100);
-    AdvisMetrics::get_instance().record_latency("storage_put_handler", 300);
-    AdvisMetrics::get_instance().record_counter("storage_put_success", 2);
+    RaftBoxMetrics::get_instance().record_latency("storage_put_handler", 100);
+    RaftBoxMetrics::get_instance().record_latency("storage_put_handler", 300);
+    RaftBoxMetrics::get_instance().record_counter("storage_put_success", 2);
 
-    const std::string output = AdvisMetrics::get_instance().dump_prometheus();
+    const std::string output = RaftBoxMetrics::get_instance().dump_prometheus();
 
-    EXPECT_NE(output.find("# TYPE adviskv_storage_put_handler_latency_us "
+    EXPECT_NE(output.find("# TYPE raftbox_storage_put_handler_latency_us "
                           "histogram"),
               std::string::npos);
     EXPECT_NE(output.find(
-                  "adviskv_storage_put_handler_latency_us_bucket{le=\"100\"} 1"),
+                  "raftbox_storage_put_handler_latency_us_bucket{le=\"100\"} 1"),
               std::string::npos);
     EXPECT_NE(output.find(
-                  "adviskv_storage_put_handler_latency_us_bucket{le=\"500\"} 2"),
+                  "raftbox_storage_put_handler_latency_us_bucket{le=\"500\"} 2"),
               std::string::npos);
     EXPECT_NE(output.find(
-                  "adviskv_storage_put_handler_latency_us_bucket{le=\"+Inf\"} 2"),
+                  "raftbox_storage_put_handler_latency_us_bucket{le=\"+Inf\"} 2"),
               std::string::npos);
-    EXPECT_NE(output.find("adviskv_storage_put_handler_latency_us_count 2"),
+    EXPECT_NE(output.find("raftbox_storage_put_handler_latency_us_count 2"),
               std::string::npos);
-    EXPECT_NE(output.find("adviskv_storage_put_handler_latency_us_sum 400"),
+    EXPECT_NE(output.find("raftbox_storage_put_handler_latency_us_sum 400"),
               std::string::npos);
     EXPECT_EQ(output.find("quantile=\"0.95\""), std::string::npos);
-    EXPECT_NE(output.find("# TYPE adviskv_storage_put_success_total counter"),
+    EXPECT_NE(output.find("# TYPE raftbox_storage_put_success_total counter"),
               std::string::npos);
-    EXPECT_NE(output.find("adviskv_storage_put_success_total 2"),
+    EXPECT_NE(output.find("raftbox_storage_put_success_total 2"),
               std::string::npos);
 }
 
-TEST(AdvisMetricsTest, ServesPrometheusMetricsOverHttp) {
-    AdvisMetrics::get_instance().stop();
-    AdvisMetrics::get_instance().reset();
-    AdvisMetrics::get_instance().record_counter("storage_get_success", 7);
+TEST(RaftBoxMetricsTest, ServesPrometheusMetricsOverHttp) {
+    RaftBoxMetrics::get_instance().stop();
+    RaftBoxMetrics::get_instance().reset();
+    RaftBoxMetrics::get_instance().record_counter("storage_get_success", 7);
 
     MetricsOptions options;
     options.http_enable = true;
@@ -117,7 +117,7 @@ TEST(AdvisMetricsTest, ServesPrometheusMetricsOverHttp) {
         GTEST_SKIP() << "local socket bind is unavailable in this environment";
     }
 
-    Status init_status = AdvisMetrics::get_instance().init(options);
+    Status init_status = RaftBoxMetrics::get_instance().init(options);
     if (init_status.fail()) {
         GTEST_SKIP() << init_status.to_string();
     }
@@ -125,14 +125,14 @@ TEST(AdvisMetricsTest, ServesPrometheusMetricsOverHttp) {
     const std::string response =
         http_get(options.http_host, options.http_port, options.http_path);
 
-    AdvisMetrics::get_instance().stop();
+    RaftBoxMetrics::get_instance().stop();
 
     EXPECT_NE(response.find("HTTP/1.1 200 OK"), std::string::npos);
     EXPECT_NE(response.find("Content-Type: text/plain; version=0.0.4"),
               std::string::npos);
-    EXPECT_NE(response.find("adviskv_storage_get_success_total 7"),
+    EXPECT_NE(response.find("raftbox_storage_get_success_total 7"),
               std::string::npos);
 }
 
 }  // namespace
-}  // namespace adviskv
+}  // namespace raftbox

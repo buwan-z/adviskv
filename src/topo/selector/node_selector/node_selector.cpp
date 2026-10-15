@@ -14,7 +14,7 @@
 #include "common/status.h"
 #include "topo/model/model.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 namespace {
 
 struct NodeView {
@@ -132,4 +132,4 @@ Status DefaultNodeSelector::select_table_nodes(const PlaceNodesParam& param, Tab
     return Status::OK();
 }
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

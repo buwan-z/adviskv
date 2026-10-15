@@ -20,31 +20,31 @@
 #include "storage/proto/storage_model_proto.h"
 #include "storage/replica/replica.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 namespace {
 
 void record_storage_write_handler_result(std::string_view op_name, const Status& status) {
     const std::string prefix = fmt::format("storage_{}_handler", op_name);
     if (status.ok()) {
-        ADVISKV_METRICS_COUNTER(prefix + "_success");
+        RAFTBOX_METRICS_COUNTER(prefix + "_success");
         return;
     }
-    ADVISKV_METRICS_COUNTER(prefix + "_failure");
+    RAFTBOX_METRICS_COUNTER(prefix + "_failure");
     switch (status.code()) {
         case StatusCode::NOT_LEADER:
-            ADVISKV_METRICS_COUNTER(prefix + "_not_leader");
+            RAFTBOX_METRICS_COUNTER(prefix + "_not_leader");
             break;
         case StatusCode::NOT_YET_COMMIT:
-            ADVISKV_METRICS_COUNTER(prefix + "_not_yet_commit");
+            RAFTBOX_METRICS_COUNTER(prefix + "_not_yet_commit");
             break;
         case StatusCode::REPLICA_NOT_FOUND:
-            ADVISKV_METRICS_COUNTER(prefix + "_replica_not_found");
+            RAFTBOX_METRICS_COUNTER(prefix + "_replica_not_found");
             break;
         case StatusCode::REPLICA_MANAGER_NOT_FOUND:
-            ADVISKV_METRICS_COUNTER(prefix + "_replica_manager_not_found");
+            RAFTBOX_METRICS_COUNTER(prefix + "_replica_manager_not_found");
             break;
         default:
-            ADVISKV_METRICS_COUNTER(prefix + "_other_error");
+            RAFTBOX_METRICS_COUNTER(prefix + "_other_error");
             break;
     }
 }
@@ -88,8 +88,8 @@ Status encode_storage_status_or_error(StorageReplicaStatus in, pb::StorageReplic
 
 grpc::Status StorageServiceImpl::Put(grpc::ServerContext* context, const rpc::PutRequest* request,
                                      rpc::PutResponse* response) {
-    ADVISKV_METRICS_TIMER("storage_put_handler");
-    ADVISKV_METRICS_COUNTER("storage_put_handler_request");
+    RAFTBOX_METRICS_TIMER("storage_put_handler");
+    RAFTBOX_METRICS_COUNTER("storage_put_handler_request");
 
     UNUSED(context);
     Status status = Status::OK();
@@ -175,8 +175,8 @@ grpc::Status StorageServiceImpl::Get(grpc::ServerContext* context, const rpc::Ge
 
 grpc::Status StorageServiceImpl::Delete(grpc::ServerContext* context, const rpc::DeleteRequest* request,
                                         rpc::DeleteResponse* response) {
-    ADVISKV_METRICS_TIMER("storage_delete_handler");
-    ADVISKV_METRICS_COUNTER("storage_delete_handler_request");
+    RAFTBOX_METRICS_TIMER("storage_delete_handler");
+    RAFTBOX_METRICS_COUNTER("storage_delete_handler_request");
 
     UNUSED(context);
     Status status = Status::OK();
@@ -430,13 +430,13 @@ grpc::Status StorageServiceImpl::PreVote(grpc::ServerContext* context, const rpc
 
 grpc::Status StorageServiceImpl::AppendEntries(grpc::ServerContext* context, const rpc::AppendEntriesRequest* request,
                                                rpc::AppendEntriesResponse* response) {
-    ADVISKV_METRICS_TIMER("storage_raft_append_entries_handler");
-    ADVISKV_METRICS_COUNTER("storage_raft_append_entries_handler_request");
+    RAFTBOX_METRICS_TIMER("storage_raft_append_entries_handler");
+    RAFTBOX_METRICS_COUNTER("storage_raft_append_entries_handler_request");
 
     UNUSED(context);
 
     if (!replica_manager_) {
-        ADVISKV_METRICS_COUNTER("storage_raft_append_entries_handler_replica_manager_not_found");
+        RAFTBOX_METRICS_COUNTER("storage_raft_append_entries_handler_replica_manager_not_found");
         LOG_WARN("replica manager is nullptr");
         fill_base_rsp(response, Status{StatusCode::REPLICA_MANAGER_NOT_FOUND, "replica manager not found"});
         return grpc::Status::OK;
@@ -445,7 +445,7 @@ grpc::Status StorageServiceImpl::AppendEntries(grpc::ServerContext* context, con
 
     ReplicaPtr&& replica = replica_manager_->get_replica_by_id(replica_id);
     if (!replica) {
-        ADVISKV_METRICS_COUNTER("storage_raft_append_entries_handler_replica_not_found");
+        RAFTBOX_METRICS_COUNTER("storage_raft_append_entries_handler_replica_not_found");
         fill_base_rsp(response, Status{StatusCode::REPLICA_NOT_FOUND, "target replica not found"});
         return grpc::Status::OK;
     }
@@ -576,4 +576,4 @@ grpc::Status StorageServiceImpl::TestGetReplicaState(grpc::ServerContext* contex
     return grpc::Status::OK;
 }
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

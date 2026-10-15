@@ -11,7 +11,7 @@
 #include "common/proto/proto.h"
 #include "sdk/log.h"
 
-namespace adviskv::sdk {
+namespace raftbox::sdk {
 
 StorageClient::StorageClient(const KVClientConf& conf) : conf_(conf) {}
 
@@ -50,14 +50,14 @@ rpc::StorageService::Stub* StorageClient::make_stub(const Endpoint& endpoint) co
 
 Status StorageClient::put(const RouteInfo& route, const Key& key, const Value& value,
                           const std::string& request_id, Milliseconds timeout) const {
-    ADVISKV_METRICS_TIMER("sdk_storage_put");
-    ADVISKV_METRICS_COUNTER("sdk_storage_put_request");
+    RAFTBOX_METRICS_TIMER("sdk_storage_put");
+    RAFTBOX_METRICS_COUNTER("sdk_storage_put_request");
 
     RouteReplica leader;
     Status status = select_leader_replica(route, &leader);
     if (status.fail()) {
-        ADVISKV_METRICS_COUNTER("sdk_storage_put_select_endpoint_failure");
-        ADVISKV_SDK_LOG(LogLevel::WARN,
+        RAFTBOX_METRICS_COUNTER("sdk_storage_put_select_endpoint_failure");
+        RAFTBOX_SDK_LOG(LogLevel::WARN,
                         "select leader replica for put failed, table_id={}, "
                         "shard_id={}, key={}, status={}",
                         route.table_id, route.shard_id, key, status.to_string());
@@ -66,7 +66,7 @@ Status StorageClient::put(const RouteInfo& route, const Key& key, const Value& v
 
     rpc::StorageService::Stub* stub = make_stub(leader.endpoint);
     if (stub == nullptr) {
-        ADVISKV_METRICS_COUNTER("sdk_storage_put_stub_missing");
+        RAFTBOX_METRICS_COUNTER("sdk_storage_put_stub_missing");
         return Status{StatusCode::INVALID_ARGUMENT, "storage stub is nullptr"};
     }
 
@@ -83,12 +83,12 @@ Status StorageClient::put(const RouteInfo& route, const Key& key, const Value& v
 
     grpc::Status grpc_status;
     {
-        ADVISKV_METRICS_TIMER("sdk_storage_put_rpc");
+        RAFTBOX_METRICS_TIMER("sdk_storage_put_rpc");
         grpc_status = stub->Put(&context, request, &response);
     }
     if (!grpc_status.ok()) {
-        ADVISKV_METRICS_COUNTER("sdk_storage_put_rpc_failure");
-        ADVISKV_SDK_LOG(LogLevel::ERROR,
+        RAFTBOX_METRICS_COUNTER("sdk_storage_put_rpc_failure");
+        RAFTBOX_SDK_LOG(LogLevel::ERROR,
                         "Storage Put RPC failed, endpoint={}:{}, table_id={}, "
                         "shard_id={}, replica_id={}, key={}, grpc_code={}, "
                         "msg={}",
@@ -99,7 +99,7 @@ Status StorageClient::put(const RouteInfo& route, const Key& key, const Value& v
                                              static_cast<int>(grpc_status.error_code()), grpc_status.error_message()));
     }
     if (Status status = decode_base_rsp_status(response.base_rsp()); status.fail()) {
-        ADVISKV_SDK_LOG(LogLevel::WARN,
+        RAFTBOX_SDK_LOG(LogLevel::WARN,
                         "Storage Put returns non-ok, endpoint={}:{}, "
                         "table_id={}, shard_id={}, replica_id={}, key={}, "
                         "code={}, msg={}",
@@ -113,14 +113,14 @@ Status StorageClient::put(const RouteInfo& route, const Key& key, const Value& v
 
 Status StorageClient::del(const RouteInfo& route, const Key& key, const std::string& request_id,
                           Milliseconds timeout) const {
-    ADVISKV_METRICS_TIMER("sdk_storage_delete");
-    ADVISKV_METRICS_COUNTER("sdk_storage_delete_request");
+    RAFTBOX_METRICS_TIMER("sdk_storage_delete");
+    RAFTBOX_METRICS_COUNTER("sdk_storage_delete_request");
 
     RouteReplica leader;
     Status status = select_leader_replica(route, &leader);
     if (status.fail()) {
-        ADVISKV_METRICS_COUNTER("sdk_storage_delete_select_endpoint_failure");
-        ADVISKV_SDK_LOG(LogLevel::WARN,
+        RAFTBOX_METRICS_COUNTER("sdk_storage_delete_select_endpoint_failure");
+        RAFTBOX_SDK_LOG(LogLevel::WARN,
                         "select leader replica for delete failed, "
                         "table_id={}, shard_id={}, key={}, status={}",
                         route.table_id, route.shard_id, key, status.to_string());
@@ -129,7 +129,7 @@ Status StorageClient::del(const RouteInfo& route, const Key& key, const std::str
 
     rpc::StorageService::Stub* stub = make_stub(leader.endpoint);
     if (stub == nullptr) {
-        ADVISKV_METRICS_COUNTER("sdk_storage_delete_stub_missing");
+        RAFTBOX_METRICS_COUNTER("sdk_storage_delete_stub_missing");
         return Status{StatusCode::INVALID_ARGUMENT, "storage stub is nullptr"};
     }
 
@@ -145,12 +145,12 @@ Status StorageClient::del(const RouteInfo& route, const Key& key, const std::str
 
     grpc::Status grpc_status;
     {
-        ADVISKV_METRICS_TIMER("sdk_storage_delete_rpc");
+        RAFTBOX_METRICS_TIMER("sdk_storage_delete_rpc");
         grpc_status = stub->Delete(&context, request, &response);
     }
     if (!grpc_status.ok()) {
-        ADVISKV_METRICS_COUNTER("sdk_storage_delete_rpc_failure");
-        ADVISKV_SDK_LOG(LogLevel::ERROR,
+        RAFTBOX_METRICS_COUNTER("sdk_storage_delete_rpc_failure");
+        RAFTBOX_SDK_LOG(LogLevel::ERROR,
                         "Storage Delete RPC failed, endpoint={}:{}, "
                         "table_id={}, shard_id={}, replica_id={}, key={}, "
                         "grpc_code={}, msg={}",
@@ -162,7 +162,7 @@ Status StorageClient::del(const RouteInfo& route, const Key& key, const std::str
                             static_cast<int>(grpc_status.error_code()), grpc_status.error_message()));
     }
     if (Status status = decode_base_rsp_status(response.base_rsp()); status.fail()) {
-        ADVISKV_SDK_LOG(LogLevel::WARN,
+        RAFTBOX_SDK_LOG(LogLevel::WARN,
                         "Storage Delete returns non-ok, endpoint={}:{}, "
                         "table_id={}, shard_id={}, replica_id={}, key={}, "
                         "code={}, msg={}",
@@ -179,7 +179,7 @@ Status StorageClient::get(const RouteInfo& route, const Key& key, Value* value, 
     RouteReplica leader;
     Status status = select_leader_replica(route, &leader);
     if (status.fail()) {
-        ADVISKV_SDK_LOG(LogLevel::WARN,
+        RAFTBOX_SDK_LOG(LogLevel::WARN,
                         "select leader replica for get failed, table_id={}, "
                         "shard_id={}, key={}, status={}",
                         route.table_id, route.shard_id, key, status.to_string());
@@ -200,7 +200,7 @@ Status StorageClient::get(const RouteInfo& route, const Key& key, Value* value, 
 
     grpc::Status grpc_status = stub->Get(&context, request, &response);
     if (!grpc_status.ok()) {
-        ADVISKV_SDK_LOG(LogLevel::ERROR,
+        RAFTBOX_SDK_LOG(LogLevel::ERROR,
                         "Storage Get RPC failed, endpoint={}:{}, table_id={}, "
                         "shard_id={}, replica_id={}, key={}, grpc_code={}, "
                         "msg={}",
@@ -212,7 +212,7 @@ Status StorageClient::get(const RouteInfo& route, const Key& key, Value* value, 
     }
 
     if (Status status = decode_base_rsp_status(response.base_rsp()); status.fail()) {
-        ADVISKV_SDK_LOG(LogLevel::WARN,
+        RAFTBOX_SDK_LOG(LogLevel::WARN,
                         "Storage Get returns non-ok, endpoint={}:{}, "
                         "table_id={}, shard_id={}, replica_id={}, key={}, "
                         "code={}, msg={}",
@@ -225,4 +225,4 @@ Status StorageClient::get(const RouteInfo& route, const Key& key, Value* value, 
     return Status::OK();
 }
 
-}  // namespace adviskv::sdk
+}  // namespace raftbox::sdk

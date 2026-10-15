@@ -4,7 +4,7 @@
 
 #include "common/func.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 namespace {
 
@@ -119,4 +119,4 @@ Status RaftCore::apply_config_entry(const LogEntry& entry) {
     return Status::OK();
 }
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

@@ -14,7 +14,7 @@
 #include "catalog/proto/catalog_table_state_proto.h"
 #include "catalog/service/ddl_service.h"
 
-namespace adviskv::catalog {
+namespace raftbox::catalog {
 
 CatalogServiceImpl::CatalogServiceImpl(DdlService* ddl_service) : ddl_service_(ddl_service) {}
 
@@ -165,4 +165,4 @@ grpc::Status CatalogServiceImpl::GetTable(grpc::ServerContext* context, const rp
     response->set_engine_type(engine_type_pb);
     return grpc::Status::OK;
 }
-}  // namespace adviskv::catalog
+}  // namespace raftbox::catalog

@@ -3,7 +3,7 @@
 #include "common.pb.h"
 #include "common/model/raft_member_type.h"
 
-namespace adviskv {
+namespace raftbox {
 
 inline bool decode_pb_raft_member_type(pb::RaftMemberType in, RaftMemberType& out) {
     switch (in) {
@@ -37,4 +37,4 @@ inline bool encode_pb_raft_member_type(RaftMemberType in, pb::RaftMemberType& ou
     }
 }
 
-}  // namespace adviskv
+}  // namespace raftbox

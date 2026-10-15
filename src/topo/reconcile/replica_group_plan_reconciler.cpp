@@ -7,7 +7,7 @@
 #include "topo/store/topo_store_txn.h"
 // #include "topo/model/table_status.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 
 ReplicaGroupPlanReconciler::ReplicaGroupPlanReconciler(ReplicaGroupReconcileContext ctx) : ctx_(std::move(ctx)) {}
 // 遍历每一个table，如果table是absent的话，直接replica_count=0，当replica都没了就删了
@@ -130,4 +130,4 @@ Status ReplicaGroupPlanReconciler::reconcile_absent_table(const Table& table) {
     });
 }
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

@@ -8,7 +8,7 @@
 #include "common/define.h"
 #include "common/status.h"
 
-namespace adviskv {
+namespace raftbox {
 
 class OperGate {
 public:
@@ -53,15 +53,15 @@ private:
     mutable std::shared_mutex mutex_;
 };
 
-#define ADVISKV_OPER_GATE_CONCAT_INNER(x, y) x##y
-#define ADVISKV_OPER_GATE_CONCAT(x, y) ADVISKV_OPER_GATE_CONCAT_INNER(x, y)
+#define RAFTBOX_OPER_GATE_CONCAT_INNER(x, y) x##y
+#define RAFTBOX_OPER_GATE_CONCAT(x, y) RAFTBOX_OPER_GATE_CONCAT_INNER(x, y)
 
 #define RETURN_IF_OPER_GUARD_ACQUIRE_FAILED(gate)                                       \
-    ::adviskv::OperGate::Guard ADVISKV_OPER_GATE_CONCAT(adviskv_oper_guard_, __LINE__); \
-    RETURN_IF_INVALID_STATUS((gate).acquire(ADVISKV_OPER_GATE_CONCAT(adviskv_oper_guard_, __LINE__)))
+    ::raftbox::OperGate::Guard RAFTBOX_OPER_GATE_CONCAT(raftbox_oper_guard_, __LINE__); \
+    RETURN_IF_INVALID_STATUS((gate).acquire(RAFTBOX_OPER_GATE_CONCAT(raftbox_oper_guard_, __LINE__)))
 
 #define RETURN_IF_OPER_GUARD_ACQUIRE_FAILED_VOID(gate)                                  \
-    ::adviskv::OperGate::Guard ADVISKV_OPER_GATE_CONCAT(adviskv_oper_guard_, __LINE__); \
-    if (((gate).acquire(ADVISKV_OPER_GATE_CONCAT(adviskv_oper_guard_, __LINE__))).fail()) return;
+    ::raftbox::OperGate::Guard RAFTBOX_OPER_GATE_CONCAT(raftbox_oper_guard_, __LINE__); \
+    if (((gate).acquire(RAFTBOX_OPER_GATE_CONCAT(raftbox_oper_guard_, __LINE__))).fail()) return;
 
-}  // namespace adviskv
+}  // namespace raftbox

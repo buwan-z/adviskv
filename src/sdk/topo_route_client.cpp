@@ -15,7 +15,7 @@
 #include "sdk/log.h"
 #include "sdk/model.h"
 
-namespace adviskv::sdk {
+namespace raftbox::sdk {
 
 TopoRouteClient::TopoRouteClient(const KVClientConf& conf) : conf_(conf) {
     const std::string target = fmt::format("{}:{}", conf_.topo_host, conf_.topo_port);
@@ -37,7 +37,7 @@ Status TopoRouteClient::get_table_routes(TableRouteInfo* table_routes, Milliseco
 
     grpc::Status grpc_status = stub_->GetTableRoutes(&context, request, &response);
     if (!grpc_status.ok()) {
-        ADVISKV_SDK_LOG(LogLevel::ERROR,
+        RAFTBOX_SDK_LOG(LogLevel::ERROR,
                         "GetTableRoutes RPC failed, topo={}:{}, db={}, table={}, "
                         "grpc_code={}, msg={}",
                         conf_.topo_host, conf_.topo_port, conf_.db_name, conf_.table_name,
@@ -47,7 +47,7 @@ Status TopoRouteClient::get_table_routes(TableRouteInfo* table_routes, Milliseco
     }
 
     if (Status status = decode_base_rsp_status(response.base_rsp()); status.fail()) {
-        ADVISKV_SDK_LOG(LogLevel::WARN,
+        RAFTBOX_SDK_LOG(LogLevel::WARN,
                         "GetTableRoutes returns non-ok, topo={}:{}, db={}, table={}, "
                         "code={}, msg={}",
                         conf_.topo_host, conf_.topo_port, conf_.db_name, conf_.table_name, response.base_rsp().code(),
@@ -100,4 +100,4 @@ Status TopoRouteClient::get_table_routes(TableRouteInfo* table_routes, Milliseco
     return Status::OK();
 }
 
-}  // namespace adviskv::sdk
+}  // namespace raftbox::sdk

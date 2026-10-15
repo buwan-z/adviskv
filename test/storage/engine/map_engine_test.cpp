@@ -6,7 +6,7 @@
 
 #include "storage/engine/map_engine.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 namespace {
 
 // put写入后get应能读回对应值
@@ -62,4 +62,4 @@ TEST(MapEngineTest, DumpAllAndClearReflectCurrentState) {
 }
 
 }  // namespace
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

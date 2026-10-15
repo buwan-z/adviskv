@@ -10,7 +10,7 @@ add_executable(e2e_client
 )
 
 target_link_libraries(e2e_client PRIVATE
-    adviskv_sdk
+    raftbox_sdk
 )
 
 target_include_directories(e2e_client PRIVATE

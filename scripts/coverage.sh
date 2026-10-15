@@ -32,13 +32,13 @@ GCOVR_EXCLUDES=(
   --exclude 'third_party/.*'
   --exclude 'test/.*'
   --exclude 'build.*/.*'
-  --exclude '.adviskv_deps/.*'
+  --exclude '.raftbox_deps/.*'
   --exclude 'tools/.*'
   --exclude 'src/.*/main/.*'
 )
 
 BUILD_DIR="$BUILD_DIR" BUILD_TYPE=Debug ./scripts/build.sh \
-  -DADVISKV_ENABLE_COVERAGE=ON \
+  -DRAFTBOX_ENABLE_COVERAGE=ON \
   "$@"
 
 find "$BUILD_DIR" -name '*.gcda' -delete

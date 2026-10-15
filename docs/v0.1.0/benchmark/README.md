@@ -1,6 +1,6 @@
-# AdvisKV v0.1.0 Benchmark
+# RaftBox v0.1.0 Benchmark
 
-AdvisKV v0.1.0 benchmark 记录本地环境下的端到端 KV 表现，链路覆盖 `SDK -> TOPO route -> Storage leader -> Raft/WAL/KV`。本页只放入口和摘要，完整数据见 put、get、mixed 三份报告。
+RaftBox v0.1.0 benchmark 记录本地环境下的端到端 KV 表现，链路覆盖 `SDK -> TOPO route -> Storage leader -> Raft/WAL/KV`。本页只放入口和摘要，完整数据见 put、get、mixed 三份报告。
 
 ## 运行方式
 

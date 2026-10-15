@@ -6,7 +6,7 @@
 #include "common/model/type.h"
 #include "common/status.h"
 
-namespace adviskv::catalog {
+namespace raftbox::catalog {
 
 struct CreateDBParam {
     std::string db_name;
@@ -90,4 +90,4 @@ struct AlterTableReplicaCountParam {
     }
 };
 
-}  // namespace adviskv::catalog
+}  // namespace raftbox::catalog

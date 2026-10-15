@@ -7,7 +7,7 @@
 #include "storage/persist/persist_engine.h"
 #include "storage/raft/iraft_rpc_transport.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 class RaftSender {
 public:
@@ -31,4 +31,4 @@ private:
     int32 timeout_ms_{1000};
 };
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

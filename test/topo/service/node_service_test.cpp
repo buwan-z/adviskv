@@ -9,7 +9,7 @@
 #include "topo/store/topo_store.h"
 #include "topo/store/topo_store_test_helper.h"
 
-namespace adviskv::topo {
+namespace raftbox::topo {
 namespace {
 
 RegisterNodeParam make_register_node_param() {
@@ -92,4 +92,4 @@ TEST(NodeServiceTest, RegisterNodeRejectsInvalidParams) {
     }
 }
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

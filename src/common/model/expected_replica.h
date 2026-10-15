@@ -10,7 +10,7 @@
 #include "common/status.h"
 #include "common/types.h"
 
-namespace adviskv {
+namespace raftbox {
 
 enum class ExpectedReplicaType : int8 {
     PRESENT = 1,
@@ -34,4 +34,4 @@ struct ExpectedReplica {
     }
 };
 
-}  // namespace adviskv
+}  // namespace raftbox

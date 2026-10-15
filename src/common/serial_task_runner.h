@@ -8,7 +8,7 @@
 
 #include "common/define.h"
 
-namespace adviskv {
+namespace raftbox {
 
 // 负责串行化，放进队列里面然后直接执行Task
 class SerialTaskRunner {
@@ -35,4 +35,4 @@ private:
     std::thread thread_;
 };
 
-}  // namespace adviskv
+}  // namespace raftbox

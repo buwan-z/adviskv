@@ -4,7 +4,7 @@
 #include "catalog/store/catalog_store.h"
 #include "catalog/service/ddl_service.h"
 
-namespace adviskv::catalog {
+namespace raftbox::catalog {
 
 class TableReconciler : public BackgroundTask {
 public:
@@ -18,4 +18,4 @@ private:
     ITopoClient* topo_client_;
 };
 
-}  // namespace adviskv::catalog
+}  // namespace raftbox::catalog

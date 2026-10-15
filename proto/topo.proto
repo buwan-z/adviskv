@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package adviskv.topo.rpc;
+package raftbox.topo.rpc;
 
 import "common.proto";
 
@@ -15,13 +15,13 @@ message GetRouteRequest{
 }
 
 message RouteReplica {
-    adviskv.pb.Endpoint endpoint = 1;
-    adviskv.pb.RaftRole role = 2;
-    adviskv.pb.ReplicaID replica_id = 3;
+    raftbox.pb.Endpoint endpoint = 1;
+    raftbox.pb.RaftRole role = 2;
+    raftbox.pb.ReplicaID replica_id = 3;
 }
 
 message GetRouteResponse{
-    adviskv.pb.BaseRsp base_rsp = 1;
+    raftbox.pb.BaseRsp base_rsp = 1;
     int32 table_id = 2;
     int32 shard_id = 3;
     repeated RouteReplica replicas = 4;
@@ -33,7 +33,7 @@ message GetTableMetaRequest{
 }
 
 message GetTableMetaResponse{
-    adviskv.pb.BaseRsp base_rsp = 1;
+    raftbox.pb.BaseRsp base_rsp = 1;
     int32 table_id = 2;
     int32 shard_count = 3;
 }
@@ -49,7 +49,7 @@ message GetTableRoutesRequest{
 }
 
 message GetTableRoutesResponse{
-    adviskv.pb.BaseRsp base_rsp = 1;
+    raftbox.pb.BaseRsp base_rsp = 1;
     int32 table_id = 2;
     int32 shard_count = 3;
     repeated ShardRoute routes = 4;
@@ -64,7 +64,7 @@ message RegisterNodeRequest{
 }
 
 message RegisterNodeResponse{
-    adviskv.pb.BaseRsp base_rsp = 1;
+    raftbox.pb.BaseRsp base_rsp = 1;
 }
 
 message PlaceTableRequest{
@@ -76,11 +76,11 @@ message PlaceTableRequest{
     int32 replica_count = 6;
     string resource_pool = 7;
     string operation_id = 8;
-    adviskv.pb.EngineType engine_type = 9;
+    raftbox.pb.EngineType engine_type = 9;
 }
 
 message PlaceTableResponse{
-    adviskv.pb.BaseRsp base_rsp = 1;
+    raftbox.pb.BaseRsp base_rsp = 1;
 }
 
 message DropTableRequest{
@@ -89,7 +89,7 @@ message DropTableRequest{
 }
 
 message DropTableResponse{
-    adviskv.pb.BaseRsp base_rsp = 1;
+    raftbox.pb.BaseRsp base_rsp = 1;
 }
 
 message AlterTableReplicaCountRequest{
@@ -99,7 +99,7 @@ message AlterTableReplicaCountRequest{
 }
 
 message AlterTableReplicaCountResponse{
-    adviskv.pb.BaseRsp base_rsp = 1;
+    raftbox.pb.BaseRsp base_rsp = 1;
 }
 
 message GetTableStatusRequest{
@@ -108,21 +108,21 @@ message GetTableStatusRequest{
 }
 
 message GetTableStatusResponse{
-    adviskv.pb.BaseRsp base_rsp = 1;
+    raftbox.pb.BaseRsp base_rsp = 1;
     int32 table_id = 2;
-    adviskv.pb.TopoTableDesired desired = 3;
-    adviskv.pb.TopoTablePhase phase = 4;
+    raftbox.pb.TopoTableDesired desired = 3;
+    raftbox.pb.TopoTablePhase phase = 4;
     string last_error_msg = 5;
     string operation_id = 6;
 }
 
 message HeartbeatReplicaInfo{
-    adviskv.pb.ReplicaID replica_id = 1;
-    adviskv.pb.RaftRole role = 2;
-    adviskv.pb.StorageReplicaStatus status = 3;
+    raftbox.pb.ReplicaID replica_id = 1;
+    raftbox.pb.RaftRole role = 2;
+    raftbox.pb.StorageReplicaStatus status = 3;
     int64 term = 4;
-    adviskv.pb.RaftMemberType member_type = 5;
-    repeated adviskv.pb.RaftMember full_membership = 6;
+    raftbox.pb.RaftMemberType member_type = 5;
+    repeated raftbox.pb.RaftMember full_membership = 6;
 }
 
 message HeartbeatRequest{
@@ -143,13 +143,13 @@ enum ExpectedReplicaType {
 
 message ExpectedReplica {
     ExpectedReplicaType type = 1;
-    adviskv.pb.ReplicaID replica_id = 2;
-    adviskv.pb.EngineType engine_type = 3;
-    repeated adviskv.pb.PeerMember initial_members = 4;
+    raftbox.pb.ReplicaID replica_id = 2;
+    raftbox.pb.EngineType engine_type = 3;
+    repeated raftbox.pb.PeerMember initial_members = 4;
 }
 
 message HeartbeatResponse{
-    adviskv.pb.BaseRsp base_rsp = 1;
+    raftbox.pb.BaseRsp base_rsp = 1;
     repeated ExpectedReplica expects = 2;
 }
 

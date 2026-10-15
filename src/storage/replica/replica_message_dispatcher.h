@@ -12,7 +12,7 @@
 #include "storage/raft/raft_sender.h"
 #include "storage/replica/replica_loop.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 class PersistEngine;
 
@@ -50,4 +50,4 @@ private:
     ThreadPool rpc_pool_;
 };
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

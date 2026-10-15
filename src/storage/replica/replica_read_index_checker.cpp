@@ -6,7 +6,7 @@
 #include "storage/replica/replica_loop.h"
 #include "storage/replica/replica_message_dispatcher.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 ReplicaReadIndexChecker::ReplicaReadIndexChecker(ReplicaContext& context, ReplicaLoop& loop)
         : context_(context), loop_(loop) {}
@@ -78,4 +78,4 @@ Status ReplicaReadIndexChecker::check_self_leader_and_get_read_index(LogIndex& r
     return Status::NOT_LEADER("failed to confirm leader with quorum");
 }
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <string>
 
-namespace adviskv::bench {
+namespace raftbox::bench {
 
 struct BenchOptions {
     std::string catalog_host{"127.0.0.1"};
@@ -48,4 +48,4 @@ struct BenchOptions {
     int32_t metrics_hold_seconds{0};
 };
 
-}  // namespace adviskv::bench
+}  // namespace raftbox::bench

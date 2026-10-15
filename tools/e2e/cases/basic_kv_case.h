@@ -5,7 +5,7 @@
 #include "e2e_options.h"
 #include "e2e_table_util.h"
 
-namespace adviskv::e2e {
+namespace raftbox::e2e {
 
 // 这个场景覆盖最基础的端到端 KV 链路：
 // 先通过 Catalog 创建 DB 和 table，等待 TOPO 完成 route，然后用 SDK 写入一批 key。
@@ -90,4 +90,4 @@ inline bool run_basic_kv_case(const Options& options) {
     return true;
 }
 
-}  // namespace adviskv::e2e
+}  // namespace raftbox::e2e

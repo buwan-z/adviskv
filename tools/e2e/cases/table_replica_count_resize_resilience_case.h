@@ -21,7 +21,7 @@
 #include "sdk/client.h"
 #include "sdk/config.h"
 
-namespace adviskv::e2e {
+namespace raftbox::e2e {
 
 namespace resize_resilience_detail {
 
@@ -292,4 +292,4 @@ inline bool run_table_replica_count_resize_disruption_verify_case(
                           resize_resilience_detail::K_AFTER_PREFIX);
 }
 
-}  // namespace adviskv::e2e
+}  // namespace raftbox::e2e

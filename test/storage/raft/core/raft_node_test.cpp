@@ -8,14 +8,14 @@
 #include "storage/persist/persist_engine.h"
 #include "test_env.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 namespace fs = std::filesystem;
 
 class RaftCoreTest : public ::testing::Test {
    protected:
     void SetUp() override {
         base_dir_ =
-            adviskv::test::make_unique_test_dir("raft_core", sequence_++);
+            raftbox::test::make_unique_test_dir("raft_core", sequence_++);
         ASSERT_TRUE(fs::create_directories(base_dir_)) << base_dir_.string();
     }
 
@@ -670,4 +670,4 @@ TEST_F(RaftCoreTest, PreVoteResponseAtCurrentTermUpdatesCandidate) {
     EXPECT_EQ(response_effects.hard_state->current_term, 3);
 }
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

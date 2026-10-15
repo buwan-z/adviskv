@@ -8,7 +8,7 @@
 #include "common/proto/proto.h"
 #include "e2e_assert.h"
 
-namespace adviskv::e2e {
+namespace raftbox::e2e {
 
 bool get_route(E2EContext* context, const Key& key, sdk::RouteInfo* route,
                std::string* error) {
@@ -93,4 +93,4 @@ bool print_current_leader(E2EContext* context, const std::string& key) {
     return true;
 }
 
-}  // namespace adviskv::e2e
+}  // namespace raftbox::e2e

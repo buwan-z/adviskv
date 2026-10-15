@@ -10,7 +10,7 @@
 #include "catalog.grpc.pb.h"
 #include "catalog/model/model.h"
 
-namespace adviskv::cli {
+namespace raftbox::cli {
 
 struct CatalogCliTarget {
     Endpoint endpoint;
@@ -52,4 +52,4 @@ private:
     std::unique_ptr<catalog_rpc::CatalogService::Stub> stub_;
 };
 
-}  // namespace adviskv::cli
+}  // namespace raftbox::cli

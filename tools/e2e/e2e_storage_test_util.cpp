@@ -13,7 +13,7 @@
 #include "e2e_route_util.h"
 #include "storage.grpc.pb.h"
 
-namespace adviskv::e2e {
+namespace raftbox::e2e {
 
 using Clock = std::chrono::steady_clock;
 
@@ -175,4 +175,4 @@ bool wait_replica_snapshot_index_at_least_for_test(
     return false;
 }
 
-}  // namespace adviskv::e2e
+}  // namespace raftbox::e2e

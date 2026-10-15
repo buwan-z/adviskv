@@ -5,7 +5,7 @@
 
 #include "common/model/type.h"
 
-namespace adviskv::sdk {
+namespace raftbox::sdk {
 
 struct RouteReplica {
     ReplicaID replica_id;
@@ -24,4 +24,4 @@ struct TableRouteInfo {
     int32_t shard_count{0};
     std::vector<RouteInfo> routes;
 };
-}  // namespace adviskv::sdk
+}  // namespace raftbox::sdk

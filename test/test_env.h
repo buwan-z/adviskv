@@ -8,10 +8,10 @@
 #include "common/path_util.h"
 #include "common/status.h"
 
-namespace adviskv::test {
+namespace raftbox::test {
 
 inline std::filesystem::path test_data_dir() {
-    return adviskv::path_from_config("data_dir");
+    return raftbox::path_from_config("data_dir");
 }
 
 inline std::filesystem::path make_unique_test_dir(const std::string& prefix,
@@ -27,4 +27,4 @@ inline std::string status_debug_string(const Status& status) {
            ", msg=" + status.msg();
 }
 
-}  // namespace adviskv::test
+}  // namespace raftbox::test

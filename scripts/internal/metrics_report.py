@@ -72,8 +72,8 @@ LABEL_RE = re.compile(r'([a-zA-Z_][a-zA-Z0-9_]*)="((?:[^"\\]|\\.)*)"')
 
 
 def metric_display_name(name: str) -> str:
-    if name.startswith("adviskv_"):
-        name = name[len("adviskv_"):]
+    if name.startswith("raftbox_"):
+        name = name[len("raftbox_"):]
     if name.endswith("_latency_us"):
         name = name[:-len("_latency_us")]
     if name.endswith("_total"):
@@ -129,7 +129,7 @@ def parse_prometheus_text(text: str) -> tuple[dict[str, HistogramSnapshot],
 def scrape_target(target: MetricsTarget, timeout_s: float) -> MetricsSample:
     timestamp = time.time()
     request = urllib.request.Request(
-        target.url, headers={"User-Agent": "adviskv-metrics-report/1"})
+        target.url, headers={"User-Agent": "raftbox-metrics-report/1"})
     try:
         with urllib.request.urlopen(request, timeout=timeout_s) as response:
             body = response.read().decode("utf-8", errors="replace")
@@ -295,7 +295,7 @@ class MetricsSampler:
         if self._thread is not None:
             return
         self._thread = threading.Thread(target=self._run,
-                                        name="adviskv-metrics-sampler",
+                                        name="raftbox-metrics-sampler",
                                         daemon=True)
         self._thread.start()
 
@@ -350,7 +350,7 @@ def format_aligned_table(header: list[str], rows: list[list[str]]) -> str:
 
 def format_report_text(report: MetricsReport) -> str:
     lines = [
-        "AdvisKV metrics report",
+        "RaftBox metrics report",
         f"started_at: {time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(report.started_at))}",
         f"duration_s: {report.duration_s:.1f}",
         f"samples: {len(report.samples)}",

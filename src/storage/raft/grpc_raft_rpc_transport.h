@@ -10,7 +10,7 @@
 #include "storage.grpc.pb.h"
 #include "storage/raft/iraft_rpc_transport.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 class GrpcRaftRpcTransport final : public IRaftRpcTransport {
 public:
@@ -34,4 +34,4 @@ private:
     mutable std::unordered_map<std::string, std::unique_ptr<rpc::StorageService::StubInterface>> stub_pool_;
 };
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

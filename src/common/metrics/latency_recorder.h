@@ -6,7 +6,7 @@
 #include <utility>
 #include <vector>
 
-namespace adviskv {
+namespace raftbox {
 
 class LatencyRecorder {
 public:
@@ -68,4 +68,4 @@ private:
     std::vector<int64_t> latencies_us_;
 };
 
-}  // namespace adviskv
+}  // namespace raftbox

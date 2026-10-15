@@ -12,7 +12,7 @@
 #include "catalog/proto/catalog_table_state_proto.h"
 #include "catalog/service/topo_client.h"
 
-namespace adviskv::catalog {
+namespace raftbox::catalog {
 namespace {
 
 class FakeTopoClient : public ITopoClient {
@@ -506,4 +506,4 @@ TEST_F(DdlServiceTest, RecreateSameNameAfterDeleteKeepsOldIdLookup) {
 
 }  // namespace
 
-}  // namespace adviskv::catalog
+}  // namespace raftbox::catalog

@@ -16,7 +16,7 @@
 #include "catalog/model/model.h"
 #include "catalog/persist/i_catalog_persist_engine.h"
 
-namespace adviskv::catalog {
+namespace raftbox::catalog {
 
 CatalogStore::CatalogStore(ICatalogPersistEngine* persist_engine) : persist_engine_(persist_engine) {}
 
@@ -531,4 +531,4 @@ Status CatalogStore::put_db_desc(DatabaseDesc new_db_desc) {
     return Status::OK();
 }
 
-}  // namespace adviskv::catalog
+}  // namespace raftbox::catalog

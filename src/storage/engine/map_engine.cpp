@@ -11,7 +11,7 @@
 #include "common/model/type.h"
 #include "common/status.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 Status MapEngine::put(const Key& key, const Value& value) {
     std::unique_lock lock(map_mutex_);
@@ -68,4 +68,4 @@ Status MapEngine::for_each_kv(const std::function<Status(const Key&, const Value
     return Status::OK();
 }
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

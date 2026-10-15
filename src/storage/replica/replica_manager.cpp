@@ -15,7 +15,7 @@
 #include "storage/model/param.h"
 #include "storage/replica/replica.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 ReplicaPtr ReplicaManager::get_replica_by_id(const ReplicaID& replica_id) const {
     std::shared_lock locker(mutex_);
@@ -174,4 +174,4 @@ ReplicaInitParam ReplicaManager::fill_param_runtime(ReplicaInitParam param) cons
 
 const std::string& ReplicaManager::get_data_dir() const { return runtime_options_.data_dir; }
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

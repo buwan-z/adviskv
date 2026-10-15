@@ -6,7 +6,7 @@
 #include "common/model/type.h"
 #include "common/status.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 class KVEngine {
 public:
@@ -24,4 +24,4 @@ public:
 
 private:
 };
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

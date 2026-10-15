@@ -9,7 +9,7 @@
 #include "common/model/type.h"
 #include "common/status.h"
 #include "topo.grpc.pb.h"
-namespace adviskv::topo {
+namespace raftbox::topo {
 
 class ServiceManager;
 
@@ -39,4 +39,4 @@ private:
     ServiceManager* service_manager_{nullptr};
 };
 
-}  // namespace adviskv::topo
+}  // namespace raftbox::topo

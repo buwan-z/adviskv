@@ -7,7 +7,7 @@
 #include "common/model/type.h"
 #include "storage/engine/kv_engine.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 class MapEngine : public KVEngine {
 public:
@@ -27,4 +27,4 @@ private:
     std::map<Key, Value> map_;
 };
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

@@ -16,7 +16,7 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <unistd.h>
-namespace adviskv {
+namespace raftbox {
 namespace {
 
 struct HistogramSnapshot {
@@ -70,7 +70,7 @@ std::string prometheus_bucket_label(int64_t upper_bound) {
 
 }  // namespace
 
-class AdvisMetrics::Registry {
+class RaftBoxMetrics::Registry {
 public:
     Registry() : bucket_bounds_(latency_buckets_us()) {}
 
@@ -144,7 +144,7 @@ private:
     std::unordered_map<std::string, int64_t> counters_;
 };
 
-class AdvisMetrics::HttpServer {
+class RaftBoxMetrics::HttpServer {
 public:
     explicit HttpServer(MetricsOptions options) : options_(std::move(options)) {}
 
@@ -237,7 +237,7 @@ private:
     std::string build_response(const std::string& request) const {
         if (request_matches_path(request, options_.http_path)) {
             return http_response("200 OK", "text/plain; version=0.0.4; charset=utf-8",
-                                 AdvisMetrics::get_instance().dump_prometheus());
+                                 RaftBoxMetrics::get_instance().dump_prometheus());
         }
         return http_response("404 Not Found", "text/plain; charset=utf-8", "not found\n");
     }
@@ -248,16 +248,16 @@ private:
     int listen_fd_{-1};
 };
 
-AdvisMetrics& AdvisMetrics::get_instance() {
-    static AdvisMetrics metrics;
+RaftBoxMetrics& RaftBoxMetrics::get_instance() {
+    static RaftBoxMetrics metrics;
     return metrics;
 }
 
-AdvisMetrics::AdvisMetrics() : registry_(std::make_unique<Registry>()) {}
+RaftBoxMetrics::RaftBoxMetrics() : registry_(std::make_unique<Registry>()) {}
 
-AdvisMetrics::~AdvisMetrics() { stop(); }
+RaftBoxMetrics::~RaftBoxMetrics() { stop(); }
 
-Status AdvisMetrics::init(const MetricsOptions& options) {
+Status RaftBoxMetrics::init(const MetricsOptions& options) {
     if (initialized_) {
         return Status::OK();
     }
@@ -275,7 +275,7 @@ Status AdvisMetrics::init(const MetricsOptions& options) {
     return Status::OK();
 }
 
-void AdvisMetrics::stop() {
+void RaftBoxMetrics::stop() {
     if (http_server_) {
         http_server_->stop();
         http_server_.reset();
@@ -283,17 +283,17 @@ void AdvisMetrics::stop() {
     initialized_ = false;
 }
 
-void AdvisMetrics::record_latency(const std::string& name, int64_t latency_us) {
+void RaftBoxMetrics::record_latency(const std::string& name, int64_t latency_us) {
     registry_->record_latency(name, latency_us);
 }
 
-void AdvisMetrics::record_counter(const std::string& name, int64_t delta) { registry_->record_counter(name, delta); }
+void RaftBoxMetrics::record_counter(const std::string& name, int64_t delta) { registry_->record_counter(name, delta); }
 
-int64_t AdvisMetrics::counter_value(const std::string& name) const { return registry_->counter_value(name); }
+int64_t RaftBoxMetrics::counter_value(const std::string& name) const { return registry_->counter_value(name); }
 
-void AdvisMetrics::reset() { registry_->reset(); }
+void RaftBoxMetrics::reset() { registry_->reset(); }
 
-std::string AdvisMetrics::dump_prometheus() const {
+std::string RaftBoxMetrics::dump_prometheus() const {
     const MetricsSnapshot snapshot = registry_->snapshot();
 
     std::vector<std::string> latency_names;
@@ -312,7 +312,7 @@ std::string AdvisMetrics::dump_prometheus() const {
 
     std::ostringstream out;
     for (const std::string& raw_name : latency_names) {
-        const std::string metric_name = "adviskv_" + raw_name + "_latency_us";
+        const std::string metric_name = "raftbox_" + raw_name + "_latency_us";
         const HistogramSnapshot& histogram = snapshot.latencies.at(raw_name);
 
         out << "# TYPE " << metric_name << " histogram\n";
@@ -325,7 +325,7 @@ std::string AdvisMetrics::dump_prometheus() const {
     }
 
     for (const std::string& raw_name : counter_names) {
-        const std::string metric_name = "adviskv_" + raw_name + "_total";
+        const std::string metric_name = "raftbox_" + raw_name + "_total";
         out << "# TYPE " << metric_name << " counter\n" << metric_name << " " << snapshot.counters.at(raw_name) << "\n";
     }
 
@@ -338,7 +338,7 @@ ScopedMetricsTimer::ScopedMetricsTimer(std::string name)
 ScopedMetricsTimer::~ScopedMetricsTimer() {
     const auto end = std::chrono::steady_clock::now();
     const int64_t latency_us = std::chrono::duration_cast<std::chrono::microseconds>(end - start_).count();
-    AdvisMetrics::get_instance().record_latency(name_, latency_us);
+    RaftBoxMetrics::get_instance().record_latency(name_, latency_us);
 }
 
-}  // namespace adviskv
+}  // namespace raftbox

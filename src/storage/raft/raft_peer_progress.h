@@ -9,7 +9,7 @@
 #include "storage/model/model.h"
 #include "storage/raft/raft_membership.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 // 负责记录peer们的next_index和match_index都到哪里了
 class RaftPeerProgress {
@@ -39,4 +39,4 @@ private:
     std::unordered_map<ReplicaID, LogIndex, ReplicaIDHash> inflight_snapshot_index_;
 };
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

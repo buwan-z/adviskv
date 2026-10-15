@@ -2,7 +2,7 @@
 
 #include <cassert>
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 RaftElection::RaftElection(const ReplicaID& self_id) : self_id_(self_id) {}
 
@@ -89,4 +89,4 @@ bool RaftElection::record_pre_vote_granted_from(const ReplicaID& voter) {
 
 Term RaftElection::pre_vote_term() const { return current_term_ + 1; }
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

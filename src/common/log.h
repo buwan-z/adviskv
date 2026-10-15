@@ -7,7 +7,7 @@
 #include "spdlog/logger.h"
 #include "spdlog/spdlog.h"
 
-namespace adviskv {
+namespace raftbox {
 
 struct LogConfig {
     std::string logger_name;
@@ -38,16 +38,16 @@ private:
 };
 
 #define LOG_DEBUG(...)                                                                                         \
-    adviskv::Logger::get_instance().get_logger()->log(spdlog::source_loc{__FILE__, __LINE__, SPDLOG_FUNCTION}, \
+    raftbox::Logger::get_instance().get_logger()->log(spdlog::source_loc{__FILE__, __LINE__, SPDLOG_FUNCTION}, \
                                                       spdlog::level::debug, __VA_ARGS__);
 #define LOG_INFO(...)                                                                                          \
-    adviskv::Logger::get_instance().get_logger()->log(spdlog::source_loc{__FILE__, __LINE__, SPDLOG_FUNCTION}, \
+    raftbox::Logger::get_instance().get_logger()->log(spdlog::source_loc{__FILE__, __LINE__, SPDLOG_FUNCTION}, \
                                                       spdlog::level::info, __VA_ARGS__);
 #define LOG_WARN(...)                                                                                          \
-    adviskv::Logger::get_instance().get_logger()->log(spdlog::source_loc{__FILE__, __LINE__, SPDLOG_FUNCTION}, \
+    raftbox::Logger::get_instance().get_logger()->log(spdlog::source_loc{__FILE__, __LINE__, SPDLOG_FUNCTION}, \
                                                       spdlog::level::warn, __VA_ARGS__);
 #define LOG_ERROR(...)                                                                                         \
-    adviskv::Logger::get_instance().get_logger()->log(spdlog::source_loc{__FILE__, __LINE__, SPDLOG_FUNCTION}, \
+    raftbox::Logger::get_instance().get_logger()->log(spdlog::source_loc{__FILE__, __LINE__, SPDLOG_FUNCTION}, \
                                                       spdlog::level::err, __VA_ARGS__);
 
-}  // namespace adviskv
+}  // namespace raftbox

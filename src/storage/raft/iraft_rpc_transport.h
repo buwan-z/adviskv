@@ -4,7 +4,7 @@
 #include "common/status.h"
 #include "storage/model/model.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 class IRaftRpcTransport {
 public:
@@ -23,4 +23,4 @@ public:
                                           int32_t timeout_ms, InstallSnapshotResult& result) const = 0;
 };
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage

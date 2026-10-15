@@ -6,7 +6,7 @@
 #include "common/log.h"
 #include "storage/raft/raft_log.h"
 
-namespace adviskv::storage {
+namespace raftbox::storage {
 
 RaftApply::RaftApply(const RaftLog& raft_log) : raft_log_(raft_log) {}
 
@@ -72,4 +72,4 @@ bool RaftApply::has_committed_current_term_entry(Term current_term) const {
     return false;
 }
 
-}  // namespace adviskv::storage
+}  // namespace raftbox::storage
